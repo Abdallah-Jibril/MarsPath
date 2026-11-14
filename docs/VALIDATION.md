@@ -9,7 +9,7 @@
 | Deliberate replacements | Six repository metadata / English documentation files |
 | Unexpected source or asset changes | Zero |
 | Main English documents checked | 10 |
-| Relative documentation links checked | 32 before this validation link was added |
+| Relative documentation links checked | 33 |
 | Embedded credential pattern scan | No matches in the inspected tracked text files |
 
 The inventory retains SHA-256 hashes for each original tracked file. Original runtime source, assets, and measured terrain were preserved. Additional build helpers and presentation/report deliverables are identified separately.
@@ -26,4 +26,14 @@ Migration does not add new terrain, movement, or radio implementation. Existing 
 
 ## Remote verification
 
-Remote privacy, repository checkout, large-file availability, and release assets are checked before retiring the earlier remote. The final migration update records the outcome here.
+Completed on 14 November 2026:
+
+- A fresh, independent clone downloaded the repository from GitHub.
+- All 1,377 source-inventory entries matched their recorded import hashes.
+- All 356 Git LFS files were downloaded; `git lfs fsck --objects HEAD` passed.
+- Main English documentation passed local-link and code-fence checks.
+- The published Windows and Quest release assets matched local sizes and GitHub SHA-256 digests.
+- Every one of the 179 archived Windows runtime files matched the existing build; archive CRC validation passed.
+- The repository remained private. Its collaborator list contained only `Abdallah-Jibril`.
+
+The earlier remote's deletion reached GitHub's account identity confirmation. That final user-controlled security step was pending when this validation record was saved. The original working folder and verified local history bundle remain available independently of either remote.
