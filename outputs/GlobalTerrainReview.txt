@@ -1,0 +1,25 @@
+GLOBAL_TERRAIN_SOURCE: Gale rim / -4.70000,137.40000 / USGS HRSC / MOLA / 200 m source / context error 0.0010m / measured relief 4474.6m / old 16ppd difference 314.4m
+GLOBAL_TERRAIN_SOURCE: Valles Marineris / -13.90000,-59.20000 / USGS HRSC / MOLA / 200 m source / context error 0.0010m / measured relief 8623.9m / old 16ppd difference 695.0m
+GLOBAL_TERRAIN_SOURCE: Arbitrary Arabia / 24.80000,14.20000 / NASA MOLA / 926 m global grid / context error 0.0010m / measured relief 1272.3m / old 16ppd difference 196.4m
+GLOBAL_TERRAIN_SOURCE: Olympus Mons / 18.65000,-133.80000 / USGS HRSC / MOLA / 200 m source / context error 0.0000m / measured relief 2960.0m / old 16ppd difference 281.5m
+GLOBAL_TERRAIN_SOURCE: Elysium Planitia / 4.50000,135.90000 / NASA MOLA / 926 m global grid / context error 0.0010m / measured relief 405.9m / old 16ppd difference 136.6m
+GLOBAL_TERRAIN_SOURCE: Utopia Planitia / 46.70000,117.50000 / NASA MOLA / 926 m global grid / context error 0.0010m / measured relief 277.2m / old 16ppd difference 56.1m
+GLOBAL_TERRAIN_SOURCE: Dateline / 10.00000,179.99000 / NASA MOLA / 926 m global grid / context error 0.0007m / measured relief 122.9m / old 16ppd difference 16.6m
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalEndpointLayout.png
+GLOBAL_TERRAIN_BOUNDED: 0 / 1.150s / 35670016 MOLA bytes / framed True / 10700.0km
+GLOBAL_TERRAIN_BOUNDED: 1 / 0.176s / 1839104 MOLA bytes / framed True / 58.4km
+GLOBAL_TERRAIN_PLANNER: Gale rim / 0.236s / USGS HRSC / MOLA / 200 m source
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainPlanner0.png
+GLOBAL_TERRAIN_VISOR: Gale rim / entry 0.154s / USGS HRSC / MOLA / 200 m source / horizon 783 samples, max 0.008m / same planner elevation -4303.420m / geometry True
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainVisor0.png
+GLOBAL_TERRAIN_DIAGNOSTIC_SELECTION: 1 / -13.8595076,-59.2 -> -13.8595009,-59.1443939 / admissible True
+GLOBAL_TERRAIN_PLANNER: Valles Marineris / nearby diagnostic / 0.378s / USGS HRSC / MOLA / 200 m source
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainPlanner1.png
+GLOBAL_TERRAIN_VISOR: Valles Marineris / nearby diagnostic / entry 0.130s / USGS HRSC / MOLA / 200 m source / horizon 783 samples, max 0.030m / same planner elevation -3412.115m / geometry True
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainVisor1.png
+GLOBAL_TERRAIN_PLANNER: Arbitrary Arabia / 0.132s / NASA MOLA / 926 m global grid
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainPlanner2.png
+GLOBAL_TERRAIN_VISOR: Arbitrary Arabia / entry 0.091s / NASA MOLA / 926 m global grid / horizon 775 samples, max 0.008m / same planner elevation -2090.740m / geometry True
+MARSPATH_HELMET_CAPTURE: MarsPathGlobalTerrainVisor2.png
+GLOBAL_TERRAIN_LIVE: request 24.80000,14.18850 / 926.0 -> 200.0m grid / native Arabia -2090.71400m / exact True / range hits 29, writes 48, ready after first budget False / 
+GLOBAL_TERRAIN_PASSED: seven off-Jezero measured providers, physical context and horizon, three planner/visor scenes, compact endpoints and bounded dateline/near-antipodal planning.

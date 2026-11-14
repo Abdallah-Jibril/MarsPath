@@ -1,0 +1,51 @@
+{
+  "sourceId": "J02_045626_1554_XN_24S309W__F17_042527_1553_XI_24S309W",
+  "sourceUrl": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/ctx/controlled/usgs/J02_045626_1554_XN_24S309W__F17_042527_1553_XI_24S309W/J02_045626_1554_XN_24S309W__F17_042527_1553_XI_24S309W_dtm.tif",
+  "metadata": "C:\\Users\\abdul\\AppData\\LocalLow\\LAGRANGE V\\MarsPath\\OfficialTerrain\\v1\\windows\\J02_045626_1554_XN_24S309W__F17_042527_1553_XI_24S309W_-1616_3344.json",
+  "binary": "C:\\Users\\abdul\\AppData\\LocalLow\\LAGRANGE V\\MarsPath\\OfficialTerrain\\v1\\windows\\J02_045626_1554_XN_24S309W__F17_042527_1553_XI_24S309W_-1616_3344.f32",
+  "binarySha256": "b7c7199adbba74f9d5d27bd61b09ad66f6eea7a217a3604d4cce715c2777fa95",
+  "sourceGridMeters": 20.617042541503906,
+  "width": 1536,
+  "height": 1536,
+  "nativeValidPixels": 1982173,
+  "nativeMinimumMeters": -907.82763671875,
+  "nativeMaximumMeters": -61.82562255859375,
+  "cropWidthMeters": 31667.776133779815,
+  "cropHeightMeters": 31667.776133779815,
+  "bboxDegrees": [
+    49.880657824714504,
+    -24.594399269089617,
+    50.414912362602756,
+    -24.060144731201362
+  ],
+  "points": [
+    {
+      "name": "native_low",
+      "column": 936,
+      "row": 656,
+      "latitude": -24.28848985107352,
+      "longitude": 50.20639309472254,
+      "nativeElevationMeters": -834.888427734375,
+      "minimumValidSupportCells": 18
+    },
+    {
+      "name": "native_high",
+      "column": 974,
+      "row": 60,
+      "latitude": -24.08118796007001,
+      "longitude": 50.219610329383826,
+      "nativeElevationMeters": -68.04054260253906,
+      "minimumValidSupportCells": 18
+    },
+    {
+      "name": "native_middle",
+      "column": 768,
+      "row": 768,
+      "latitude": -24.327445911127874,
+      "longitude": 50.14795900464102,
+      "nativeElevationMeters": -318.3671569824219,
+      "minimumValidSupportCells": 18
+    }
+  ],
+  "note": "Golden values are original Float32 pixel centers with >=18-cell taxicab valid support. Elevation differences describe this cropped local relief, not a formally delineated crater rim-to-floor depth. No gap estimates or resampling used."
+}

@@ -1,0 +1,1272 @@
+{
+  "start": {
+    "lat": 26.73911,
+    "lon": 82.70998,
+    "height": -1729.2459142982493,
+    "source": "H2948_0000_DA4.IMG",
+    "spacing": 75,
+    "components": [
+      {
+        "height": -1729.2459142982493,
+        "weight": 1,
+        "source": "H2948_0000_DA4.IMG",
+        "spacing": 75,
+        "quadPixel": [
+          1186,
+          213
+        ]
+      }
+    ]
+  },
+  "end": {
+    "lat": 24.24785,
+    "lon": 84.94257,
+    "height": -2111.3420968804003,
+    "source": "H2926_0000_DA4.IMG",
+    "spacing": 100,
+    "components": [
+      {
+        "height": -2111.3420968804003,
+        "weight": 1,
+        "source": "H2926_0000_DA4.IMG",
+        "spacing": 100,
+        "quadPixel": [
+          1270,
+          2910
+        ]
+      }
+    ]
+  },
+  "knownFloor": {
+    "lat": 25.2272575,
+    "lon": 83.77844375,
+    "height": -3462.7819866194845,
+    "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+    "spacing": 20.768311056212898,
+    "components": [
+      {
+        "height": -3393.616575181876,
+        "weight": 1,
+        "source": "H2926_0000_DA4.IMG",
+        "spacing": 100,
+        "quadPixel": [
+          642,
+          2329
+        ]
+      },
+      {
+        "height": -3462.7819866194845,
+        "weight": 1,
+        "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+        "spacing": 20.768311056212898,
+        "quadPixel": [
+          1143,
+          1238
+        ]
+      }
+    ],
+    "distanceFromStartKm": 106.16192190878901,
+    "bearingFromStart": 147.33699161951404
+  },
+  "knownRim": {
+    "lat": 24.76702,
+    "lon": 83.456555,
+    "height": -1617.0166858174116,
+    "source": "G18_025383_2053_XN_25N276W__G19_025528_2053_XN_25N276W",
+    "spacing": 20.667078685594507,
+    "components": [
+      {
+        "height": -1609.5981348166688,
+        "weight": 1,
+        "source": "H2926_0000_DA4.IMG",
+        "spacing": 100,
+        "quadPixel": [
+          468,
+          2602
+        ]
+      },
+      {
+        "height": -1625.6933407449615,
+        "weight": 1,
+        "source": "H2948_0000_DA4.IMG",
+        "spacing": 75,
+        "quadPixel": [
+          1730,
+          1771
+        ]
+      },
+      {
+        "height": -1617.0166858174116,
+        "weight": 1,
+        "source": "G18_025383_2053_XN_25N276W__G19_025528_2053_XN_25N276W",
+        "spacing": 20.667078685594507,
+        "quadPixel": [
+          692,
+          2150
+        ]
+      }
+    ],
+    "distanceFromStartKm": 123.49534099399926,
+    "bearingFromStart": 161.00888955640266
+  },
+  "horizonRadiusKm": 60,
+  "nearRelief": [
+    {
+      "squareHalfExtentMeters": 180,
+      "min": -1733.0198050230058,
+      "max": -1722.972925027215,
+      "range": 10.046879995790732
+    },
+    {
+      "squareHalfExtentMeters": 500,
+      "min": -1738.921263662274,
+      "max": -1709.1865783767325,
+      "range": 29.734685285541445
+    },
+    {
+      "squareHalfExtentMeters": 1000,
+      "min": -1757.8542713930583,
+      "max": -1679.2365915392627,
+      "range": 78.61767985379561
+    },
+    {
+      "squareHalfExtentMeters": 4000,
+      "min": -1875.410838602754,
+      "max": -1547.9387901928344,
+      "range": 327.4720484099196
+    },
+    {
+      "squareHalfExtentMeters": 12000,
+      "min": -2098.133182805905,
+      "max": -867.4027950729007,
+      "range": 1230.7303877330044
+    }
+  ],
+  "directCorridor": [
+    {
+      "progress": 0,
+      "distanceKm": 0,
+      "lat": 26.73911,
+      "lon": 82.70998,
+      "height": -1729.2459142982493,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1729.2459142982493,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1186,
+            213
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.05,
+      "distanceKm": 9.49558478786625,
+      "lat": 26.615368426752383,
+      "lon": 82.82385540660538,
+      "height": -1455.435104013127,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1455.435104013127,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1267,
+            311
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.1,
+      "distanceKm": 18.9911695757325,
+      "lat": 26.491536399464287,
+      "lon": 82.93748451288637,
+      "height": -1541.794809312023,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1524.124062492942,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            197,
+            1580
+          ]
+        },
+        {
+          "height": -1541.794809312023,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1348,
+            409
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.15,
+      "distanceKm": 28.486754363598745,
+      "lat": 26.367614599841385,
+      "lon": 83.05086899713312,
+      "height": -1657.4949477069808,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1658.762852822171,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            257,
+            1654
+          ]
+        },
+        {
+          "height": -1657.4949477069808,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1429,
+            506
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.2,
+      "distanceKm": 37.982339151465,
+      "lat": 26.243603705473824,
+      "lon": 83.16401053044781,
+      "height": -1429.2836012008108,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1451.4199477728891,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            316,
+            1727
+          ]
+        },
+        {
+          "height": -1429.2836012008108,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1510,
+            604
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.25,
+      "distanceKm": 47.47792393933125,
+      "lat": 26.11950438987084,
+      "lon": 83.27691077677635,
+      "height": -1363.8182563569164,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -1360.221521830354,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            376,
+            1801
+          ]
+        },
+        {
+          "height": -1363.8182563569164,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1591,
+            703
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.3,
+      "distanceKm": 56.97350872719749,
+      "lat": 25.995317322495133,
+      "lon": 83.38957139294045,
+      "height": -2093.2846965673875,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -2110.291586429197,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            435,
+            1874
+          ]
+        },
+        {
+          "height": -2093.2846965673875,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1672,
+            801
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.35,
+      "distanceKm": 66.46909351506373,
+      "lat": 25.87104316879698,
+      "lon": 83.50199402867011,
+      "height": -2874.4811153092396,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -2861.0924353235678,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            495,
+            1948
+          ]
+        },
+        {
+          "height": -2874.4811153092396,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1753,
+            899
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.4,
+      "distanceKm": 75.96467830293,
+      "lat": 25.74668259024818,
+      "lon": 83.6141803266362,
+      "height": -3252.042328134802,
+      "source": "H2948_0000_DA4.IMG",
+      "spacing": 75,
+      "components": [
+        {
+          "height": -3248.7271510748774,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            555,
+            2022
+          ]
+        },
+        {
+          "height": -3252.042328134802,
+          "weight": 1,
+          "source": "H2948_0000_DA4.IMG",
+          "spacing": 75,
+          "quadPixel": [
+            1834,
+            997
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.45,
+      "distanceKm": 85.46026309079625,
+      "lat": 25.622236244375788,
+      "lon": 83.72613192248366,
+      "height": -3317.773673767408,
+      "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+      "spacing": 20.768311056212898,
+      "components": [
+        {
+          "height": -3290.6134681228923,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            614,
+            2095
+          ]
+        },
+        {
+          "height": -3317.773673767408,
+          "weight": 1,
+          "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+          "spacing": 20.768311056212898,
+          "quadPixel": [
+            994,
+            111
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.5,
+      "distanceKm": 94.9558478786625,
+      "lat": 25.49770478479558,
+      "lon": 83.83785044486476,
+      "height": -2191.317526905668,
+      "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+      "spacing": 20.768311056212898,
+      "components": [
+        {
+          "height": -2109.90935330678,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            674,
+            2169
+          ]
+        },
+        {
+          "height": -2191.317526905668,
+          "weight": 1,
+          "source": "J19_052046_2055_XN_25N276W__J18_051901_2055_XN_25N276W",
+          "spacing": 20.768311056212898,
+          "quadPixel": [
+            1313,
+            466
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.55,
+      "distanceKm": 104.45143266652873,
+      "lat": 25.373088861245375,
+      "lon": 83.9493375154728,
+      "height": -2891.1366954627315,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -2891.1366954627315,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            734,
+            2243
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.6,
+      "distanceKm": 113.94701745439498,
+      "lat": 25.248389119618118,
+      "lon": 84.0605947490761,
+      "height": -3651.100254300283,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -3651.100254300283,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            793,
+            2317
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.65,
+      "distanceKm": 123.44260224226124,
+      "lat": 25.1236062019947,
+      "lon": 84.17162375355211,
+      "height": -3505.392895865032,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -3505.392895865032,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            853,
+            2391
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.7,
+      "distanceKm": 132.93818703012747,
+      "lat": 24.99874074667667,
+      "lon": 84.28242612992194,
+      "height": -2915.4870313305787,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -2915.4870313305787,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            912,
+            2465
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.75,
+      "distanceKm": 142.43377181799374,
+      "lat": 24.873793388218647,
+      "lon": 84.39300347238513,
+      "height": -1330.462268883099,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -1330.462268883099,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            972,
+            2539
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.8,
+      "distanceKm": 151.92935660586,
+      "lat": 24.74876475746055,
+      "lon": 84.5033573683546,
+      "height": -1510.3197629477436,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -1510.3197629477436,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            1032,
+            2613
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.85,
+      "distanceKm": 161.42494139372621,
+      "lat": 24.623655481559666,
+      "lon": 84.61348939849184,
+      "height": -1824.1061369712195,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -1824.1061369712195,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            1091,
+            2687
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.9,
+      "distanceKm": 170.9205261815925,
+      "lat": 24.49846618402243,
+      "lon": 84.7234011367424,
+      "height": -1922.4726284433539,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -1922.4726284433539,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            1151,
+            2761
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 0.95,
+      "distanceKm": 180.41611096945874,
+      "lat": 24.373197484736075,
+      "lon": 84.83309415037152,
+      "height": -1986.837289784305,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -1986.837289784305,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            1210,
+            2836
+          ]
+        }
+      ]
+    },
+    {
+      "progress": 1,
+      "distanceKm": 189.911695757325,
+      "lat": 24.24785,
+      "lon": 84.94257,
+      "height": -2111.3420968804003,
+      "source": "H2926_0000_DA4.IMG",
+      "spacing": 100,
+      "components": [
+        {
+          "height": -2111.3420968804003,
+          "weight": 1,
+          "source": "H2926_0000_DA4.IMG",
+          "spacing": 100,
+          "quadPixel": [
+            1270,
+            2910
+          ]
+        }
+      ]
+    }
+  ],
+  "sightlines": [
+    {
+      "heading": 172,
+      "samples": [
+        {
+          "distanceKm": 5,
+          "height": -1847.8803896547565,
+          "curvatureDrop": -3.6787974272856383,
+          "elevationAngle": -1.4215698510899983,
+          "visible": false,
+          "maxPriorAngle": 0.04321041039849046
+        },
+        {
+          "distanceKm": 10,
+          "height": -1779.0363755265623,
+          "curvatureDrop": -14.715480204619402,
+          "elevationAngle": -0.37952592177744476,
+          "visible": false,
+          "maxPriorAngle": 0.04321041039849046
+        },
+        {
+          "distanceKm": 15,
+          "height": -1711.5942332505895,
+          "curvatureDrop": -33.11045843672435,
+          "elevationAngle": -0.06557493619664076,
+          "visible": false,
+          "maxPriorAngle": 0.04321041039849046
+        },
+        {
+          "distanceKm": 20,
+          "height": -1633.0346518387653,
+          "curvatureDrop": -58.86432515008289,
+          "elevationAngle": 0.10217056586349524,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 25,
+          "height": -1745.1648746618462,
+          "curvatureDrop": -91.97232018101175,
+          "elevationAngle": -0.25129450926580865,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 30,
+          "height": -1775.3880288428866,
+          "curvatureDrop": -132.4386986182761,
+          "elevationAngle": -0.3444914159228354,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 35,
+          "height": -1800.9383310916717,
+          "curvatureDrop": -180.26200395703975,
+          "elevationAngle": -0.4154583318829751,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 40,
+          "height": -1665.7609468547585,
+          "curvatureDrop": -235.45298887044117,
+          "elevationAngle": -0.24888738489653714,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 45,
+          "height": -1569.248007454364,
+          "curvatureDrop": -298.0027469430582,
+          "elevationAngle": -0.17796459568580844,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 50,
+          "height": -1633.7678095148467,
+          "curvatureDrop": -367.89637017783457,
+          "elevationAngle": -0.3142757861039555,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 55,
+          "height": -1700.0536436754476,
+          "curvatureDrop": -445.1442261762439,
+          "elevationAngle": -0.43531392079418046,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 60,
+          "height": -1495.1918982774612,
+          "curvatureDrop": -529.7881901215462,
+          "elevationAngle": -0.2841662754186162,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 65,
+          "height": -1620.6166542558126,
+          "curvatureDrop": -621.7395247772664,
+          "elevationAngle": -0.4540264989318527,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 70,
+          "height": -1571.7754840193936,
+          "curvatureDrop": -721.0775498202673,
+          "elevationAngle": -0.4629471360830962,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 75,
+          "height": -1424.9227046365856,
+          "curvatureDrop": -827.7990704626948,
+          "elevationAngle": -0.4013992782743253,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 80,
+          "height": -1435.5044784009274,
+          "curvatureDrop": -941.8431764947131,
+          "elevationAngle": -0.46561583406230805,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 85,
+          "height": -1421.2555757519713,
+          "curvatureDrop": -1063.2507731512937,
+          "elevationAngle": -0.5104962250813062,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 90,
+          "height": -1644.1629379660128,
+          "curvatureDrop": -1191.9323569808732,
+          "elevationAngle": -0.7061132005955935,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 95,
+          "height": -1720.5133537858358,
+          "curvatureDrop": -1328.0093405391888,
+          "elevationAngle": -0.7971552555019884,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 100,
+          "height": -1730.551310547781,
+          "curvatureDrop": -1471.4637752365954,
+          "elevationAngle": -0.8453001547732781,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 105,
+          "height": -1812.583406403761,
+          "curvatureDrop": -1622.237589843205,
+          "elevationAngle": -0.9321795548035774,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 110,
+          "height": -1806.231041413784,
+          "curvatureDrop": -1780.4044534190034,
+          "elevationAngle": -0.9689377021873986,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 115,
+          "height": -1680.0361862882085,
+          "curvatureDrop": -1945.9944552737184,
+          "elevationAngle": -0.9464339405478638,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        },
+        {
+          "distanceKm": 120,
+          "height": -1907.1930451803337,
+          "curvatureDrop": -2118.7302021550054,
+          "elevationAngle": -1.0981050439938866,
+          "visible": false,
+          "maxPriorAngle": 0.26506658672639005
+        }
+      ]
+    },
+    {
+      "heading": 147.33699161951404,
+      "samples": [
+        {
+          "distanceKm": 5,
+          "height": -1783.11163578211,
+          "curvatureDrop": -3.6788676277706833,
+          "elevationAngle": -0.6792180578785542,
+          "visible": false,
+          "maxPriorAngle": -0.37208942460786604
+        },
+        {
+          "distanceKm": 10,
+          "height": -1475.421602110377,
+          "curvatureDrop": -14.716796511729608,
+          "elevationAngle": 1.3605822577977944,
+          "visible": false,
+          "maxPriorAngle": 2.9064716078459045
+        },
+        {
+          "distanceKm": 15,
+          "height": -1029.6912406910403,
+          "curvatureDrop": -33.11711023468432,
+          "elevationAngle": 2.5382270750649085,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 20,
+          "height": -1492.9518961728877,
+          "curvatureDrop": -58.86675443276258,
+          "elevationAngle": 0.5036328795151725,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 25,
+          "height": -1668.4941557150805,
+          "curvatureDrop": -91.97439768675424,
+          "elevationAngle": -0.07549085822608387,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 30,
+          "height": -1439.6868404997376,
+          "curvatureDrop": -132.4517972883971,
+          "elevationAngle": 0.2969331188109038,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 35,
+          "height": -1530.3761041755174,
+          "curvatureDrop": -180.2763732053758,
+          "elevationAngle": 0.027667888194475455,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 40,
+          "height": -1370.365766938883,
+          "curvatureDrop": -235.47347939173662,
+          "elevationAngle": 0.17440582977350275,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 45,
+          "height": -1197.2948780091149,
+          "curvatureDrop": -298.0354013297307,
+          "elevationAngle": 0.2957764345286979,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 50,
+          "height": -1065.3312182902687,
+          "curvatureDrop": -367.95797984051757,
+          "elevationAngle": 0.3373074595785787,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 55,
+          "height": -1556.987341558162,
+          "curvatureDrop": -445.1629885541581,
+          "elevationAngle": -0.2862081474674081,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 60,
+          "height": -2347.164400128614,
+          "curvatureDrop": -529.6552208092885,
+          "elevationAngle": -1.0981572472070007,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 65,
+          "height": -2791.105062146063,
+          "curvatureDrop": -621.5251295007544,
+          "elevationAngle": -1.486336244194697,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 70,
+          "height": -2982.892227833173,
+          "curvatureDrop": -720.7777866387128,
+          "elevationAngle": -1.6185854914094207,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 75,
+          "height": -3118.4958685930433,
+          "curvatureDrop": -827.3860767126787,
+          "elevationAngle": -1.6958840023272297,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 80,
+          "height": -3295.074064115896,
+          "curvatureDrop": -941.3272272682856,
+          "elevationAngle": -1.798156204634618,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 85,
+          "height": -3306.2009384700755,
+          "curvatureDrop": -1062.6603701101064,
+          "elevationAngle": -1.781772708795561,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 90,
+          "height": -3300.711785748011,
+          "curvatureDrop": -1191.3506577521032,
+          "elevationAngle": -1.76130932832632,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 95,
+          "height": -3336.6320596608484,
+          "curvatureDrop": -1327.3770352899405,
+          "elevationAngle": -1.772427904091421,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 100,
+          "height": -3359.5816474039666,
+          "curvatureDrop": -1470.757567563433,
+          "elevationAngle": -1.7792151308686799,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 105,
+          "height": -3431.6703149394048,
+          "curvatureDrop": -1621.4637540699036,
+          "elevationAngle": -1.8162037924102175,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 110,
+          "height": -3565.4350982169935,
+          "curvatureDrop": -1779.481673238965,
+          "elevationAngle": -1.8858114369110528,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 115,
+          "height": -3608.167630910559,
+          "curvatureDrop": -1944.8890400093135,
+          "elevationAngle": -1.9076486040991207,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        },
+        {
+          "distanceKm": 120,
+          "height": -3555.546019154125,
+          "curvatureDrop": -2117.70123346487,
+          "elevationAngle": -1.8856195854192745,
+          "visible": false,
+          "maxPriorAngle": 2.9292401261178567
+        }
+      ]
+    },
+    {
+      "heading": 161.00888955640266,
+      "samples": [
+        {
+          "distanceKm": 5,
+          "height": -1784.0115293787171,
+          "curvatureDrop": -3.6788666524089053,
+          "elevationAngle": -0.6895341995510105,
+          "visible": false,
+          "maxPriorAngle": -0.20032324148920977
+        },
+        {
+          "distanceKm": 10,
+          "height": -1730.2614561676648,
+          "curvatureDrop": -14.715691665914349,
+          "elevationAngle": -0.09992456595309605,
+          "visible": true,
+          "maxPriorAngle": -0.09992456595309605
+        },
+        {
+          "distanceKm": 15,
+          "height": -1575.7824755651375,
+          "curvatureDrop": -33.11178324741233,
+          "elevationAngle": 0.4534183432970437,
+          "visible": false,
+          "maxPriorAngle": 0.6149212188447637
+        },
+        {
+          "distanceKm": 20,
+          "height": -1446.2834572148638,
+          "curvatureDrop": -58.86756374601396,
+          "elevationAngle": 0.637363280581148,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 25,
+          "height": -1663.7243149335852,
+          "curvatureDrop": -91.97452693259608,
+          "elevationAngle": -0.06455393812732989,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 30,
+          "height": -1462.2009922234918,
+          "curvatureDrop": -132.45091881236922,
+          "elevationAngle": 0.2539198189828903,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 35,
+          "height": -1703.595199938724,
+          "curvatureDrop": -180.26717373865077,
+          "elevationAngle": -0.2560247866375969,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 40,
+          "height": -1818.603597121872,
+          "curvatureDrop": -235.44238671511476,
+          "elevationAngle": -0.46792789756663283,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 45,
+          "height": -1557.4119126420696,
+          "curvatureDrop": -298.00378605359685,
+          "elevationAngle": -0.1628878927162483,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 50,
+          "height": -1388.7738828780207,
+          "curvatureDrop": -367.9229236992167,
+          "elevationAngle": -0.03341933167319211,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 55,
+          "height": -1466.370210500219,
+          "curvatureDrop": -445.1748725046989,
+          "elevationAngle": -0.1917700289284534,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 60,
+          "height": -900.3283318735078,
+          "curvatureDrop": -529.8810318495833,
+          "elevationAngle": 0.28402323589873824,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 65,
+          "height": -1155.718718845986,
+          "curvatureDrop": -621.8246789067223,
+          "elevationAngle": -0.04408914490971087,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 70,
+          "height": -2082.667586894564,
+          "curvatureDrop": -720.9690211369672,
+          "elevationAngle": -0.8813256082280836,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 75,
+          "height": -2414.108914360038,
+          "curvatureDrop": -827.557848098694,
+          "elevationAngle": -1.1574625926353739,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 80,
+          "height": -2578.377125133127,
+          "curvatureDrop": -941.5260793220574,
+          "elevationAngle": -1.2845602681885868,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 85,
+          "height": -2570.8996856608246,
+          "curvatureDrop": -1062.8906813458768,
+          "elevationAngle": -1.285830223592551,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 90,
+          "height": -2846.798859478007,
+          "curvatureDrop": -1191.5100498518252,
+          "elevationAngle": -1.4721599293313061,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 95,
+          "height": -2949.5527696159334,
+          "curvatureDrop": -1327.528479776092,
+          "elevationAngle": -1.538826408835877,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 100,
+          "height": -2915.7084371185915,
+          "curvatureDrop": -1470.9499928730927,
+          "elevationAngle": -1.5247288149166431,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 105,
+          "height": -2789.341148937491,
+          "curvatureDrop": -1621.7707525912717,
+          "elevationAngle": -1.4654700576914619,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 110,
+          "height": -2428.2628170243665,
+          "curvatureDrop": -1780.0781702958673,
+          "elevationAngle": -1.2931046826894093,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 115,
+          "height": -1749.0102427339802,
+          "curvatureDrop": -1945.9549118208815,
+          "elevationAngle": -0.9808125536937424,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        },
+        {
+          "distanceKm": 120,
+          "height": -1780.7634174722502,
+          "curvatureDrop": -2118.8091246494414,
+          "elevationAngle": -1.037712895042836,
+          "visible": false,
+          "maxPriorAngle": 1.6314392477495332
+        }
+      ]
+    }
+  ],
+  "limitations": "Direct corridor stations and line-of-sight probes, not the computed Balanced polyline. Original bundled HRSC/CTX samples and continuous feather weights reproduced; small display-only void interpolation is excluded from this independent probe. No synthetic elevation added."
+}
