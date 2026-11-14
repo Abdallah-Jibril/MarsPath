@@ -1,0 +1,73 @@
+{
+  "crops": [
+    {
+      "height": 297,
+      "north": 19.0017494816521,
+      "width": 446,
+      "west": 76.4972914244982,
+      "resource": "JezeroContext200",
+      "step": 0.003374120830641,
+      "name": "Jezero"
+    },
+    {
+      "name": "Gale",
+      "resource": "GaleContext200",
+      "width": 623,
+      "height": 593,
+      "west": 136.39805853086784,
+      "north": -3.5981118419813356,
+      "step": 0.003374120830641
+    },
+    {
+      "name": "Valles",
+      "resource": "VallesContext200",
+      "width": 593,
+      "height": 593,
+      "west": -59.6012464002372,
+      "north": -12.998412476147166,
+      "step": 0.003374120830641
+    },
+    {
+      "name": "Olympus",
+      "resource": "OlympusContext200",
+      "width": 830,
+      "height": 801,
+      "west": -135.20179773157946,
+      "north": 20.000489247521813,
+      "step": 0.003374120830641
+    },
+    {
+      "name": "NASA Trek reference crater / Arabia Terra",
+      "resource": "TrekCraterContext200",
+      "width": 356,
+      "height": 356,
+      "west": 21.897268143065503,
+      "north": 21.603196642076284,
+      "step": 0.003374120830641,
+      "source": "https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif",
+      "sha256": "483ae3813960e7f5e661504901660d666a538abac6aae520c03b541f0be47862"
+    },
+    {
+      "name": "NewRouteStation1Context200",
+      "resource": "NewRouteStation1Context200",
+      "width": 356,
+      "height": 356,
+      "west": 57.20744263572357,
+      "north": 25.25399538082985,
+      "step": 0.003374120830641,
+      "source": "https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif",
+      "sha256": "d77592d64e21283276f988a017c5f9fca9fe15f02efe6b6f2ea5d5c5a53d9acc"
+    },
+    {
+      "name": "TrekReferenceWestContext200",
+      "resource": "TrekReferenceWestContext200",
+      "width": 356,
+      "height": 356,
+      "west": -23.133748462669274,
+      "north": 21.61331900456821,
+      "step": 0.003374120830641,
+      "source": "https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif",
+      "sha256": "b54948632d1fedf585d2295c355f6bfe9bd0550191c39f9757a7c9f18bb9ad3a"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NasaSuit1
+  m_Shader: {fileID: 4800000, guid: 5581e689ccd80b54085db9cf4e87509f, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CtxDetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CtxOverviewTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CtxViewTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GroundTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 55ef5ae91a9c634489a99993a6a24a59, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OrbitalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BumpScale: 0
+    - _CtxDetailBlend: 0
+    - _CtxDetailSpacing: 1000
+    - _CtxOverviewBlend: 0
+    - _CtxOverviewSpacing: 1000
+    - _CtxViewBlend: 0
+    - _CtxViewSpacing: 1000
+    - _DepthOffsetUnits: 0
+    - _DetailCutoutEnabled: 0
+    - _DetailMode: 0
+    - _GeodesicUv: 0
+    - _MapLayer: 0
+    - _MapReliefScale: 1
+    - _OrbitalBlend: 0
+    - _OrbitalMono: 0
+    - _OrbitalPrecise: 0
+    - _OrthoBlend: 0
+    - _PlanetaryCutout: 0
+    - _PlanetaryRadius: 0
+    - _RegionalBlend: 0
+    - _Smoothness: 0.12
+    - _SourceImageSpacing: 200
+    m_Colors:
+    - _Color: {r: 0.92, g: 0.94, b: 0.95, a: 1}
+    - _CtxDetailRect: {r: 0, g: 0, b: 0, a: 0}
+    - _CtxOverviewRect: {r: 0, g: 0, b: 0, a: 0}
+    - _CtxViewRect: {r: 0, g: 0, b: 0, a: 0}
+    - _GeoFrame: {r: 0, g: 0, b: 0, a: 0}
+    - _OrbitalGeoFrame: {r: 0, g: 1, b: 0, a: 0}
+    - _OrbitalRect: {r: 0, g: 0, b: 0, a: 0}
+    - _OrbitalUvAnchor: {r: 0, g: 0, b: 0, a: 0}
+    - _PlanningDetailRect: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

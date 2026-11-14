@@ -1,0 +1,12 @@
+MarsPath global navigation map
+Source page: https://science.nasa.gov/3d-resources/mars/
+Asset: https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/image/mars/Mars.jpg
+Credit: NASA/Jet Propulsion Laboratory & Caltech; Viking imagery processed at USGS.
+Equirectangular color texture, 0 degrees longitude at the center; north up.
+Used as a global visual basemap, not as an elevation dataset or an EVA hazard map.
+The globe is spherical, with no inferred height displacement.
+Jezero: current mission coordinates and crop bounds are in JezeroTerrainSource.txt.
+Landmark reference: https://planetarynames.wr.usgs.gov/Feature/4453 (Olympus Mons)
+Landmark reference: https://planetarynames.wr.usgs.gov/Feature/6288 (Valles Marineris)
+Gale bookmark denotes the Curiosity landing neighborhood, not a surveyed EVA zone.
+Only the included Jezero sample mission currently has local terrain and five route outputs.

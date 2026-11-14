@@ -1,0 +1,13 @@
+NASA Mars Global Surveyor / MOLA MEGDR topography.
+Source: https://pds-geosciences.wustl.edu/missions/mgs/megdr.html
+Product: urn:nasa:pds:mgs_mola_topography_derived:data_meg016:megt90n000eb, PDS4 v1.1
+Binary: https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg016/megt90n000eb.img
+Label: same directory, megt90n000eb.xml (retained in work/geodata/MarsMola16.xml).
+5760 columns x 2880 rows, north to south; 0 to 360 east, pixel centers at 0.03125 degrees.
+Signed MSB 16-bit integer, units meters above the product areoid; 16 pixels/degree.
+Equatorial pixel spacing: 3.7044613374 km. Bilinear interpolation does not add measured detail.
+MOLA globe/regional elevations are real macro context. Subpixel surface relief, rocks,
+science candidates, terrain-risk scores, and EVA route costs in this build are modeled.
+Regional display compresses horizontal scale and exaggerates relief for demonstration.
+Regional routes are planning simulations, not certified operational EVA guidance.
+Landmark centers: USGS Gazetteer; plains list https://planetarynames.wr.usgs.gov/SearchResults?Feature+Type=31_Planitia%2C+planitiae&Target=20_Mars

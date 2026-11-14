@@ -1,0 +1,7 @@
+NASA/JPL-Caltech/MSSS, PIA20323
+Nodules of Cemented Sand Grains Within Martian Sandstone.
+MAHLI, Curiosity, 10 March 2016 (sol 1277), Stimson unit, Mount Sharp.
+https://www.jpl.nasa.gov/images/pia20323-nodules-of-cemented-sand-grains-within-martian-sandstone/
+https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA20323.jpg
+Used as visual material grain, not georeferenced imagery, elevation or a measured hazard layer.
+Mirrored/multiscale sampling and a filtered photographic residual reduce repetition.

@@ -1,0 +1,13 @@
+# NASA 3D Resources — Astronaut
+
+newmtl nasa_astronaut_1
+Kd 0.5843137502670288 0.5843137502670288 0.5843137502670288
+Ks 0.08 0.08 0.08
+Ns 24
+map_Kd Astronaut_Diffuse_1.png
+
+newmtl nasa_astronaut_2
+Kd 0.5843137502670288 0.5843137502670288 0.5843137502670288
+Ks 0.08 0.08 0.08
+Ns 24
+map_Kd Astronaut_Diffuse_2.png

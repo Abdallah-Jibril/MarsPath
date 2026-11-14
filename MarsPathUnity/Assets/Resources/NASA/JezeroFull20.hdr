@@ -1,0 +1,17 @@
+ENVI
+description = {
+MarsPathUnity/Assets/Resources/NASA/JezeroFull20.bytes}
+samples = 4456
+lines   = 5067
+bands   = 1
+header offset = 0
+file type = ENVI Standard
+data type = 2
+interleave = bsq
+byte order = 0
+map info = {Equirectangular, 1, 1, 4329000, 1143420, 20, 20}
+coordinate system string = {PROJCS["Jezero_Crater_Projection",GEOGCS["GCS_Mars_2000_Sphere",DATUM["Mars_2000_(Sphere)",SPHEROID["Mars_2000_Sphere",3396190.0,0.0]],PRIMEM["Reference_Meridian",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equidistant_Cylindrical"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",0.0],PARAMETER["Standard_Parallel_1",18.4663],UNIT["Meter",1.0]]}
+band names = {
+Band 1}
+data ignore value = -32768
+default bands = {1}

@@ -1,0 +1,43 @@
+MarsPath measured terrain and imagery update, 2026-10-27
+
+HRSC/MOLA 200 m v2 blended DEM:
+https://fdp.astrogeology.usgs.gov/fdp/mars/
+https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif
+Fergason, R., Hare, T. & Laura, J. (2018), HRSC and MOLA Blended
+Digital Elevation Model at 200m v2, USGS Astrogeology.
+Original: 106694 x 53347 signed Int16, nodata -32768, uncompressed
+little-endian BigTIFF. Geographic Mars 2000 sphere, radius 3396190 m.
+Upper-left corner -180,90; spacing 0.003374120830641 degrees.
+Four small OFFLINE crops are bundled: Jezero context, Gale, Valles,
+Olympus. Their exact pixel bounds are in RegionalDem200.json.
+These crops do not provide global 200 m coverage in this application.
+Source file is read with verified HTTP byte ranges; no resampling of
+stored crop heights. Runtime bilinear sampling uses pixel centres.
+Detailed Jezero source: JezeroFullSource.txt, 20 m CTX DEM.
+Fallback elsewhere: bundled 16 ppd global MGS MOLA (~3.7 km equator).
+The 200 m grid is a blend; its pixel spacing is not a uniform claim
+of independently measured 200 m landforms throughout every crop.
+
+Regional planetary imagery:
+https://www.arcgis.com/home/item.html?id=1efb16809db84f0c892b9b0662dab0c8
+https://astro.arcgis.com/arcgis/rest/services/OnMars/MDIM/MapServer
+NASA/JPL/USGS, NASA Ames colorized Viking MDIM 2.1, hosted by Esri.
+Published service native source: 231 m at equator; positional accuracy
+approximately one source pixel. Stored display is an 8192 x 4096
+assembly of level 3, 512-pixel source tiles: ~2.6 km display sampling
+at equator. No invented detail or AI upscaling. Source JPEG tiles are
+spatially assembled; display JPEG is encoded at quality 94.
+This colorized mosaic is processed orbital imagery, not a calibrated
+natural-color measurement at every visible point.
+
+Ground color/lighting references:
+https://science.nasa.gov/photojournal/detailed-panorama-of-mars-jezero-crater-delta/
+https://science.nasa.gov/resource/explore-mars-jezero-crater-with-nasas-perseverance-rover-2/
+NASA/JPL-Caltech/ASU/MSSS. Small soil grain and boulders are modeled;
+the imagery is not used to invent surveyed rock positions or hazards.
+
+Ground scene: 1 Unity unit = 1 metre, source macro heights 1:1.
+Regional close maps: 3.5x CTX / 2x other source relief, labelled model.
+Long-route maps use spherical Mars geometry and source elevation,
+with 2x source relief to aid inspection. Finer local geometry replaces
+the corresponding coarse planetary mesh, without a floating map edge.

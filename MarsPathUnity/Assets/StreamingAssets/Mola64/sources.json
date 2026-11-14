@@ -1,0 +1,34 @@
+{
+  "retrieved": "2026-10-28T23:13:24.809Z",
+  "pixelsPerDegree": 64,
+  "width": 11520,
+  "height": 5760,
+  "type": "SignedMSB2",
+  "unit": "m above areoid",
+  "products": [
+    {
+      "name": "megt90n000gb",
+      "url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt90n000gb.img",
+      "bytes": 132710400,
+      "sha256": "95b492b0670e0f572736820c13c3907a5294a04aa21cbbddd30e038bbd46f1b6"
+    },
+    {
+      "name": "megt90n180gb",
+      "url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt90n180gb.img",
+      "bytes": 132710400,
+      "sha256": "72c9ea46b2e2485718cddfc0041fec76d9024020d93d6ddf985ac727988d7e9a"
+    },
+    {
+      "name": "megt00n000gb",
+      "url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt00n000gb.img",
+      "bytes": 132710400,
+      "sha256": "59313efe92045324503e54f130ddc29096668523ae8dd0e6d64553cc8144c193"
+    },
+    {
+      "name": "megt00n180gb",
+      "url": "https://pds-geosciences.wustl.edu/mgs/urn-nasa-pds-mgs_mola_topography_derived/meg064/megt00n180gb.img",
+      "bytes": 132710400,
+      "sha256": "6cec4b2a319dc3f1d699a73cef303e097bcd9cd490ff85c412c725e1d81ae4a3"
+    }
+  ]
+}

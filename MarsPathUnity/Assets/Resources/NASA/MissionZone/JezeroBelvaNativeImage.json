@@ -1,0 +1,29 @@
+{
+  "key": "BundledJezeroBelvaNative",
+  "source": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first.tif",
+  "kind": "HiRISE",
+  "resource": "NASA/MissionZone/JezeroBelvaNativeOrthoPixels",
+  "spacing": 0.25,
+  "nativeResolution": true,
+  "west": 77.3720228297538,
+  "south": 18.47452278553473,
+  "east": 77.38497945428483,
+  "north": 18.487479410065767,
+  "rect": {
+    "x": 0.714922285638205,
+    "y": 0.6026362376974151,
+    "z": 3.599062369730177e-05,
+    "w": 7.198124739464302e-05
+  },
+  "nativeWindow": [
+    35349,
+    43113,
+    3072,
+    3072
+  ],
+  "validSourceSamples": 9437184,
+  "sourceDnSha256": "c8454036815e644321191357290ea1c592e6e2ad7c7234c119c84827baa1a0ee",
+  "payloadSha256": "be8fb58f81ab0d8a8a55d947587e2a2743d88e6b82904c4738e00262e8c8efb3",
+  "displayLow": 39.0,
+  "displayHigh": 213.0
+}

@@ -1,0 +1,10 @@
+NASA/JPL-Caltech/MSSS, PIA24940, Figure 1
+WATSON's View of Dourbes in Mars' Jezero Crater.
+Perseverance WATSON, sol 253, 5 November 2021. Figure 1 shows the natural rock surface outside the abrasion patch.
+https://science.nasa.gov/resource/watsons-view-of-dourbes-in-mars-jezero-crater/
+https://assets.science.nasa.gov/content/dam/science/psd/mars/downloadable_items/4/6/46850_PIA24940-Watsons_View_of_Dourbes_Fig_1.jpeg
+SHA-256 88BF89A27CFC8E07C1B09213FC759F37B0023FC0B6B3492CDA6DC820AE6D1C9C
+The photograph supplies grain to illustrative Jezero rock materials. The meshes, locations and material assignments are modeled.
+Shape and scale references: NASA/JPL-Caltech/ASU/MSSS Mastcam-Z Belva panorama and Jezero delta panorama.
+https://science.nasa.gov/resource/perseverance-takes-in-view-at-belva-crater/
+https://www.jpl.nasa.gov/images/pia24921-detailed-panorama-of-mars-jezero-crater-delta/

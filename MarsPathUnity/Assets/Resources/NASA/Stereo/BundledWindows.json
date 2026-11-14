@@ -1,0 +1,27 @@
+{
+  "retrieved": "2026-11-04",
+  "source": "USGS Astrogeology official native CTX stereo DTMs",
+  "windows": [
+    {
+      "metadata": "NASA/Stereo/Crater184J19",
+      "heights": "NASA/Stereo/Crater184J19Heights"
+    },
+    {
+      "metadata": "NASA/Stereo/Crater184G18",
+      "heights": "NASA/Stereo/Crater184G18Heights"
+    },
+    {
+      "metadata": "NASA/Stereo/NewRouteJ01",
+      "heights": "NASA/Stereo/NewRouteJ01Heights"
+    },
+    {
+      "metadata": "NASA/Stereo/TrekWestF03",
+      "heights": "NASA/Stereo/TrekWestF03Heights"
+    }
+  ],
+  "images": [
+    "NASA/Stereo/JezeroHiRiseNativeOrtho",
+    "NASA/Stereo/Crater184J19Image",
+    "NASA/Stereo/Crater184G18Image"
+  ]
+}

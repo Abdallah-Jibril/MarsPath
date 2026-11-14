@@ -1,0 +1,50 @@
+{
+  "missionId": "MP-JEZERO-DEMO-001",
+  "region": "Jezero Crater — Prototype Mission Zone",
+  "dataNotice": "Terrain uses a georeferenced crop of the official USGS Jezero CTX DEM with NASA-derived surface detail. Route geometry, compressed demo scale, and suit telemetry remain prototype outputs pending the MarsPath API.",
+  "currentLocation": { "label": "Habitat Alpha", "latitude": 18.4447, "longitude": 77.4510 },
+  "destination": { "label": "Delta Science Site", "latitude": 18.4672, "longitude": 77.4298 },
+  "telemetry": { "oxygenPercent": 96.0, "suitPowerPercent": 91.0, "heartRateBpm": 82.0 },
+  "routes": [
+    {
+      "id": "route-balanced", "type": "BALANCED", "displayName": "Balanced / Recommended", "summary": "Best overall balance of time, terrain safety, energy use, and science value.", "colorHex": "#35E5FF",
+      "distanceKm": 2.8, "etaMinutes": 43, "safetyScore": 87, "energyScore": 82, "scienceScore": 76, "maxSlopeDegrees": 12, "recommended": true,
+      "waypoints": [{"x":-0.82,"z":-0.72},{"x":-0.55,"z":-0.50},{"x":-0.28,"z":-0.30},{"x":-0.05,"z":-0.06},{"x":0.26,"z":0.10},{"x":0.50,"z":0.38},{"x":0.78,"z":0.72}],
+      "hazardIds": ["hz-02"], "sciencePointIds": ["sci-01"]
+    },
+    {
+      "id": "route-safest", "type": "SAFEST", "displayName": "Safest", "summary": "Avoids steep slopes and known hazard zones, with a moderate increase in distance.", "colorHex": "#53F08A",
+      "distanceKm": 3.4, "etaMinutes": 55, "safetyScore": 96, "energyScore": 79, "scienceScore": 61, "maxSlopeDegrees": 7, "recommended": false,
+      "waypoints": [{"x":-0.82,"z":-0.72},{"x":-0.76,"z":-0.34},{"x":-0.62,"z":0.00},{"x":-0.38,"z":0.30},{"x":-0.05,"z":0.52},{"x":0.38,"z":0.64},{"x":0.78,"z":0.72}],
+      "hazardIds": [], "sciencePointIds": []
+    },
+    {
+      "id": "route-fastest", "type": "FASTEST", "displayName": "Fastest", "summary": "Shortest travel time, but crosses steeper terrain and passes close to a crater rim.", "colorHex": "#FFB43B",
+      "distanceKm": 2.2, "etaMinutes": 32, "safetyScore": 68, "energyScore": 69, "scienceScore": 48, "maxSlopeDegrees": 19, "recommended": false,
+      "waypoints": [{"x":-0.82,"z":-0.72},{"x":-0.51,"z":-0.42},{"x":-0.20,"z":-0.12},{"x":0.13,"z":0.17},{"x":0.45,"z":0.45},{"x":0.78,"z":0.72}],
+      "hazardIds": ["hz-01","hz-02"], "sciencePointIds": []
+    },
+    {
+      "id": "route-science", "type": "SCIENCE", "displayName": "Science Priority", "summary": "Passes high-value geology targets and exposed deposits suitable for observation.", "colorHex": "#B985FF",
+      "distanceKm": 3.7, "etaMinutes": 64, "safetyScore": 78, "energyScore": 66, "scienceScore": 98, "maxSlopeDegrees": 15, "recommended": false,
+      "waypoints": [{"x":-0.82,"z":-0.72},{"x":-0.52,"z":-0.64},{"x":-0.22,"z":-0.72},{"x":0.02,"z":-0.40},{"x":0.32,"z":-0.18},{"x":0.61,"z":0.18},{"x":0.78,"z":0.72}],
+      "hazardIds": ["hz-03"], "sciencePointIds": ["sci-01","sci-02","sci-03"]
+    },
+    {
+      "id": "route-energy", "type": "ENERGY", "displayName": "Energy Efficient", "summary": "Follows gentler elevation changes to reduce predicted suit energy demand.", "colorHex": "#FFE25A",
+      "distanceKm": 3.1, "etaMinutes": 51, "safetyScore": 85, "energyScore": 96, "scienceScore": 58, "maxSlopeDegrees": 9, "recommended": false,
+      "waypoints": [{"x":-0.82,"z":-0.72},{"x":-0.58,"z":-0.50},{"x":-0.45,"z":-0.16},{"x":-0.18,"z":0.06},{"x":0.10,"z":0.36},{"x":0.45,"z":0.56},{"x":0.78,"z":0.72}],
+      "hazardIds": [], "sciencePointIds": ["sci-01"]
+    }
+  ],
+  "hazards": [
+    { "id": "hz-01", "label": "Steep Crater Rim", "severity": "HIGH", "warning": "Steep crater rim ahead", "action": "Reduce speed and follow the marked corridor away from the edge.", "x": -0.28, "z": -0.05 },
+    { "id": "hz-02", "label": "Loose Regolith", "severity": "MEDIUM", "warning": "Loose regolith and reduced traction ahead", "action": "Use short steps and avoid sudden direction changes.", "x": 0.24, "z": 0.18 },
+    { "id": "hz-03", "label": "Rock Field", "severity": "MEDIUM", "warning": "Dense rock field ahead", "action": "Slow down and remain inside the arrow corridor.", "x": 0.49, "z": -0.08 }
+  ],
+  "sciencePoints": [
+    { "id": "sci-01", "label": "Layered Outcrop", "category": "GEOLOGY", "x": 0.06, "z": -0.36 },
+    { "id": "sci-02", "label": "Delta Deposit", "category": "SEDIMENTOLOGY", "x": 0.38, "z": -0.15 },
+    { "id": "sci-03", "label": "Mineral Signature", "category": "SPECTROSCOPY", "x": 0.63, "z": 0.22 }
+  ]
+}

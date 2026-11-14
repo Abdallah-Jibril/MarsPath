@@ -1,0 +1,18 @@
+USGS Astrogeology Mars 2020 CTX DEM mosaic, 20 m/pixel.
+Source local original: work/geodata/M20_JezeroCrater_CTXDEM_20m.tif.
+4456 columns x 5067 rows, ~89.12 x 101.34 km projected bounding box.
+Coverage gaps use a bundled 200 m HRSC/MOLA regional crop where covered, then global MOLA.
+Unity file JezeroFull20.bytes: signed little-endian Int16 meters, no-data -32768,
+north-to-south rows. Original Float32 values quantized to nearest meter by GDAL.
+Projection: Mars sphere radius 3396190 m, equidistant cylindrical,
+standard parallel 18.4663 degrees, central meridian 0, east-positive longitude.
+Upper left outer corner: 4329000 E, 1143420 N; pixel spacing 20 m.
+CTX orthoimage: M20_JezeroCrater_CTXortho_mosaic_5m.tif, downsampled to
+4096 pixels wide for display. The original source pixels are approximately 5 m;
+this display texture has lower sampling, roughly 22 m/pixel.
+Ortho upper left outer corner 4329192.10812596,1143347.424175;
+17766x20234 original pixels of 5.00206468110263x5.00226297161329 m.
+Reference: https://www.usgs.gov/media/images/m20jezerocraterctxdemmosaic20m100jpg
+Fine soil, boulders and suit telemetry are demonstration models. CTX elevations
+and orthoimage do not certify EVA safety. Display relief is exaggerated 3.5x
+for local CTX scenes. MOLA-only regions retain lower-resolution global context.

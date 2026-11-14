@@ -1,0 +1,209 @@
+{
+  "retrieved": "2026-10-28T20:51:29.143Z",
+  "source": "NASA PDS / ESA Mars Express HRSC DA4 sinusoidal areoid products",
+  "strips": [
+    {
+      "id": "H3124_0000_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/3124/h3124_0000_da4.img",
+      "resource": "NASA/HRSC/H3124_0000_DA4",
+      "width": 901,
+      "height": 5050,
+      "dataOffset": 19822,
+      "radius": 3396000,
+      "longitude": 67,
+      "west": -24420,
+      "north": 1437945,
+      "spacing": 75,
+      "sha256": "1c587bb668d87633535f14d9584926589246798ff70fa2c941f1afd9b41f3f80"
+    },
+    {
+      "id": "H3135_0000_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/3135/h3135_0000_da4.img",
+      "resource": "NASA/HRSC/H3135_0000_DA4",
+      "width": 885,
+      "height": 4900,
+      "dataOffset": 19470,
+      "radius": 3396000,
+      "longitude": 66,
+      "west": -21045,
+      "north": 1438260,
+      "spacing": 75,
+      "sha256": "9f492f1654a5d76109e004001f4216a8b9113c894ec4b5996192491e537c25b4"
+    },
+    {
+      "id": "H1402_0009_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/1402/h1402_0009_da4.img",
+      "resource": "NASA/HRSC/H1402_0009_DA4",
+      "width": 987,
+      "height": 1901,
+      "dataOffset": 19740,
+      "radius": 3396000,
+      "longitude": 66,
+      "west": -52990,
+      "north": 1434789.9999999998,
+      "spacing": 175,
+      "sha256": "7fcf891e8d64ae4dbe29e993a98f96d02b35df7aab22fd1bd8c1d34b1be01bb5"
+    },
+    {
+      "id": "H5173_0000_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/5173/h5173_0000_da4.img",
+      "resource": "NASA/HRSC/H5173_0000_DA4",
+      "width": 1261,
+      "height": 14684,
+      "dataOffset": 20176,
+      "radius": 3396000,
+      "longitude": 63,
+      "west": -47182.5,
+      "north": 2156662.5,
+      "spacing": 75,
+      "sha256": "ae11deecd34bb935bf1a0e8868ea095a9bf6f317b6274650776cceb6c19b9d7b"
+    },
+    {
+      "id": "H2926_0000_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/2926/h2926_0000_da4.img",
+      "resource": "NASA/HRSC/H2926_0000_DA4",
+      "width": 1938,
+      "height": 5100,
+      "dataOffset": 23256,
+      "radius": 3396000,
+      "longitude": 84,
+      "west": -76170,
+      "north": 1728300.0000000002,
+      "spacing": 100,
+      "sha256": "ed150bcac5daf165a227a83b6373e803a0f24bf94d0f24432e6af3f8ef99139b"
+    },
+    {
+      "id": "H2948_0000_DA4.IMG",
+      "url": "https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/data/2948/h2948_0000_da4.img",
+      "resource": "NASA/HRSC/H2948_CraterRoute75",
+      "width": 1935,
+      "height": 2600,
+      "dataOffset": 16,
+      "radius": 3396000,
+      "longitude": 82,
+      "west": -51435,
+      "north": 1600905,
+      "spacing": 75,
+      "sha256": "26e09668efb7ae62929713e0c83f62e8faeef3d1df37df3e15ff9f33aac61092",
+      "originalByteRange": [
+        1958220,
+        12020219
+      ],
+      "originalRowRange": [
+        500,
+        3099
+      ],
+      "processing": "Original MSB signed integer rows, native 75 m grid. Source header removed; 16 zero padding bytes before unchanged source row bytes. No interpolation/resampling."
+    },
+    {
+      "id": "H7407_0009.DA4.50.TIF",
+      "url": "https://maps.planet.fu-berlin.de/mex4/h7407_0009.da4.50.tif",
+      "resource": "NASA/HRSC/H7407_0009_Team75",
+      "width": 1281,
+      "height": 3952,
+      "dataOffset": 16,
+      "radius": 3396000,
+      "longitude": 59,
+      "west": -69487.5,
+      "north": 1718887.5,
+      "spacing": 75,
+      "sourceLabel": "ESA / MEX HRSC science-team / preliminary",
+      "sha256": "6f66c11ab6e6c0b4e2ef0f6ba7465d3ca20ba1f820b5b0388d67dd91e17db783",
+      "originalWindow": {
+        "x": 0,
+        "y": 4979,
+        "width": 1281,
+        "height": 3952
+      },
+      "processing": "Exact signed native75m source pixels, little-to-big endian conversion only; noresampling, native sinusoidal projection."
+    },
+    {
+      "id": "H7432_0000.DA4.50.TIF",
+      "url": "https://maps.planet.fu-berlin.de/mex4/h7432_0000.da4.50.tif",
+      "resource": "NASA/HRSC/H7432_0000_Team75",
+      "width": 1298,
+      "height": 3240,
+      "dataOffset": 16,
+      "radius": 3396000,
+      "longitude": 57,
+      "west": -35137.5,
+      "north": 1718887.5,
+      "spacing": 75,
+      "sourceLabel": "ESA / MEX HRSC science-team / preliminary",
+      "sha256": "5b8a8f4090b0ce8b09e83303ab32841b81814b4696f6ad599c63e3010c418a33",
+      "originalWindow": {
+        "x": 0,
+        "y": 7901,
+        "width": 1298,
+        "height": 3240
+      },
+      "processing": "Exact signed native75m source pixels, little-to-big endian conversion only; noresampling, native sinusoidal projection."
+    },
+    {
+      "id": "H7457_0000.DA4.50.TIF",
+      "url": "https://maps.planet.fu-berlin.de/mex4/h7457_0000.da4.50.tif",
+      "resource": "NASA/HRSC/H7457_0000_Team75",
+      "width": 1431,
+      "height": 3952,
+      "dataOffset": 16,
+      "radius": 3396000,
+      "longitude": 56,
+      "west": -63487.5,
+      "north": 1718887.5,
+      "spacing": 75,
+      "sourceLabel": "ESA / MEX HRSC science-team / preliminary",
+      "sha256": "69b2c900267d75c5b794021a772e6d19f82bb1f5478366ecdb7bdd9b6a539cde",
+      "originalWindow": {
+        "x": 0,
+        "y": 8327,
+        "width": 1431,
+        "height": 3952
+      },
+      "processing": "Exact signed native75m source pixels, little-to-big endian conversion only; noresampling, native sinusoidal projection."
+    },
+    {
+      "id": "H7482_0000.DA4.50.TIF",
+      "url": "https://maps.planet.fu-berlin.de/mex4/h7482_0000.da4.50.tif",
+      "resource": "NASA/HRSC/H7482_0000_Team75",
+      "width": 1612,
+      "height": 3952,
+      "dataOffset": 16,
+      "radius": 3396000,
+      "longitude": 54,
+      "west": -39037.5,
+      "north": 1718887.5,
+      "spacing": 75,
+      "sourceLabel": "ESA / MEX HRSC science-team / preliminary",
+      "sha256": "875dfe0677dc9be7bfa4344ff6df43981b13ab87069f1a610df214635532f4c3",
+      "originalWindow": {
+        "x": 0,
+        "y": 9379,
+        "width": 1612,
+        "height": 3952
+      },
+      "processing": "Exact signed native75m source pixels, little-to-big endian conversion only; noresampling, native sinusoidal projection."
+    },
+    {
+      "id": "H5271_0000.DA4.50.TIF",
+      "url": "https://maps.planet.fu-berlin.de/mex4/h5271_0000.da4.50.tif",
+      "resource": "NASA/HRSC/H5271_WestCrater50",
+      "width": 1001,
+      "height": 1001,
+      "dataOffset": 16,
+      "radius": 3396000.0,
+      "longitude": 338.0,
+      "west": -51595.00000000001,
+      "north": 1270345.0,
+      "spacing": 50,
+      "sourceLabel": "ESA / MEX HRSC science-team / preliminary",
+      "sha256": "9dd2b2ebcf526c19c23ecc7ff5b6e7974435a58d104d09c24bf790c9757b705a",
+      "originalWindow": {
+        "x": 0,
+        "y": 7460,
+        "width": 1001,
+        "height": 1001
+      },
+      "processing": "Exact original signed Int16 native 50m crop. No resampling. Endian conversion only. Original nodata retained."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "key": "BundledJezeroHiRiseNativeOrtho",
+  "source": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/ESP_045994_1985_RED_A_01_ORTHO.tif",
+  "kind": "HiRISE",
+  "rect": {
+    "x": 0.7150521282804427,
+    "y": 0.6025450723646983,
+    "z": 3.658637305095327E-05,
+    "w": 7.317274610188681E-05
+  },
+  "spacing": 0.2541382261019006,
+  "resource": "NASA/Stereo/JezeroHiRiseNativeOrthoPixels",
+  "west": 77.41876618096,
+  "south": 18.45811302565,
+  "east": 77.43193727526,
+  "north": 18.47128411994,
+  "nativeResolution": true
+}

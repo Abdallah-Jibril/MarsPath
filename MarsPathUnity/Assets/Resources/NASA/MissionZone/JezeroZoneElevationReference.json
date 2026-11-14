@@ -1,0 +1,92 @@
+{
+  "source": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+  "sourceCropSha256": "0a667030c8f38591d6b236fce35fa4623f58acb254fa93afe0e1646f898c3228",
+  "description": "Independent source-GeoTIFF bilinear heights at exact Unity Float32 latitude/longitude values; not application provider output",
+  "points": [
+    {
+      "latitude": 18.404699325561523,
+      "longitude": 77.35713195800781,
+      "heightMeters": -2482.2367545050574,
+      "nativeStencil": [
+        [
+          -2482.135498046875,
+          -2482.21728515625
+        ],
+        [
+          -2482.3154296875,
+          -2482.410400390625
+        ]
+      ],
+      "nativePixelColumn": 1275.0980813987553,
+      "nativePixelRow": 8809.514469942776
+    },
+    {
+      "latitude": 18.532917022705078,
+      "longitude": 77.35713195800781,
+      "heightMeters": -2414.8221951001933,
+      "nativeStencil": [
+        [
+          -2414.847900390625,
+          -2414.837646484375
+        ],
+        [
+          -2414.791748046875,
+          -2414.79345703125
+        ]
+      ],
+      "nativePixelColumn": 1275.0980813987553,
+      "nativePixelRow": 1209.4492546236143
+    },
+    {
+      "latitude": 18.468807220458984,
+      "longitude": 77.42472076416016,
+      "heightMeters": -2495.62010333673,
+      "nativeStencil": [
+        [
+          -2495.33740234375,
+          -2495.552490234375
+        ],
+        [
+          -2495.69482421875,
+          -2495.92529296875
+        ]
+      ],
+      "nativePixelColumn": 5281.404122039676,
+      "nativePixelRow": 5009.538391039707
+    },
+    {
+      "latitude": 18.404699325561523,
+      "longitude": 77.4923095703125,
+      "heightMeters": -2623.970002324714,
+      "nativeStencil": [
+        [
+          -2624.021484375,
+          -2623.929443359375
+        ],
+        [
+          -2624.034423828125,
+          -2623.962158203125
+        ]
+      ],
+      "nativePixelColumn": 9287.710162680596,
+      "nativePixelRow": 8809.514469942776
+    },
+    {
+      "latitude": 18.532917022705078,
+      "longitude": 77.4923095703125,
+      "heightMeters": -2549.5399155320642,
+      "nativeStencil": [
+        [
+          -2549.5283203125,
+          -2549.55029296875
+        ],
+        [
+          -2549.520263671875,
+          -2549.541015625
+        ]
+      ],
+      "nativePixelColumn": 9287.710162680596,
+      "nativePixelRow": 1209.4492546236143
+    }
+  ]
+}

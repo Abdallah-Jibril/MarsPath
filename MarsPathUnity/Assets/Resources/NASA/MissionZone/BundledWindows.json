@@ -1,0 +1,95 @@
+{
+  "retrieved": "2026-11-08T22:54:03.510671+00:00",
+  "source": "USGS Jezero TRN 1 m elevation, co-registered 1 m zone imagery, and native 0.25 m Belva and western delta image tiles",
+  "windows": [
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile00Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile00Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile01Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile01Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile02Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile02Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile03Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile03Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile04Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile04Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile05Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile05Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile06Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile06Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile07Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile07Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile08Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile08Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile09Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile09Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile10Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile10Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile11Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile11Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile12Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile12Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile13Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile13Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile14Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile14Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/Jezero10kmTile15Height",
+      "heights": "NASA/MissionZone/Jezero10kmTile15Heights"
+    }
+  ],
+  "images": [
+    "NASA/MissionZone/Jezero10kmTile00Image",
+    "NASA/MissionZone/Jezero10kmTile01Image",
+    "NASA/MissionZone/Jezero10kmTile02Image",
+    "NASA/MissionZone/Jezero10kmTile03Image",
+    "NASA/MissionZone/Jezero10kmTile04Image",
+    "NASA/MissionZone/Jezero10kmTile05Image",
+    "NASA/MissionZone/Jezero10kmTile06Image",
+    "NASA/MissionZone/Jezero10kmTile07Image",
+    "NASA/MissionZone/Jezero10kmTile08Image",
+    "NASA/MissionZone/Jezero10kmTile09Image",
+    "NASA/MissionZone/Jezero10kmTile10Image",
+    "NASA/MissionZone/Jezero10kmTile11Image",
+    "NASA/MissionZone/Jezero10kmTile12Image",
+    "NASA/MissionZone/Jezero10kmTile13Image",
+    "NASA/MissionZone/Jezero10kmTile14Image",
+    "NASA/MissionZone/Jezero10kmTile15Image",
+    "NASA/MissionZone/JezeroBelvaNativeImage",
+    "NASA/MissionZone/JezeroBelvaSouthNativeImage",
+    "NASA/MissionZone/JezeroDeltaNative00Image",
+    "NASA/MissionZone/JezeroDeltaNative01Image",
+    "NASA/MissionZone/JezeroDeltaNative02Image",
+    "NASA/MissionZone/JezeroDeltaNative03Image",
+    "NASA/MissionZone/JezeroDeltaNative04Image"
+  ]
+}

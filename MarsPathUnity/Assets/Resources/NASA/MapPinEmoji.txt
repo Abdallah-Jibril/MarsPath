@@ -1,0 +1,4 @@
+Map pin UI glyph: Unicode U+1F4CD (📍), rendered from Windows Segoe UI Emoji.
+Transparent PNG preserves the requested emoji appearance without depending on
+Unity IMGUI's runtime surrogate-pair / color-emoji font support. This is a UI
+marker, not NASA imagery or a mapped terrain feature.
