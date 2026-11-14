@@ -1,0 +1,21 @@
+{
+  "Repository": "Abdallah-Jibril/MarsPath_Hackathon",
+  "PackagedAt": "2026-11-14T17:11:35.9584046+02:00",
+  "Description": "Existing Windows and Quest builds packaged for repository migration.",
+  "Unity": "6000.6.5f1",
+  "QuestApplicationId": "com.lagrangev.marspath",
+  "WindowsBuildFiles": 179,
+  "Packages": [
+    {
+      "File": "MarsPath-Windows-x64.zip",
+      "Bytes": 1424202556,
+      "SHA256": "c38963404b53ca0a92a7e2c820158642c9dc146a40619ba375ca63f08f2e97f8"
+    },
+    {
+      "File": "MarsPath-Quest3.apk",
+      "Bytes": 652673625,
+      "SHA256": "43604fdec7d7274269811bca4ef97ddb100b5750a151cacd256a10eae950dfc7"
+    }
+  ],
+  "PhysicalAcceptance": "Latest zone reticle and laptop-to-Quest voice confirmation pending."
+}
