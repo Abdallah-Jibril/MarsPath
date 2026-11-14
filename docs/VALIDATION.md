@@ -36,4 +36,4 @@ Completed on 14 November 2026:
 - Every one of the 179 archived Windows runtime files matched the existing build; archive CRC validation passed.
 - The repository remained private. Its collaborator list contained only `Abdallah-Jibril`.
 
-The earlier remote's deletion reached GitHub's account identity confirmation. That final user-controlled security step was pending when this validation record was saved. The original working folder and verified local history bundle remain available independently of either remote.
+The owner completed GitHub's identity confirmation. The earlier `Abdallah-Jibril/MarsPath` remote was then deleted. An authenticated API check returned HTTP 404 for the retired repository while the new private repository remained accessible. The original working folder and verified local history bundle remain available independently of either remote.

@@ -31,3 +31,5 @@ Unity caches, temporary logs, IDE state, Git credentials, radio pairing data, an
 ## Verification
 
 Migration checks cover preserved source hashes, repository consistency, large-file availability, documentation links, package checksums, and remote privacy/access. Existing runtime checks are recorded as baseline evidence. Migration checks do not replace live headset acceptance.
+
+The previous remote was deleted after fresh-clone and release verification, following the owner's GitHub identity confirmation. The new repository remains private with no additional collaborators. See [the validation record](VALIDATION.md).
