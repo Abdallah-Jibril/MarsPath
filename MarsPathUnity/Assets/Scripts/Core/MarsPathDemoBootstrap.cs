@@ -78,10 +78,14 @@ namespace MarsPath
             oxygen = mission.telemetry.oxygenPercent;
             power = mission.telemetry.suitPowerPercent;
             GlobalView = gameObject.AddComponent<MarsGlobalView>();
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                questMissionControl = true;
+                RefinementEnabled = false;
+            }
             GlobalView.Initialize(mainCamera, cameraRig, mission);
             GlobalView.RoutesRequested += (start,end) => StartCoroutine(BuildSelectedRegion(start,end));
             GlobalView.JezeroDemoRequested += () => StartCoroutine(PrepareJezeroShowcase());
-            if (Application.platform == RuntimePlatform.Android) RefinementEnabled = false;
         }
 
         private void BuildEnvironment()
@@ -159,6 +163,11 @@ namespace MarsPath
         {
             UpdateFullscreenResolution();
             if (GlobalView != null && GlobalView.IsVisible) return;
+            if (desktopBrowsingRoutes)
+            {
+                routeView.SetPlanningVisualScale(cameraRig.PlanningDistance / 80f);
+                return;
+            }
             if(surfaceActive&&(builtStereoRevision!=MarsOfficialTerrain.Revision+MarsHrscStereoTerrain.Revision||builtElevationRevision!=MarsRegionSourceCache.ElevationRevision))
             {
                 if(builtSourceFingerprint!=SurfaceSourceFingerprint(surfaceCenter))
@@ -166,9 +175,17 @@ namespace MarsPath
                 else{builtStereoRevision=MarsOfficialTerrain.Revision+MarsHrscStereoTerrain.Revision;builtElevationRevision=MarsRegionSourceCache.ElevationRevision;}
             }
             if(!missionStarted&&routeView!=null&&cameraRig!=null)routeView.SetPlanningVisualScale(cameraRig.PlanningDistance/80f);
+            if (desktopMissionMirror && missionStarted)
+            {
+                UpdateDesktopMirror();
+                return;
+            }
             if(pendingSeek>=0){float seek=pendingSeek;pendingSeek=-1;SeekFullJourney(seek);}
             if (missionStarted && Application.platform == RuntimePlatform.Android)
+            {
+                UpdateQuestFacing();
                 SetQuestWalkInput(MarsQuestControls.RightTriggerPressed(), cameraRig.QuestWalkTrackingReady);
+            }
             if (!missionStarted || paused || arrived || routeView.SelectedWorldPoints == null)
             {
                 SetAstronautWalking(false);
@@ -224,7 +241,7 @@ namespace MarsPath
         private void LateUpdate()
         {
             bool missionOpen = missionStarted && !helmetEntryLoading && GlobalView != null && !GlobalView.IsVisible;
-            bool outside = missionOpen && Application.isFocused && !Application.isBatchMode;
+            bool outside = missionOpen && !desktopBrowsingRoutes && Application.isFocused && !Application.isBatchMode;
             UpdateMissionRadio(missionOpen && !helmetPreview && !Application.isBatchMode);
             if (outside && evaAudio == null) evaAudio = mainCamera.gameObject.AddComponent<MarsEvaSoundscape>();
             if (evaAudio == null) return;
@@ -232,7 +249,8 @@ namespace MarsPath
             bool walking = outside && !paused && !arrived && !helmetPreview && (demoPresentation || playbackSpeed <= 1);
             EvaHazard hazard = reserveStop ? EvaHazard.Reserve : rockAhead ? EvaHazard.Rock
                 : nearbyHazard != null || upcomingSurfaceSlope > 10 ? EvaHazard.Terrain : EvaHazard.None;
-            evaAudio.Mix(outside, walking, arrived, surfaceActive ? surfaceMetres : routeProgress * pathLength, hazard, MissionRadioReceiving);
+            evaAudio.Mix(outside, walking, arrived, surfaceActive ? surfaceMetres : routeProgress * pathLength,
+                hazard, MissionRadioReceiving || QuestRadioTalking);
         }
 
         private void SetAstronautWalking(bool value)
@@ -366,8 +384,9 @@ namespace MarsPath
             if(!mission.routes[selectedRoute].available)return;
             helmetPreview=false;
             missionStarted = true;
-            paused = Application.platform == RuntimePlatform.Android;
+            paused = Application.platform == RuntimePlatform.Android || desktopMissionMirror;
             questWaitForTriggerRelease = paused;
+            questRouteFacing.Reset();
             arrived = false;
             routeProgress = 0f;
             reserveStop=false;evaSimulation.Reset(mission.telemetry);playbackSpeed=1;
@@ -385,8 +404,7 @@ namespace MarsPath
             UpdateAstronautPosition(0);UpdateLifeSupport(mission.routes[selectedRoute]);UpdateHazardProximity(mission.routes[selectedRoute]);
             cameraRig.SnapToMission(astronaut.transform);
             ResetVisorPanels();
-            if (surfaceActive && !Application.isBatchMode && (RefinementEnabled || MarsMissionZone.IsMission(mission)))
-                StartCoroutine(EnsureSurfaceSources());
+            BeginSurfaceSourceRefinement();
         }
 
         public void PrepareMissionCapture()
@@ -426,6 +444,8 @@ namespace MarsPath
 
         private void ReturnToPlanning()
         {
+            EndDesktopMirror();
+            questRouteFacing.Reset();
             ResetVisorPanels();
             if(helmetPreview){demoPresentation=previewDemoChoice;helmetPreview=false;}
             elevationProfile=null;
@@ -549,11 +569,7 @@ namespace MarsPath
             return $"{label}   {Mathf.Abs(value):0.000000}° {hemisphere}";
         }
 
-        private static string HeadingCardinal(float heading)
-        {
-            string[] directions = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
-            return directions[Mathf.RoundToInt(heading / 45f) % directions.Length];
-        }
+        private static string HeadingCardinal(float heading) => MarsCompass.Cardinal(heading);
 
         private void DrawArrivalMessage()
         {

@@ -7,9 +7,9 @@ namespace MarsPath
     public sealed class MarsEvaSoundscape : MonoBehaviour
     {
         private const string AudioPath = "Audio/Eva/";
-        private const float AmbienceVolume = .26f;
+        private const float AmbienceVolume = .23f;
         private const double MetresPerFootfall = .64 / .63 / 2;
-        private readonly AudioClip[] footfalls = new AudioClip[4];
+        private readonly AudioClip[] footfalls = new AudioClip[8];
         private AudioSource ambience, boots, cues;
         private AudioClip alert, arrival;
         private bool hasDistance, wasWalking, wasArrived;
@@ -87,12 +87,13 @@ namespace MarsPath
                 if (distanceSinceFootfall >= MetresPerFootfall && Time.unscaledTime >= nextFootfall)
                 {
                     distanceSinceFootfall %= MetresPerFootfall;
-                    AudioClip clip = footfalls[stepIndex % footfalls.Length];
+                    // Relatively prime stride visits all eight timbres before repeating.
+                    AudioClip clip = footfalls[(stepIndex * 3) % footfalls.Length];
                     boots.panStereo = (stepIndex & 1) == 0 ? -.11f : .11f;
-                    boots.pitch = .94f + (stepIndex % 5) * .031f;
+                    boots.pitch = .97f + (stepIndex % 7) * .009f;
                     if (clip != null)
                     {
-                        boots.PlayOneShot(clip, .47f);
+                        boots.PlayOneShot(clip, .56f);
                         FootfallCount++;
                     }
                     stepIndex++;

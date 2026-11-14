@@ -6,7 +6,7 @@ namespace MarsPath
     // remain as a fallback and for life-support/general terrain symbols.
     internal static class MarsHazardIcons
     {
-        internal enum Symbol { Rocks, Slope, LifeSupport, Terrain }
+        internal enum Symbol { Rocks, Slope, LifeSupport, Terrain, Direction }
 
         private static bool picturesLoaded;
         private static Texture2D rockPicture,slopePicture,atlas;
@@ -72,6 +72,11 @@ namespace MarsPath
                     Line(43, 11, 24, 11); Line(24, 11, 19, 16);
                     Line(28, 11, 28, 5); Line(39, 11, 39, 5); Line(26, 5, 41, 5);
                     Line(33.5f, 25, 33.5f, 43, 4); Line(24.5f, 34, 42.5f, 34, 4);
+                    break;
+                case Symbol.Direction:
+                    Line(47, 53, 47, 25, 4); Line(47, 25, 40, 14, 4);
+                    Line(40, 14, 23, 14, 4); Line(23, 14, 15, 25, 4);
+                    Line(15, 25, 15, 46, 4); Line(15, 46, 6, 37, 4); Line(15, 46, 24, 37, 4);
                     break;
                 default:
                     Line(32, 7, 59, 54); Line(59, 54, 5, 54); Line(5, 54, 32, 7);

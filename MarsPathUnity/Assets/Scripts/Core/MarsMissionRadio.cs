@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -11,8 +12,8 @@ using UnityEngine.Android;
 
 namespace MarsPath
 {
-    /// <summary>Two-way push-to-talk with a paired Quest over Wi-Fi or USB.</summary>
-    internal sealed class MarsMissionRadio : MonoBehaviour
+    /// <summary>Paired Mission Control link over Wi-Fi or USB.</summary>
+    internal sealed partial class MarsMissionRadio : MonoBehaviour
     {
         private const int DesktopUsbPort = 42739;
         private const int QuestVoicePort = 42741;
@@ -20,25 +21,26 @@ namespace MarsPath
         private const int SampleRate = 48000;
         private const int FrameSamples = 960;
         private const int PcmBytes = FrameSamples * 2;
-        private const float PlaybackGain = 2.3f;
-        private readonly byte[] outgoingPcm = new byte[PcmBytes], incomingPcm = new byte[PcmBytes];
-        private readonly byte[] outgoingFrame = new byte[MarsRadioPairing.FrameLength(PcmBytes)];
-        private readonly byte[] incomingFrame = new byte[MarsRadioPairing.FrameLength(PcmBytes)];
-        private readonly float[] playback = new float[SampleRate / 4];
+        private const int PayloadBytes = PcmBytes + 16;
+        private const int DataOffset = 1;
+        private readonly byte[] outgoingPayload = new byte[PayloadBytes];
+        private byte[] incomingPayload;
+        private readonly MarsVoicePlayback playback = new MarsVoicePlayback();
         private TcpListener listener;
         private TcpClient peer;
         private Connection pendingUsb, pendingWifi;
-        private MarsRadioPairing pairing;
+        private MarsRadioTransport transport;
         private MarsRadioDiscovery discovery;
         private IPAddress wifiAddress;
         private byte[] key;
         private string keyPath;
         private bool headset, active;
+        private volatile bool voiceEnabled = true, captureActive;
+        private int captureInterrupted;
         private bool peerUsesUsb, usbReady;
-        private float lastVoice = -10f, nextUsbAttempt, nextWifiAttempt, nextKeyCheck, nextNetworkAttempt, wifiFoundAt;
+        private float nextUsbAttempt, nextWifiAttempt, nextKeyCheck, nextNetworkAttempt, wifiFoundAt;
         private AudioClip voiceClip;
         private AudioSource voice;
-        private int frameOffset, readPosition, writePosition, buffered;
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         private readonly MarsRadioUsbBridge bridge = new MarsRadioUsbBridge();
 #endif
@@ -50,11 +52,20 @@ namespace MarsPath
         private float[] capture;
         private int capturePosition, captureFrameSamples;
         private bool talkRequested, waitForTalkRelease = true;
+        private float[] outputMono;
+        private int sentVoiceFrames, lastLoggedSent, lastLoggedReceived;
+        private float capturePeak, nextAudioDiagnostic;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        private MarsQuestVoiceOutput questOutput;
+        private bool nativeOutputUnavailable;
+#endif
 
-        internal bool Connected => peer != null && peer.Connected;
+        internal bool Connected => transport?.Connected == true;
+        internal bool CanReachQuest => Connected || usbReady || pendingWifi != null ||
+            wifiAddress != null && Time.unscaledTime - wifiFoundAt <= 4f;
         internal bool Talking => microphone != null;
         internal bool TalkRequested => talkRequested;
-        internal bool Receiving => active && Time.unscaledTime - lastVoice < .35f;
+        internal bool Receiving => active && playback.Receiving;
         internal string MicrophoneStatus { get; private set; }
         internal string LinkStatus => Connected ? (peerUsesUsb ? "USB READY" : "WI-FI READY")
             : usbReady ? "CONNECTING VIA USB" : pendingWifi != null ? "CONNECTING VIA WI-FI"
@@ -67,18 +78,24 @@ namespace MarsPath
             voice = gameObject.AddComponent<AudioSource>();
             voice.playOnAwake = false;
             voice.spatialBlend = 0;
+            voice.dopplerLevel = 0;
+            voice.bypassReverbZones = true;
+            voice.bypassListenerEffects = true;
             voice.loop = true;
             voice.volume = 1f;
             voice.priority = 0;
-            voiceClip = AudioClip.Create("Mission Control radio", SampleRate, 1, SampleRate, true, ReadVoice);
+            // A silent source clocks the native DSP filter. PCM is supplied at
+            // the final mixer callback on both Windows and Android.
+            voiceClip = AudioClip.Create("Mission Control radio clock", SampleRate, 1, SampleRate, false);
             voice.clip = voiceClip;
-            gameObject.AddComponent<AudioHighPassFilter>().cutoffFrequency = 165;
-            gameObject.AddComponent<AudioLowPassFilter>().cutoffFrequency = 4500;
+            gameObject.AddComponent<AudioHighPassFilter>().cutoffFrequency = 115;
+            gameObject.AddComponent<AudioLowPassFilter>().cutoffFrequency = 6000;
         }
 
-        internal void Tick(bool inMission, bool focused, bool talkHeld)
+        internal void Tick(bool voicePage, bool focused, bool talkHeld)
         {
             float now = Time.unscaledTime;
+            CheckDispatchTimeout(now);
             RefreshKey(now);
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             if (!headset && key != null)
@@ -87,7 +104,7 @@ namespace MarsPath
                 usbReady = bridge.Ready;
             }
 #endif
-            if (!inMission || headset && !focused)
+            if (headset && !focused)
             {
                 if (active) StopRadio();
                 return;
@@ -95,17 +112,23 @@ namespace MarsPath
             try
             {
                 active = true;
-                UpdateTalkInput(focused, talkHeld);
+                if (voiceEnabled && !voicePage) ClearPlayback();
+                voiceEnabled = voicePage;
+                UpdateTalkInput(focused && voicePage, talkHeld);
                 if (key == null) return;
-                if (!headset && !usbReady && peerUsesUsb) ClosePeer();
+                if (transport != null && !Connected) ClosePeer();
                 CompleteConnection(ref pendingUsb, true, now);
                 CompleteConnection(ref pendingWifi, false, now);
                 PollNetwork(now);
                 if (!Connected) return;
-                if (talkRequested && !Talking && MicrophoneStatus == null) StartMicrophone();
-                NetworkStream stream = peer.GetStream();
-                Receive(stream);
-                if (Connected && Talking) Transmit(stream);
+                Receive();
+                if (!Connected) return;
+                if (Interlocked.Exchange(ref captureInterrupted, 0) != 0) DisarmMicrophone();
+                StartVoicePlayback();
+                if (talkRequested && !Talking && !Receiving && MicrophoneStatus == null) StartMicrophone();
+                if (Talking) Transmit();
+                SendControlFrames();
+                LogVoiceDiagnostics(now);
             }
             catch (SocketException) { ClosePeer(); }
             catch (IOException) { ClosePeer(); }
@@ -164,18 +187,19 @@ namespace MarsPath
             if (waitForTalkRelease || talkRequested) return;
             talkRequested = true;
             MicrophoneStatus = null;
+        }
+
+        private void StartMicrophone()
+        {
 #if UNITY_ANDROID && !UNITY_EDITOR
             if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
             {
                 DisarmMicrophone();
                 MicrophoneStatus = "ALLOW MICROPHONE ACCESS";
                 Permission.RequestUserPermission(Permission.Microphone);
+                return;
             }
 #endif
-        }
-
-        private void StartMicrophone()
-        {
             try
             {
                 if (Microphone.devices.Length == 0)
@@ -185,6 +209,13 @@ namespace MarsPath
                     return;
                 }
                 microphoneDevice = SelectMicrophone(Microphone.devices, headset);
+                if (microphoneDevice == null)
+                {
+                    DisarmMicrophone();
+                    MicrophoneStatus = "USE A PHYSICAL MIC";
+                    return;
+                }
+                ClearPlayback();
                 Microphone.GetDeviceCaps(microphoneDevice, out int minimum, out int maximum);
                 int rate = maximum > 0 ? Mathf.Clamp(SampleRate, minimum, maximum) : SampleRate;
                 microphone = Microphone.Start(microphoneDevice, true, 1, rate);
@@ -197,6 +228,7 @@ namespace MarsPath
                 captureFrameSamples = Mathf.Max(1, Mathf.RoundToInt(microphone.frequency / 50f));
                 capture = new float[captureFrameSamples * microphone.channels];
                 capturePosition = 0;
+                captureActive = true;
                 Debug.Log($"MARSPATH_RADIO: capture device={microphoneDevice}, rate={microphone.frequency}, channels={microphone.channels}");
             }
             catch (UnityException)
@@ -216,10 +248,11 @@ namespace MarsPath
             {
                 string name = device.ToLowerInvariant();
                 if (name.Contains("oculus") || name.Contains("meta quest") || name.Contains("virtual") ||
-                    name.Contains("steam") || name.Contains("loopback") || name.Contains("stereo mix")) continue;
+                    name.Contains("steam") || name.Contains("loopback") || name.Contains("stereo mix") ||
+                    name.Contains("wave out mix") || name.Contains("what u hear")) continue;
                 return device;
             }
-            return devices[0];
+            return null;
         }
 
         private void PollNetwork(float now)
@@ -320,9 +353,7 @@ namespace MarsPath
                 (headset || !viaUsb || usbReady))
             {
                 ClosePeer();
-                peer = pending.Client;
-                pairing = pending.Handshake.Result;
-                peerUsesUsb = viaUsb;
+                OpenTransport(pending.Client, pending.Handshake.Result, viaUsb);
                 pending = null;
                 if (viaUsb) CancelConnection(ref pendingWifi);
                 Debug.Log("MARSPATH_RADIO: " + (viaUsb ? "USB ready" : "Wi-Fi ready"));
@@ -332,6 +363,14 @@ namespace MarsPath
                 CancelConnection(ref pending);
                 if (viaUsb) nextUsbAttempt = now + 1.5f;
             }
+        }
+
+        internal void OpenTransport(TcpClient client, MarsRadioPairing authenticated, bool viaUsb)
+        {
+            peer = client;
+            peerUsesUsb = viaUsb;
+            transport = new MarsRadioTransport(client, authenticated, PayloadBytes,
+                (byte)MessageKind.LiveState, ReceiveVoice);
         }
 
         private sealed class Connection
@@ -348,28 +387,26 @@ namespace MarsPath
                 {
                     if (address != null) await client.ConnectAsync(address, port).ConfigureAwait(false);
                     client.NoDelay = true;
-                    client.SendBufferSize = 8192;
-                    return MarsRadioPairing.Authenticate(client, key, headset, PcmBytes);
+                    return MarsRadioPairing.Authenticate(client, key, headset, PayloadBytes);
                 });
             }
         }
 
-        private void Transmit(NetworkStream stream)
+        private void Transmit()
         {
             int position = Microphone.GetPosition(microphoneDevice);
             if (position < 0) return;
             int available = (position - capturePosition + microphone.samples) % microphone.samples;
-            if (available > captureFrameSamples * 6)
+            if (available > captureFrameSamples * 25)
             {
-                capturePosition = (position - captureFrameSamples * 3 + microphone.samples) % microphone.samples;
-                available = captureFrameSamples * 3;
+                capturePosition = (position - captureFrameSamples * 25 + microphone.samples) % microphone.samples;
+                available = captureFrameSamples * 25;
             }
-            while (available >= captureFrameSamples && peer.Client.Poll(0, SelectMode.SelectWrite))
+            while (available >= captureFrameSamples && Connected)
             {
                 if (!microphone.GetData(capture, capturePosition)) break;
                 EncodeVoice(microphone.channels);
-                pairing.Encrypt(outgoingPcm, outgoingFrame);
-                stream.Write(outgoingFrame, 0, outgoingFrame.Length);
+                WriteFrame();
                 capturePosition = (capturePosition + captureFrameSamples) % microphone.samples;
                 available -= captureFrameSamples;
             }
@@ -377,6 +414,7 @@ namespace MarsPath
 
         private void EncodeVoice(int channels)
         {
+            BeginFrame(MessageKind.Voice);
             float step = captureFrameSamples / (float)FrameSamples;
             for (int i = 0; i < FrameSamples; i++)
             {
@@ -387,79 +425,87 @@ namespace MarsPath
                 for (int channel = 0; channel < channels; channel++)
                     sum += Mathf.LerpUnclamped(capture[first * channels + channel], capture[next * channels + channel], source - first);
                 int pcm = Mathf.RoundToInt(Mathf.Clamp(sum / channels, -1f, 1f) * short.MaxValue);
-                outgoingPcm[i * 2] = (byte)pcm;
-                outgoingPcm[i * 2 + 1] = (byte)(pcm >> 8);
+                capturePeak = Mathf.Max(capturePeak, Mathf.Abs(sum / channels));
+                outgoingPayload[DataOffset + i * 2] = (byte)pcm;
+                outgoingPayload[DataOffset + i * 2 + 1] = (byte)(pcm >> 8);
+            }
+            sentVoiceFrames++;
+        }
+
+        internal void Receive()
+        {
+            for (int i = 0; i < 64 && transport.TryReceive(out incomingPayload); i++)
+            {
+                if (!ReceiveControlFrame()) { ClosePeer(); return; }
             }
         }
 
-        private void Receive(NetworkStream stream)
+        private void ReceiveVoice(byte[] payload)
         {
-            for (int i = 0; i < 8 && stream.DataAvailable; i++)
+            // Runs on the network thread. Unity microphone calls stay in Tick.
+            if (!voiceEnabled || !headset && captureActive) return;
+            if (headset && captureActive) Interlocked.Exchange(ref captureInterrupted, 1);
+            playback.Write(payload, DataOffset, FrameSamples, headset);
+        }
+
+        private void StartVoicePlayback()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if (headset && voiceEnabled && !nativeOutputUnavailable)
             {
-                int read = stream.Read(incomingFrame, frameOffset, incomingFrame.Length - frameOffset);
-                if (read == 0) { ClosePeer(); return; }
-                frameOffset += read;
-                if (frameOffset == incomingFrame.Length)
+                try
                 {
-                    if (!pairing.TryDecrypt(incomingFrame, incomingPcm)) { ClosePeer(); return; }
-                    // Receiving must also work while the local talk button is held.
-                    QueueVoice();
-                    frameOffset = 0;
+                    questOutput ??= new MarsQuestVoiceOutput(playback);
+                    if (questOutput.Failure != null) throw new InvalidOperationException(questOutput.Failure);
+                    return;
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogWarning("MARSPATH_VOICE: media output fallback: " + exception.Message);
+                    questOutput?.Dispose(); questOutput = null;
+                    nativeOutputUnavailable = true;
                 }
             }
-            if (peer.Client.Poll(0, SelectMode.SelectRead) && peer.Available == 0) ClosePeer();
+#endif
+            if (voiceEnabled && !voice.isPlaying) voice.Play();
         }
 
-        private void QueueVoice()
+        private static float AmplifyVoice(short sample, bool onHeadset)
         {
-            bool enoughToPlay;
-            lock (playback)
-            {
-                int overflow = Mathf.Max(0, buffered + FrameSamples - playback.Length);
-                readPosition = (readPosition + overflow) % playback.Length;
-                buffered -= overflow;
-                for (int i = 0; i < FrameSamples; i++)
-                {
-                    short sample = unchecked((short)(incomingPcm[i * 2] | incomingPcm[i * 2 + 1] << 8));
-                    playback[writePosition] = AmplifyVoice(sample);
-                    writePosition = (writePosition + 1) % playback.Length;
-                }
-                buffered += FrameSamples;
-                enoughToPlay = buffered >= 2 * FrameSamples;
-            }
-            lastVoice = Time.unscaledTime;
-            if (!voice.isPlaying && enoughToPlay) voice.Play();
+            return MarsVoicePlayback.Amplify(sample, onHeadset);
         }
 
-        private static float AmplifyVoice(short sample)
+        [UnityEngine.Scripting.Preserve]
+        private void OnAudioFilterRead(float[] data, int channels)
         {
-            const float knee = .70f, headroom = .20f;
-            float boosted = sample * (PlaybackGain / 32768f);
-            float excess = Math.Abs(boosted) - knee;
-            if (excess <= 0f) return boosted;
-
-            // Compress loud peaks gradually while leaving quieter speech at full gain.
-            float limited = knee + headroom * excess / (headroom + excess);
-            return boosted < 0f ? -limited : limited;
+            if (channels == 1) { playback.Read(data); return; }
+            int frames = data.Length / channels;
+            if (outputMono == null || outputMono.Length != frames) outputMono = new float[frames];
+            playback.Read(outputMono);
+            for (int frame = 0; frame < frames; frame++)
+                for (int channel = 0; channel < channels; channel++)
+                    data[frame * channels + channel] = outputMono[frame];
         }
 
-        private void ReadVoice(float[] data)
+        private void LogVoiceDiagnostics(float now)
         {
-            lock (playback)
-            {
-                int available = Math.Min(buffered, data.Length);
-                for (int i = 0; i < available; i++)
-                {
-                    data[i] = playback[readPosition];
-                    readPosition = (readPosition + 1) % playback.Length;
-                }
-                buffered -= available;
-                Array.Clear(data, available, data.Length - available);
-            }
+            if (now < nextAudioDiagnostic || sentVoiceFrames == lastLoggedSent &&
+                transport.ReceivedVoiceFrames == lastLoggedReceived) return;
+            nextAudioDiagnostic = now + 2;
+            lastLoggedSent = sentVoiceFrames;
+            lastLoggedReceived = transport.ReceivedVoiceFrames;
+            string output = "Unity DSP";
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if (questOutput != null) output = "Android media, written=" + questOutput.WrittenSamples;
+#endif
+            Debug.Log($"MARSPATH_VOICE: {(headset ? "Quest" : "Laptop")}, sent={sentVoiceFrames}, " +
+                $"micPeak={capturePeak:0.0000}, received={lastLoggedReceived}, playing={voice.isPlaying}, " +
+                $"sink={output}, outputRate={AudioSettings.outputSampleRate}, {playback.Diagnostics()}");
         }
 
         private void StopMicrophone()
         {
+            captureActive = false;
             if (microphone == null) return;
             Microphone.End(microphoneDevice);
             Destroy(microphone);
@@ -476,20 +522,22 @@ namespace MarsPath
 
         private void ClearPlayback()
         {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            questOutput?.Dispose(); questOutput = null;
+#endif
             if (voice != null) voice.Stop();
-            lastVoice = -10f;
-            lock (playback) readPosition = writePosition = buffered = 0;
+            playback.Clear();
         }
 
         private void ClosePeer()
         {
             StopMicrophone();
+            transport?.Dispose();
+            transport = null;
             peer?.Close();
             peer = null;
             peerUsesUsb = false;
-            pairing?.Dispose();
-            pairing = null;
-            frameOffset = 0;
+            ResetControlConnection();
             ClearPlayback();
         }
 
@@ -508,6 +556,9 @@ namespace MarsPath
         private void StopRadio()
         {
             active = false;
+#if UNITY_ANDROID && !UNITY_EDITOR
+            questOutput?.Dispose(); questOutput = null;
+#endif
             DisarmMicrophone();
             listener?.Stop();
             listener = null;

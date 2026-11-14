@@ -18,7 +18,7 @@ namespace MarsPath
         private MarsQuestPlanner planner;
         private GameObject visor, radioSetup;
         private Text distance, routeName, eta, heading, progress, reserves, effort, warning, traverseAction, details, radio;
-        private Text radioStatus;
+        private Text radioStatus, returnAction;
         private Image warningPlate, warningStripe, detailsPlate, radioPlate;
         private bool showDetails;
         private Vector3 anchorPosition;
@@ -28,10 +28,12 @@ namespace MarsPath
         private bool aHeld, backHeld, xHeld, yHeld;
         private float lastTrackedAt;
         private float nextStatusUpdate;
+        private float? lastLookHeading;
 
         internal Camera PlanningCamera => planner.MapCamera;
         internal bool WalkTrackingReady => Application.isFocused && hasMissionAnchor && pose.IsCalibrated &&
             Time.unscaledTime - lastTrackedAt <= TrackingGraceSeconds;
+        internal float? LookHeading => WalkTrackingReady ? lastLookHeading : null;
         internal void HidePlanner() => planner.SetVisible(false);
 
         public void Initialize(MarsPathDemoBootstrap owner, MarsPathCameraRig rig)
@@ -47,7 +49,7 @@ namespace MarsPath
             distance = panel.Label("Distance", new Rect(-410, 350, 264, 48), string.Empty, 35, Color.white, true);
             eta = panel.Label("Estimated time", new Rect(-410, 314, 264, 25), string.Empty, 18, MarsQuestPanel.Muted);
             panel.Card("Compass card", new Rect(0, 369, 332, 85), MarsQuestPanel.Background);
-            heading = panel.Label("Route heading", new Rect(0, 387, 311, 34), string.Empty, 26, Color.white, true);
+            heading = panel.Label("Look heading", new Rect(0, 387, 311, 34), string.Empty, 26, Color.white, true);
             progress = panel.Label("Route progress", new Rect(0, 351, 311, 26), string.Empty, 19, MarsQuestPanel.Muted);
             panel.Card("Suit card", new Rect(410, 351, 286, 121), MarsQuestPanel.Background);
             panel.Label("Suit telemetry caption", new Rect(410, 387, 264, 24), "SUIT  /  MODELED", 18, MarsQuestPanel.Cyan);
@@ -63,7 +65,7 @@ namespace MarsPath
             panel.Card("Traverse card", new Rect(0, -370, 286, 57), MarsQuestPanel.Button);
             traverseAction = panel.Label("Traverse action", new Rect(0, -370, 274, 42), string.Empty, 23, Color.white, true);
             panel.Card("Route planner card", new Rect(255, -370, 198, 57), MarsQuestPanel.Background);
-            panel.Label("Return action", new Rect(255, -370, 186, 42), "B    ROUTES", 22, MarsQuestPanel.Muted, true);
+            returnAction = panel.Label("Return action", new Rect(255, -370, 186, 42), "B    ROUTES", 22, MarsQuestPanel.Muted, true);
             panel.Card("Live details card", new Rect(-255, -370, 198, 57), MarsQuestPanel.Background);
             panel.Label("Details action", new Rect(-255, -370, 186, 42), "X    DETAILS", 22, MarsQuestPanel.Muted, true);
             panel.Label("Radio action", new Rect(-255, -419, 198, 31), "Y    RADIO", 19, MarsQuestPanel.Muted, true);
@@ -85,6 +87,7 @@ namespace MarsPath
         public void ClearAnchor()
         {
             hasMissionAnchor = false;
+            lastLookHeading = null;
             pose.Reset();
             visor.SetActive(false);
             radioSetup.SetActive(false);
@@ -94,9 +97,11 @@ namespace MarsPath
         {
             planner.SetVisible(false);
             anchorPosition = ground + Vector3.up * StandingEyeHeight;
+            if (hasMissionAnchor && mission.QuestWalking)
+                pose.RotateWorld(Mathf.DeltaAngle(initialWorldHeading.eulerAngles.y, heading.eulerAngles.y));
+            initialWorldHeading = heading;
             if (!hasMissionAnchor)
             {
-                initialWorldHeading = heading;
                 hasMissionAnchor = true;
                 lastTrackedAt = Time.unscaledTime;
                 nextStatusUpdate = 0;
@@ -104,6 +109,13 @@ namespace MarsPath
                 visor.SetActive(true);
             }
             ApplyHeadPose();
+        }
+
+        internal bool TryRouteFacing(Vector3 routeForward, out float signedError)
+        {
+            signedError = 0;
+            return hasMissionAnchor && Application.isFocused && ApplyTrackedPose() &&
+                MarsRouteFacing.TrySignedError(transform.forward, routeForward, out signedError);
         }
 
         private void OnEnable() => Application.onBeforeRender += ApplyHeadPose;
@@ -172,7 +184,7 @@ namespace MarsPath
             distance.text = mission.QuestVisorStatus;
             routeName.text = mission.QuestVisorRoute;
             eta.text = mission.QuestVisorEta;
-            heading.text = mission.QuestVisorHeading;
+            heading.text = LookHeading is float bearing ? MarsCompass.Format(bearing) : "HEADING —";
             progress.text = mission.QuestVisorProgress;
             reserves.text = mission.QuestVisorReserves;
             effort.text = mission.QuestVisorEffort;
@@ -185,6 +197,8 @@ namespace MarsPath
             details.gameObject.SetActive(showDetails);
             if (showDetails) details.text = mission.QuestLiveDetails();
             traverseAction.text = WalkTrackingReady ? mission.QuestVisorAction : "WAITING FOR HEADSET";
+            traverseAction.color = mission.QuestFacingBlocked ? MarsPathDemoBootstrap.EvaWarningRed : Color.white;
+            returnAction.text = mission.QuestDispatchedMission ? "B    CONTROL" : "B    ROUTES";
             nextStatusUpdate = Time.unscaledTime + .2f;
         }
 
@@ -211,9 +225,16 @@ namespace MarsPath
         {
             if (planner != null && planner.Visible) planner.ApplyPose();
             if (!hasMissionAnchor || !Application.isFocused) return;
-            if (pose.Apply(transform, anchorPosition, initialWorldHeading, anchorPosition.y - MaximumHeadDrop))
-                lastTrackedAt = Time.unscaledTime;
-            else if (!pose.IsCalibrated) transform.SetPositionAndRotation(anchorPosition, initialWorldHeading);
+            if (!ApplyTrackedPose() && !pose.IsCalibrated)
+                transform.SetPositionAndRotation(anchorPosition, initialWorldHeading);
+        }
+
+        private bool ApplyTrackedPose()
+        {
+            if (!pose.Apply(transform, anchorPosition, initialWorldHeading, anchorPosition.y - MaximumHeadDrop)) return false;
+            lastTrackedAt = Time.unscaledTime;
+            if (MarsCompass.TryGetHeading(transform.forward, out float bearing)) lastLookHeading = bearing;
+            return true;
         }
     }
 
@@ -236,6 +257,14 @@ namespace MarsPath
             hasPositionOrigin = false;
             lastHeadOffset = Vector3.zero;
         }
+
+        internal void RotateWorld(float degrees)
+        {
+            Quaternion turn = Quaternion.AngleAxis(degrees, Vector3.up);
+            headsetToWorld = turn * headsetToWorld;
+            lastHeadOffset = turn * lastHeadOffset;
+        }
+
 
         public bool Apply(Transform target, Vector3 anchor, Quaternion heading, float minimumEyeY = float.NegativeInfinity)
         {

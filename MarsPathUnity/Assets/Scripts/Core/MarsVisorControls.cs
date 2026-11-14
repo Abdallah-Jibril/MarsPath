@@ -9,6 +9,7 @@ namespace MarsPath
         private int observedVisorRoute=-1;
         private GUIStyle visorHeading,visorSmall,visorMicro,visorStatus,visorCenteredSmall,visorBody,visorButton,visorActiveButton,visorDistance;
         private GUIStyle visorRouteRight,visorDistanceMeta,visorAction,visorActionActive,visorActionLabel,visorKeycap;
+        private GUIStyle visorLivePercent, visorCompassHeading;
         private Texture2D visorRouteDot;
 
         public void ResetVisorPanels()
@@ -29,6 +30,8 @@ namespace MarsPath
             visorMicro=new GUIStyle(visorSmall){fontSize=11,normal={textColor=new Color(.63f,.75f,.79f)}};
             visorRouteRight=new GUIStyle(visorMicro){alignment=TextAnchor.MiddleRight,wordWrap=false};
             visorStatus=new GUIStyle(centerStyle){fontSize=17,normal={textColor=new Color(.89f,.97f,.98f)}};
+            visorLivePercent = new GUIStyle(visorHeading) { alignment = TextAnchor.MiddleRight, fontSize = 21 };
+            visorCompassHeading = new GUIStyle(visorStatus) { fontSize = 22 };
             visorCenteredSmall=new GUIStyle(visorSmall){alignment=TextAnchor.MiddleCenter,wordWrap=false};
             visorBody=new GUIStyle(visorSmall){fontSize=14};
             visorDistance=new GUIStyle(metricStyle)
@@ -63,6 +66,18 @@ namespace MarsPath
         }
         private void DrawVisorActions(Color routeColor)
         {
+            if (desktopMissionMirror)
+            {
+                if (DrawVisorAction(new Rect(413,820,184,52),showMissionDetails?"HIDE DETAILS":"DETAILS","D",UiCyan,showMissionDetails))
+                    showMissionDetails = !showMissionDetails;
+                if (DrawVisorAction(new Rect(613,820,192,52),cameraRig.HelmetView?"CHASE VIEW":"VISOR VIEW","V",UiCyan,false))
+                {cameraRig.SetHelmetView(!cameraRig.HelmetView);ResetVisorPanels();}
+                if (DrawVisorAction(new Rect(821,820,190,52),"BROWSE ROUTES",null,UiCyan,false))
+                    BrowseLiveRoutes();
+                if (DrawVisorAction(new Rect(1027,820,160,52),showMissionMenu?"CLOSE MENU":"MISSION","ESC",UiCyan,showMissionMenu))
+                    showMissionMenu = !showMissionMenu;
+                return;
+            }
             bool previousEnabled=GUI.enabled;
             GUI.enabled=previousEnabled&&!reserveStop;
             if(DrawVisorAction(new Rect(504,820,176,52),helmetPreview?"START EVA":DemoEnded?"CONTINUE ROUTE":paused?"RESUME":"PAUSE",null,routeColor,true))
@@ -189,6 +204,17 @@ namespace MarsPath
         }
         private void DrawVisorMissionMenu()
         {
+            if (desktopMissionMirror)
+            {
+                VisorPanel(new Rect(1134,252,444,239),UiCyan);
+                GUI.Label(new Rect(1154,269,352,28),"MISSION CONTROL",visorHeading);
+                if(GUI.Button(new Rect(1523,264,36,32),"×",visorButton))showMissionMenu=false;
+                GUI.Label(new Rect(1154,311,404,46),"Movement follows the Quest controller.\nThe displayed position and reserves are live.",visorSmall);
+                if(GUI.Button(new Rect(1154,370,404,39),showMissionDetails?"HIDE DETAILS":"DATA & MISSION DETAILS",visorButton))
+                    showMissionDetails=!showMissionDetails;
+                if(GUI.Button(new Rect(1154,425,404,39),"BROWSE ROUTES",visorButton))BrowseLiveRoutes();
+                return;
+            }
             VisorPanel(new Rect(1134,252,444,534),UiCyan);
             GUI.Label(new Rect(1154,269,352,28),"MISSION",visorHeading);
             if(GUI.Button(new Rect(1523,264,36,32),"×",visorButton))showMissionMenu=false;

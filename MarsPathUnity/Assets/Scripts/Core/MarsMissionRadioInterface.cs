@@ -17,8 +17,8 @@ namespace MarsPath
         internal bool QuestRadioTalking => missionRadio != null && missionRadio.Talking;
         internal string MissionRadioActivity => QuestRadioTalking ? "Talking" : MissionRadioReceiving ? "Receiving"
             : missionRadio != null && missionRadio.TalkRequested ? "Waiting for link" : null;
-        internal Color MissionRadioAccent => QuestRadioTalking || missionRadio != null && missionRadio.TalkRequested
-            ? new Color(1f, .72f, .38f) : MissionRadioReceiving ? new Color(.34f, .90f, 1f)
+        internal Color MissionRadioAccent => MissionRadioReceiving ? new Color(.34f, .90f, 1f)
+            : QuestRadioTalking || missionRadio != null && missionRadio.TalkRequested ? new Color(1f, .72f, .38f)
             : QuestRadioConnected ? new Color(.43f, .90f, .70f) : UiMuted;
 
         internal void ToggleQuestRadioSetup() => showQuestRadio = !showQuestRadio;
@@ -38,8 +38,14 @@ namespace MarsPath
                 missionRadio.Initialize(quest);
             }
             bool focused = Application.isFocused;
-            bool talkHeld = inMission && focused && (quest ? MarsQuestControls.LeftTriggerPressed() : MissionControlTalkHeld());
-            missionRadio.Tick(inMission, focused, talkHeld);
+            if (quest) AdvertiseQuestWaiting(focused);
+            bool voicePage = inMission || (quest ? questMissionControl && GlobalView.IsVisible : !GlobalView.IsVisible && !helmetPreview);
+            bool talkHeld = voicePage && focused && (quest ? MarsQuestControls.LeftTriggerPressed() : MissionControlTalkHeld());
+            missionRadio.Tick(voicePage, focused, talkHeld);
+            if (!quest) TickDesktopDispatch();
+            if (quest && missionRadio.TryTakeRoute(out var id, out byte[] payload))
+                StartCoroutine(LoadDispatchedPlan(id, payload));
+            TickMissionSynchronization(quest);
         }
 
         private static bool MissionControlTalkHeld()

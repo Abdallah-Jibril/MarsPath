@@ -27,6 +27,8 @@ namespace MarsPath.Editor
             PlayerSettings.defaultScreenWidth = 1440;
             PlayerSettings.defaultScreenHeight = 900;
             PlayerSettings.resizableWindow = true;
+            PlayerSettings.runInBackground = true;
+            PlayerSettings.forceSingleInstance = true;
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

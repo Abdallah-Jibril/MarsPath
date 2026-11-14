@@ -8,8 +8,9 @@ namespace MarsPath
         private bool demoPresentation=true;
         public bool DemoMode=>demoPresentation;
         public bool TimedControlsVisible=>missionStarted&&!demoPresentation;
-        public float DemoElapsed=>demoDirector.Elapsed;
-        private bool DemoEnded => demoPresentation && demoDirector.Complete;
+        public float DemoElapsed=>desktopMissionMirror ? mirrorDemoSeconds : demoDirector.Elapsed;
+        private bool DemoEnded => demoPresentation && (desktopMissionMirror
+            ? currentLiveState?.demoComplete == true : demoDirector.Complete);
         internal GeoPoint DemoPreviewEnd => fullTrack.AtMeters(MarsDemoDirector.PreviewMetres(fullTrack.LengthKm * 1000));
         private static string DemoScope(RouteData route)
         {

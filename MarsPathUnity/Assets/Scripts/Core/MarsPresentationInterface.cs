@@ -41,16 +41,16 @@ namespace MarsPath
             for(int i=0;i<mission.routes.Length;i++)
             {
                 RouteData r=mission.routes[i];float y=204+i*75;Color c=MarsPathRouteView.ParseColor(r.colorHex,UiCyan);
-                GUI.enabled=!helmetEntryLoading;
-                if(GUI.Button(new Rect(27,y,321,66),GUIContent.none,i==selectedRoute?planSelected:planCard)){SelectRoute(i);inspectProgress=0;}
+                GUI.enabled=!helmetEntryLoading&&!PlanningDispatchPending;
+                if(GUI.Button(new Rect(27,y,321,66),GUIContent.none,i==PlanningRouteIndex?planSelected:planCard))SelectPlanningRoute(i);
                 GUI.enabled=true;
                 UiFill(new Rect(34,y+12,3,42),c);
                 GUI.Label(new Rect(46,y+14,25,24),(i+1).ToString("00"),new GUIStyle(planCaption){normal={textColor=c}});
                 GUI.Label(new Rect(77,y+8,250,24),r.displayName,planLabel);
                 GUI.Label(new Rect(77,y+37,250,21),r.available?$"{FormatRouteLength(r.distanceKm)}   ·   {TimeLabel(r.etaMinutes)} est.{(r.recommended?"   ·   Recommended":"")}":"No feasible modeled corridor",planCaption);
-                if(i==selectedRoute)UiFill(new Rect(333,y+20,3,25),c);
+                if(i==PlanningRouteIndex)UiFill(new Rect(333,y+20,3,25),c);
             }
-            RouteData route=mission.routes[selectedRoute];
+            RouteData route=mission.routes[PlanningRouteIndex];
             UiFill(new Rect(32,591,307,1),new Color(.16f,.29f,.32f));
             GUI.Label(new Rect(32,605,150,22),"TRAVERSABILITY  "+route.safetyScore.ToString("0"),planCaption);UiBar(new Rect(32,635,143,3),route.safetyScore/100,UiCyan);
             GUI.Label(new Rect(197,605,150,22),"ENERGY  "+route.energyScore.ToString("0"),planCaption);UiBar(new Rect(197,635,142,3),route.energyScore/100,UiAmber);
@@ -65,6 +65,7 @@ namespace MarsPath
             GUI.Label(new Rect(659,13,105,22),"03  EVA",planCaption);
             GUI.Label(new Rect(402,39,575,35),"COMPARE YOUR ROUTES",planTitle);
             GUI.Label(new Rect(404,78,575,22),"DRAG TO PAN · RIGHT-DRAG TO ORBIT · SCROLL TO ZOOM",planCaption);
+            if (!desktopBrowsingRoutes) DrawPlanningRadio();
             if(GUI.Button(new Rect(990,18,310,39),cameraRig.PlanningInspectionActive?"‹ ROUTE OVERVIEW":"INSPECT TERRAIN",planButton))
                 cameraRig.TogglePlanningInspection();
             MarsPlanningDetailStream detail=GetComponent<MarsPlanningDetailStream>();
@@ -75,8 +76,19 @@ namespace MarsPath
             else if(matching)GUI.Label(new Rect(990,77,580,22),$"{imageKind.ToUpperInvariant()} IMAGE {matchingGrid:0.##} m · HEIGHT {MarsRegionalTerrain.SourceSpacingMeters(imageFocus):0.#} m · MESH {PlanningMeshCellMeters:0.#} m",planCaption);
             else if(imageGrid<float.MaxValue)GUI.Label(new Rect(990,77,580,22),$"CTX IMAGE {imageGrid:0.#} m · HEIGHT {MarsRegionalTerrain.SourceSpacingMeters(imageFocus):0.#} m · LOCAL MESH {PlanningMeshCellMeters:0.#} m",planCaption);
             else GUI.Label(new Rect(990,77,580,22),$"HEIGHT {MarsRegionalTerrain.SourceSpacingMeters(imageFocus):0.#} m · LOCAL MESH {PlanningMeshCellMeters:0.#} m · CONTEXT IMAGE",planCaption);
-            if(GUI.Button(new Rect(1324,18,248,39),MarsMissionZone.IsMission(mission)?"‹ JEZERO MISSION ZONE":"‹ GLOBAL MARS",planButton))ReturnToGlobalMap();
+            GUI.enabled=!PlanningDispatchPending;
+            bool browse = desktopBrowsingRoutes;
+            string backLabel = browse ? "BACK TO LIVE  ›" : MarsMissionZone.IsMission(mission) ? "‹ JEZERO MISSION ZONE" : "‹ GLOBAL MARS";
+            bool goBack = GUI.Button(new Rect(1324,18,248,39), backLabel, browse ? planSelected : planButton);
+            GUI.enabled=true;
+            if (goBack)
+            {
+                if (browse) ReturnToLiveMission();
+                else ReturnToGlobalMap();
+                return;
+            }
             DrawSelectedRouteDock(route);
+            if (browse) DrawBrowseLiveStatus();
             DrawEndpointWorldLabels();
             DrawPlanningDistanceScale();
             DrawPlanningZoomControls();
@@ -134,6 +146,8 @@ namespace MarsPath
             EnsureVisorStyles();ObserveVisorContext();
             if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
             {showMissionMenu=!showMissionMenu;Event.current.Use();}
+            if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.D)
+            {showMissionDetails=!showMissionDetails;Event.current.Use();}
             if(cameraRig.HelmetView)DrawVisorFrame();
             Matrix4x4 hudMatrix=GUI.matrix;
             if(cameraRig.HelmetView)
@@ -144,25 +158,30 @@ namespace MarsPath
             GUI.BeginGroup(new Rect(0,0,1600,900));
             RouteData route=mission.routes[selectedRoute];Color color=MarsPathRouteView.ParseColor(route.colorHex,UiCyan);
             DrawVisorDistance(route,color);
-            DrawVisorCompassTape();
+            if (desktopMissionMirror) DrawLiveMissionProgress(color);
+            else DrawVisorCompassTape();
             VisorPanel(new Rect(1230,22,348,130),UiCyan);
             GUI.Label(new Rect(1248,33,310,21),"SUIT / MODELED RESERVES",visorMicro);
             GUI.Label(new Rect(1248,64,148,27),$"O₂  {oxygen:0.0}%",visorHeading);
             GUI.Label(new Rect(1417,64,146,27),$"PWR  {power:0.0}%",visorHeading);
             UiBar(new Rect(1250,104,143,5),oxygen/100,UiCyan);UiBar(new Rect(1419,104,141,5),power/100,UiAmber);
             GUI.Label(new Rect(1248,120,310,19),$"{electricalWatts:0} W suit   ·   {oxygenFlowGramsPerHour:0} g O₂/h",visorMicro);
-            string mode=demoPresentation?"2 MIN DEMO":"MISSION TIME · ×"+playbackSpeed.ToString("0");
-            string status=helmetPreview?"HELMET PREVIEW":arrived?"DESTINATION REACHED":reserveStop?"RESERVE STOP · "+mode:DemoEnded?"DEMO COMPLETE":paused?"PAUSED · "+mode:mode;
-            GUI.Label(new Rect(459,107,682,27),status,visorStatus);
-            UiBar(new Rect(568,145,464,3),demoPresentation?DemoElapsed/MarsDemoDirector.DurationSeconds:routeProgress,color);
-            string countdown = demoPresentation && !DemoEnded && !arrived
-                ? $"{Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s LEFT   ·   " : string.Empty;
-            GUI.Label(new Rect(484,161,632,23),countdown +
-                $"{routeProgress*100:0.0}% OF ROUTE   ·   SURFACE {currentSlopeDegrees:0.0}°",visorCenteredSmall);
+            if (!desktopMissionMirror)
+            {
+                string mode=demoPresentation?"2 MIN DEMO":"MISSION TIME · ×"+playbackSpeed.ToString("0");
+                string status=helmetPreview?"HELMET PREVIEW":arrived?"DESTINATION REACHED":reserveStop?"RESERVE STOP · "+mode:DemoEnded?"DEMO COMPLETE":paused?"PAUSED · "+mode:mode;
+                GUI.Label(new Rect(459,107,682,27),status,visorStatus);
+                UiBar(new Rect(568,145,464,3),demoPresentation?DemoElapsed/MarsDemoDirector.DurationSeconds:routeProgress,color);
+                string countdown = demoPresentation && !DemoEnded && !arrived
+                    ? $"{Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s LEFT   ·   " : string.Empty;
+                GUI.Label(new Rect(484,161,632,23),countdown +
+                    $"{routeProgress*100:0.0}% OF ROUTE   ·   SURFACE {currentSlopeDegrees:0.0}°",visorCenteredSmall);
+            }
             DrawVisorSourceBadge();
             DrawVisorActions(color);
             DrawMissionRadio();
-            GUI.Label(new Rect(1167,838,400,23),"RMB LOOK   /   R RESET",visorMicro);
+            if (!desktopMissionMirror || !cameraRig.HelmetView)
+                GUI.Label(new Rect(1230,838,348,23),"RMB LOOK   /   R RESET",visorMicro);
             if(showMissionMenu)DrawVisorMissionMenu();
             if(showMissionDetails)DrawVisorDataDetails();
             if(showPlaybackControls)DrawVisorTimeline();
@@ -180,8 +199,18 @@ namespace MarsPath
             title = detail = null;
             symbol = MarsHazardIcons.Symbol.Terrain;
             if (!missionStarted || arrived) return false;
+            if (desktopMissionMirror)
+            {
+                title = currentLiveState?.warning;
+                detail = currentLiveState?.warningDetail;
+                if (currentLiveState != null && System.Enum.IsDefined(typeof(MarsHazardIcons.Symbol), currentLiveState.warningSymbol))
+                    symbol = (MarsHazardIcons.Symbol)currentLiveState.warningSymbol;
+                return !string.IsNullOrEmpty(title);
+            }
             if(reserveStop)
             {title="RESERVE STOP";detail="LIFE SUPPORT · PAUSED";symbol=MarsHazardIcons.Symbol.LifeSupport;}
+            else if (QuestFacingBlocked)
+            { title = questRouteFacing.Title; detail = questRouteFacing.Instruction; symbol = MarsHazardIcons.Symbol.Direction; }
             else if(rockAhead)
             {
                 title=rockFieldCount>0?"ROCK FIELD AHEAD":"BOULDER AHEAD";

@@ -7,6 +7,8 @@ namespace MarsPath
     {
         private string questLobbyMessage;
         private bool questWaitForTriggerRelease;
+        private readonly MarsRouteFacing questRouteFacing = new MarsRouteFacing();
+        internal bool QuestFacingBlocked => questRouteFacing.Blocked;
 
         internal string QuestLobbyStatus => GlobalView.IsBusy || preparingJezeroShowcase || helmetEntryLoading
             ? "Loading measured terrain"
@@ -15,6 +17,7 @@ namespace MarsPath
         internal bool QuestCanReplayOrContinue => arrived || DemoEnded && !reserveStop;
         internal int QuestRouteIndex => selectedRoute;
         internal bool QuestDemoMode => demoPresentation;
+        internal bool QuestWalking => missionStarted && !paused && !arrived && !DemoEnded && !reserveStop;
         internal string QuestDemoScope => DemoScope(mission.routes[selectedRoute]);
         internal float QuestPlanningMesh => PlanningMeshCellMeters;
         internal string QuestPlanningStatus => helmetEntryLoading
@@ -116,7 +119,14 @@ namespace MarsPath
         internal void QuestReturnToRoutes()
         {
             if (!missionStarted || helmetEntryLoading) return;
-            ReturnToPlanning();
+            if (questDispatchedMission)
+            {
+                PublishQuestState(false);
+                questDispatchedMission = false;
+                ReturnToGlobalMap();
+                if (GlobalView.LocalZoneVisible) GlobalView.CloseMissionZone();
+            }
+            else ReturnToPlanning();
         }
 
         internal void QuestReplay()
@@ -134,14 +144,14 @@ namespace MarsPath
         internal string QuestVisorStatus => !missionStarted ? "LOADING" : arrived ? "ARRIVED" : FormatRouteLength(DistanceRemainingKm);
         internal string QuestVisorRoute => mission.routes[selectedRoute].displayName.ToUpperInvariant();
         internal string QuestVisorEta => $"{TimeLabel(mission.routes[selectedRoute].etaMinutes * (1 - routeProgress))} EST. LEFT";
-        internal string QuestVisorHeading => $"{HeadingCardinal(currentHeadingDegrees)}   {currentHeadingDegrees:000}°";
         internal string QuestVisorProgress => demoPresentation && !arrived
             ? $"DEMO  {Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s  ·  {routeProgress:P1} OF ROUTE"
             : $"{routeProgress:P1} OF ROUTE  ·  {currentSlopeDegrees:0.0}° SURFACE";
         internal string QuestVisorReserves => $"O₂  {oxygen:0.0}%   ·   PWR  {power:0.0}%";
         internal string QuestVisorEffort => $"{electricalWatts:0} W SUIT   ·   {oxygenFlowGramsPerHour:0} g O₂/h";
         internal string QuestVisorAction => arrived ? "A   REPLAY" : reserveStop ? "RESERVE STOP"
-            : DemoEnded ? "A   CONTINUE ROUTE" : paused ? "RT   HOLD TO WALK" : "RT   RELEASE TO STOP";
+            : DemoEnded ? "A   CONTINUE ROUTE" : QuestFacingBlocked ? "FACE ROUTE TO WALK"
+            : paused ? "RT   HOLD TO WALK" : "RT   RELEASE TO STOP";
         internal string QuestVisorWarning => TryGetCompactWarning(out string title, out string detail, out _)
             ? $"{title}\n{detail}" : string.Empty;
 
@@ -159,17 +169,28 @@ namespace MarsPath
                    $"BODY {metabolicWatts:0} W / SUIT {electricalWatts:0} W\nCONCEPT SUIT · 0.8 kg O₂ · 447 Wh";
         }
 
+        private void UpdateQuestFacing()
+        {
+            if (!missionStarted || arrived || DemoEnded || reserveStop || helmetPreview)
+            {
+                questRouteFacing.Reset();
+                return;
+            }
+            bool hasHeading = cameraRig.TryQuestRouteFacing(out float error);
+            questRouteFacing.Update(hasHeading, error);
+        }
+
         internal void SetQuestWalkInput(bool held, bool trackingReady)
         {
             if (!missionStarted) return;
-            if (!trackingReady)
+            if (!trackingReady || questDispatchedMission && missionRadio?.RemoteMirrorReady != true)
             {
                 PauseQuestTraverse();
                 return;
             }
             if (!held) questWaitForTriggerRelease = false;
             bool shouldPause = !held || questWaitForTriggerRelease || arrived || DemoEnded || reserveStop || helmetPreview ||
-                QuestRadioSetupVisible;
+                QuestRadioSetupVisible || QuestFacingBlocked;
             if (paused == shouldPause) return;
             paused = shouldPause;
             if (Application.platform == RuntimePlatform.Android)

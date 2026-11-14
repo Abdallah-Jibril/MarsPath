@@ -13,6 +13,10 @@ namespace MarsPath
         private bool missionMode;
         private Transform astronaut;
         private bool helmetView=true;
+        private bool remoteHeadPose;
+        private Vector3 remoteEyeOffset;
+        private Quaternion remoteEyeRotation;
+        private float? remoteLookHeading;
         private const float NeutralHelmetPitch=3;
         private float helmetPitch=NeutralHelmetPitch;
         public bool HelmetView=>missionMode&&helmetView;
@@ -42,6 +46,7 @@ namespace MarsPath
         internal float PlanningAspect => questHeadTracking != null ? PlanningCamera.aspect :
             Screen.width * cameraComponent.rect.width / Mathf.Max(1, Screen.height * cameraComponent.rect.height);
         internal bool QuestWalkTrackingReady => questHeadTracking != null && questHeadTracking.WalkTrackingReady;
+        internal float? QuestLookHeading => questHeadTracking?.LookHeading;
         public struct PlanningView{public float yaw,pitch,distance;public Vector3 target;public bool inspection;public Vector4 overviewOrbit;public Vector3 overviewTarget;}
         private PlanningView inspectionOverview;
         public PlanningView CapturePlanningView()=>new PlanningView{yaw=yaw,pitch=pitch,distance=distance,target=target,inspection=PlanningInspectionActive,
@@ -82,9 +87,10 @@ namespace MarsPath
             ApplyOrbit();
         }
 
-        public void SetMissionMode(bool enabled, Transform astronautTarget)
+        public void SetMissionMode(bool enabled, Transform astronautTarget, bool keepRemotePose = false)
         {
             missionMode = enabled;
+            if (!enabled && !keepRemotePose) remoteHeadPose = false;
             astronaut = astronautTarget;
             if (questHeadTracking == null) lastMouse=Input.mousePosition;
             else if (enabled) questHeadTracking.HidePlanner();
@@ -223,14 +229,43 @@ namespace MarsPath
             cameraComponent.transform.position=helmetView?EyePosition(actor):FollowPosition(actor);
             cameraComponent.transform.rotation=helmetView?EyeRotation(actor):Quaternion.LookRotation(actor.position+Vector3.up*1.15f-cameraComponent.transform.position);
         }
-        private Vector3 EyePosition(Transform actor)=>actor.position+Vector3.up*.94f+actor.forward*.08f;
+        private Vector3 EyePosition(Transform actor)=>remoteHeadPose ? actor.TransformPoint(remoteEyeOffset)
+            : actor.position+Vector3.up*.94f+actor.forward*.08f;
+        internal bool TryQuestRouteFacing(out float signedError)
+        {
+            signedError = 0;
+            return astronaut != null && questHeadTracking != null &&
+                questHeadTracking.TryRouteFacing(astronaut.forward, out signedError);
+        }
+        internal bool TryCaptureQuestView(Transform actor, out Vector3 offset, out Quaternion rotation)
+        {
+            offset = Vector3.zero; rotation = Quaternion.identity;
+            if (questHeadTracking == null || !questHeadTracking.WalkTrackingReady || actor == null) return false;
+            offset = actor.InverseTransformPoint(cameraComponent.transform.position);
+            rotation = Quaternion.Inverse(actor.rotation) * cameraComponent.transform.rotation;
+            return true;
+        }
+        internal void SetRemoteHeadPose(Vector3 offset, Quaternion rotation, float? lookHeading)
+        {
+            remoteEyeOffset = offset;
+            remoteEyeRotation = rotation.normalized;
+            remoteLookHeading = lookHeading;
+            remoteHeadPose = true;
+        }
         private void UpdateQuestAnchor(Transform actor)
         {
             Vector3 ground = actor.position + actor.forward * .08f;
             ground.y = MarsTerrainGenerator.SampleHeight(ground.x, ground.z);
             questHeadTracking.SetGroundAnchor(ground, Quaternion.Euler(0, actor.eulerAngles.y, 0));
         }
-        private Quaternion EyeRotation(Transform actor)=>Quaternion.Euler(helmetPitch,actor.eulerAngles.y+followYaw,0);
+        private Quaternion EyeRotation(Transform actor)
+        {
+            if (!remoteHeadPose) return Quaternion.Euler(helmetPitch, actor.eulerAngles.y + followYaw, 0);
+            Quaternion view = actor.rotation * remoteEyeRotation;
+            if (remoteLookHeading is float bearing && MarsCompass.TryGetHeading(view * Vector3.forward, out float localBearing))
+                view = Quaternion.AngleAxis(Mathf.DeltaAngle(localBearing, bearing), Vector3.up) * view;
+            return view;
+        }
         public void SetHelmetView(bool enabled)
         {helmetView=enabled;followYaw=0;helmetPitch=NeutralHelmetPitch;ApplyViewVisibility();if(missionMode&&astronaut!=null)SnapToMission(astronaut);}
         private void ApplyViewVisibility()
@@ -342,7 +377,7 @@ namespace MarsPath
                 Vector3 m=Input.mousePosition,d=m-lastMouse;lastMouse=m;
                 bool overScene=m.y/Screen.height>0.13f&&m.y/Screen.height<0.78f;
                 if(overScene&&Input.GetMouseButton(1)&&!Input.GetMouseButtonDown(1))
-                {followYaw+=d.x*0.25f;if(helmetView)helmetPitch=Mathf.Clamp(helmetPitch-d.y*.20f,-65,65);else followHeight=Mathf.Clamp(followHeight-d.y*0.018f,1.6f,6);}
+                {if(!helmetView || !remoteHeadPose)followYaw+=d.x*0.25f;if(helmetView && !remoteHeadPose)helmetPitch=Mathf.Clamp(helmetPitch-d.y*.20f,-65,65);else if(!helmetView)followHeight=Mathf.Clamp(followHeight-d.y*0.018f,1.6f,6);}
                 if(overScene&&!helmetView)followDistance=Mathf.Clamp(followDistance-Input.mouseScrollDelta.y*0.55f,3.2f,12);
                 if(Input.GetKeyDown(KeyCode.V))SetHelmetView(!helmetView);
                 if(Input.GetKeyDown(KeyCode.R)){followYaw=0;helmetPitch=NeutralHelmetPitch;followDistance=4.7f;followHeight=2.15f;}
@@ -379,7 +414,8 @@ namespace MarsPath
             if(helmetView)
             {
                 cameraComponent.transform.position=EyePosition(astronaut);
-                cameraComponent.transform.rotation=Quaternion.Slerp(cameraComponent.transform.rotation,EyeRotation(astronaut),blend);
+                cameraComponent.transform.rotation=remoteHeadPose ? EyeRotation(astronaut)
+                    : Quaternion.Slerp(cameraComponent.transform.rotation,EyeRotation(astronaut),blend);
                 return;
             }
             cameraComponent.transform.position=Vector3.Lerp(cameraComponent.transform.position,FollowPosition(astronaut),blend);

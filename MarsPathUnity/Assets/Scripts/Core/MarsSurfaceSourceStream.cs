@@ -17,6 +17,11 @@ namespace MarsPath
         private readonly Dictionary<string, bool> surfaceNeighborhoodCoverage = new Dictionary<string, bool>();
         private readonly Dictionary<string,float> surfaceGeometryAttempts=new Dictionary<string,float>(),surfaceImageAttempts=new Dictionary<string,float>();
         public bool SurfaceSourceLoading=>surfaceSourceLoading;
+        private void BeginSurfaceSourceRefinement()
+        {
+            if (surfaceActive && !Application.isBatchMode && (RefinementEnabled || MarsMissionZone.IsMission(mission)))
+                StartCoroutine(EnsureSurfaceSources());
+        }
         internal static void SurfaceSourceEndpoints(GeoPoint center,out GeoPoint a,out GeoPoint b)
         {a=MarsGeospatial.Destination(center,270,14);b=MarsGeospatial.Destination(center,90,14);}
         private static string SurfaceJobKey(GeoPoint p)=>Mathf.RoundToInt(p.latitude*100)+"_"+Mathf.RoundToInt(p.longitude*100);

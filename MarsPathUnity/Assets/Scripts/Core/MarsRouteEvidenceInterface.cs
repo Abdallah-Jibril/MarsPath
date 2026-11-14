@@ -15,14 +15,17 @@ namespace MarsPath
             GUI.Label(new Rect(1004, 137, 481, 29), route.displayName.ToUpperInvariant(), planLabel);
             if (GUI.Button(new Rect(1504, 132, 32, 29), "×", planButton)) showPlanningDetails = false;
 
-            if (GUI.Button(new Rect(1004, 177, 253, 31), "DATA", showRouteLimits ? planButton : planSelected))
-                showRouteLimits = false;
-            if (GUI.Button(new Rect(1271, 177, 259, 31), "ROUTE LIMITS", showRouteLimits ? planSelected : planButton))
-                showRouteLimits = true;
-            if (showRouteLimits)
+            if (!desktopBrowsingRoutes)
             {
-                DrawRouteBudgetEditor();
-                return;
+                if (GUI.Button(new Rect(1004, 177, 253, 31), "DATA", showRouteLimits ? planButton : planSelected))
+                    showRouteLimits = false;
+                if (GUI.Button(new Rect(1271, 177, 259, 31), "ROUTE LIMITS", showRouteLimits ? planSelected : planButton))
+                    showRouteLimits = true;
+                if (showRouteLimits)
+                {
+                    DrawRouteBudgetEditor();
+                    return;
+                }
             }
 
             var wrapped = new GUIStyle(planCaption) { wordWrap = true };
@@ -37,7 +40,7 @@ namespace MarsPath
                 GUI.Label(new Rect(1004, 300, 526, 29), "NO FEASIBLE ROUTE FOR THIS PROFILE", planLabel);
                 GUI.Label(new Rect(1004, 344, 526, 57),
                     "Review the route limits or choose different endpoints. Resource totals are available after a route is found.", wrapped);
-                if (GUI.Button(new Rect(1004, 420, 526, 39), "ADJUST ROUTE LIMITS", planButton))
+                if (!desktopBrowsingRoutes && GUI.Button(new Rect(1004, 420, 526, 39), "ADJUST ROUTE LIMITS", planButton))
                     showRouteLimits = true;
                 return;
             }

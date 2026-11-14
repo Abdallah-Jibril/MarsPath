@@ -39,6 +39,8 @@ namespace MarsPath
         private Text zoneButtonLabel, zoneStart, zoneEnd;
         private RawImage zoneMap;
         private Text zoneAim;
+        private GameObject plannerOverlay, waitingOverlay;
+        private Text waitingTitle, waitingStatus, waitingHint;
         private Rect zoneView = new Rect(0, 0, 1, 1);
         private float zoneZoom = 1f;
         private Vector2 zoneCenter = new Vector2(.5f, .5f);
@@ -83,6 +85,7 @@ namespace MarsPath
         private void CreateOverlay(Camera camera, int layer)
         {
             var panel = new MarsQuestPanel(camera, "Quest globe HUD", layer, foreground: true);
+            plannerOverlay = panel.Root;
             title = panel.Label("Title", new Rect(0, 486, 950, 56), "MARSPATH  /  GLOBAL MARS", 37, Color.white, true);
             startCard = panel.Card("Start card", new Rect(-217, 413, 410, 62), MarsQuestPanel.Background);
             endCard = panel.Card("Destination card", new Rect(217, 413, 410, 62), MarsQuestPanel.Background);
@@ -108,6 +111,21 @@ namespace MarsPath
             planButton = panel.Card("Plan route button", new Rect(319, -484, 302, 63), MarsQuestPanel.Button);
             panel.Label("Plan route shortcut", new Rect(319, -484, 288, 41), "X    VIEW ROUTES", 22, Color.white, true);
             status = panel.Label("Globe controls and status", new Rect(0, -548, 960, 39), string.Empty, 22, MarsQuestPanel.Muted);
+
+            var waiting = new MarsQuestPanel(camera, "Quest Mission Control lobby", layer, foreground: true);
+            waitingOverlay = waiting.Root;
+            waiting.Label("Mission Control lobby title", new Rect(0, 464, 900, 56),
+                "MARSPATH  /  ASTRONAUT", 36, Color.white, true);
+            waiting.Card("Dispatch status card", new Rect(0, -455, 660, 169), MarsQuestPanel.Background);
+            waitingTitle = waiting.Label("Dispatch status", new Rect(0, -404, 620, 36),
+                "WAITING FOR MISSION CONTROL", 28, MarsQuestPanel.Cyan, true);
+            waitingStatus = waiting.Label("Link status", new Rect(0, -454, 620, 37),
+                string.Empty, 22, MarsQuestPanel.Muted);
+            waitingHint = waiting.Label("Lobby controls", new Rect(0, -505, 620, 35),
+                "", 20, Color.white);
+            bool waitingForControl = mission != null && mission.QuestMissionControlMode;
+            plannerOverlay.SetActive(!waitingForControl);
+            waitingOverlay.SetActive(waitingForControl);
         }
 
         public void SetFocus(float latitudeDegrees, float longitudeDegrees)
@@ -147,6 +165,32 @@ namespace MarsPath
             yHeld = y;
             triggerHeld = trigger;
             bHeld = b;
+
+            bool waitingForControl = mission.QuestMissionControlMode;
+            plannerOverlay.SetActive(!waitingForControl);
+            waitingOverlay.SetActive(waitingForControl);
+            if (waitingForControl)
+            {
+                sphere.gameObject.SetActive(true);
+                startMarker.gameObject.SetActive(false);
+                endMarker.gameObject.SetActive(false);
+                previewLine.enabled = false;
+                pointer.Hide();
+                waitingTitle.text = mission.QuestDispatchLoading ? "ROUTE RECEIVED"
+                    : "WAITING FOR MISSION CONTROL";
+                waitingStatus.text = mission.QuestWaitingDetail;
+                waitingStatus.color = mission.MissionRadioAccent;
+                waitingHint.text = mission.QuestDispatchLoading ? "OPENING THE HELMET AT THE ROUTE START"
+                    : mission.QuestRadioConnected ? "LT  RADIO     ·     A  PLAN ON QUEST" : "A  PLAN ON QUEST";
+                if (ready && switchPressed) mission.SetQuestMissionControl(false);
+                return;
+            }
+            previewLine.enabled = true;
+            if (ready && backPressed && !inZone)
+            {
+                mission.SetQuestMissionControl(true);
+                return;
+            }
 
             if (inZone != showedZone)
             {
@@ -253,7 +297,8 @@ namespace MarsPath
             startCoordinates.text = Coordinates(globe.StartLocation);
             endCoordinates.text = Coordinates(globe.EndLocation);
             status.text = mission.QuestLobbyStatus ??
-                (inZone ? "L STICK  PAN  ·  R STICK  ZOOM  ·  A  SWITCH PIN" : "L STICK  ROTATE  ·  R STICK  ZOOM  ·  A  SWITCH PIN");
+                (inZone ? "L STICK  PAN  ·  R STICK  ZOOM  ·  A  SWITCH PIN"
+                    : "L STICK  ROTATE  ·  R STICK  ZOOM  ·  A  SWITCH PIN  ·  B  MISSION CONTROL");
             ReportControllerChange();
         }
 

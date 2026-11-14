@@ -56,13 +56,18 @@ namespace MarsPath
             UiLine(new Vector2(stationX,graph.y-4),new Vector2(stationX,graph.yMax+4),Color.white,1.5f);
             GUI.Label(new Rect(470,851,660,23),$"{inspectProgress*profile.lengthKm:0.0} km along route  ·  {profile.HeightAt(inspectProgress):0} m measured elevation  /  vertical scale 1:1",planCaption);
 
-            GUI.enabled=!helmetEntryLoading;
+            if (desktopBrowsingRoutes) return;
+            GUI.enabled=!helmetEntryLoading&&!budgetReplanning&&!PlanningDispatchPending;
             if(GUI.Button(new Rect(1160,655,190,34),demoPresentation?"●  2 MIN DEMO":"2 MIN DEMO",demoPresentation?planSelected:planButton))demoPresentation=true;
             if(GUI.Button(new Rect(1360,655,194,34),demoPresentation?"FULL MISSION":"●  FULL MISSION",demoPresentation?planButton:planSelected))demoPresentation=false;
-            GUI.enabled=route.available&&!helmetEntryLoading;
-            if(GUI.Button(new Rect(1160,706,394,79),helmetEntryLoading?$"PREPARING {helmetEntryPercent*100:0}%":demoPresentation?"ENTER HELMET DEMO  ›":"START FULL MISSION  ›",helmetAction))BeginHelmetEntry(false);
-            GUI.Label(new Rect(1167,789,387,28),helmetEntryLoading?terrainPreparationMessage:demoPresentation?DemoScope(route):"FULL ROUTE · BEGINS AT SELECTED START",new GUIStyle(planCaption){alignment=TextAnchor.MiddleCenter});
-            if(GUI.Button(new Rect(1160,826,394,39),$"PREVIEW GROUND AT {inspectProgress*100:0}%  ›",planButton))BeginHelmetEntry(true);
+            GUI.enabled=route.available&&!helmetEntryLoading&&!budgetReplanning&&!PlanningDispatchPending;
+            string entry = helmetEntryLoading ? $"PREPARING {helmetEntryPercent*100:0}%" : PlanningDispatchPending
+                ? "WAITING FOR QUEST" : demoPresentation ? "ENTER HELMET DEMO  ›" : "START FULL MISSION  ›";
+            if(GUI.Button(new Rect(1160,706,394,79),entry,helmetAction))EnterHelmetFromPlanner();
+            string scope = helmetEntryLoading ? terrainPreparationMessage : PlannerDispatchDetail ??
+                (demoPresentation ? DemoScope(route) : "FULL ROUTE · BEGINS AT SELECTED START");
+            GUI.Label(new Rect(1167,789,387,28),scope,new GUIStyle(planCaption){alignment=TextAnchor.MiddleCenter});
+            if(GUI.Button(new Rect(1160,826,394,39),$"LAPTOP PREVIEW AT {inspectProgress*100:0}%  ›",planButton))BeginHelmetEntry(true);
             GUI.enabled=true;
         }
 
@@ -73,7 +78,8 @@ namespace MarsPath
         {
             if(!cameraRig.PlanningInspectionActive)return;
             Vector3 target=cameraRig.PlanningTarget;
-            if(inspectedMission==mission&&inspectedRoute==selectedRoute&&(target-inspectedTarget).sqrMagnitude<.000001f)return;
+            int index = PlanningRouteIndex;
+            if(inspectedMission==mission&&inspectedRoute==index&&(target-inspectedTarget).sqrMagnitude<.000001f)return;
             float best=float.MaxValue;int closest=0;
             for(int i=0;i<profile.locations.Length;i++)
             {
@@ -82,7 +88,23 @@ namespace MarsPath
                 if(distance<best){best=distance;closest=i;}
             }
             inspectProgress=closest/(float)(profile.locations.Length-1);
-            inspectedMission=mission;inspectedRoute=selectedRoute;inspectedTarget=target;
+            inspectedMission=mission;inspectedRoute=index;inspectedTarget=target;
+        }
+
+        private void DrawBrowseLiveStatus()
+        {
+            RouteData active = mission.routes[selectedRoute];
+            Color accent = LiveMissionFresh ? UiCyan : UiAmber;
+            PlanningCard(new Rect(1160, 668, 394, 146), accent);
+            GUI.Label(new Rect(1180, 681, 353, 22), LiveMissionFresh ? "LIVE ON QUEST" : "WAITING FOR QUEST UPDATE", planCaption);
+            GUI.Label(new Rect(1180, 710, 264, 30), active.displayName, planLabel);
+            float progress = currentLiveState?.progress ?? routeProgress;
+            GUI.Label(new Rect(1442, 710, 91, 30), $"{progress:P1}", planLabel);
+            UiBar(new Rect(1180, 763, 354, 5), progress, accent);
+            string radio = MissionRadioActivity ?? missionRadio?.MicrophoneStatus ??
+                (QuestRadioConnected ? "Y  ·  HOLD TO TALK" : QuestRadioStatus);
+            GUI.Label(new Rect(1180, 781, 354, 22), radio,
+                new GUIStyle(planCaption) { normal = { textColor = MissionRadioAccent } });
         }
 
         private static void UiLine(Vector2 a,Vector2 b,Color color,float width)

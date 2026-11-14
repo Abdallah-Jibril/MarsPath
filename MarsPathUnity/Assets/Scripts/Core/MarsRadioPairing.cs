@@ -11,7 +11,7 @@ namespace MarsPath
     {
         internal const int KeyLength = 32;
         private const int NonceLength = 32;
-        private const byte ProtocolVersion = 2;
+        private const byte ProtocolVersion = 4;
         private const int IvLength = 16;
         private const int TagLength = 32;
         private readonly VoiceChannel outgoing, incoming;
@@ -58,7 +58,7 @@ namespace MarsPath
             }
 
             stream.ReadTimeout = Timeout.Infinite;
-            stream.WriteTimeout = 15;
+            stream.WriteTimeout = 2000;
             var laptopToQuest = new VoiceChannel(Derive(3), Derive(4), payloadLength);
             var questToLaptop = new VoiceChannel(Derive(5), Derive(6), payloadLength);
             return headset ? new MarsRadioPairing(questToLaptop, laptopToQuest)

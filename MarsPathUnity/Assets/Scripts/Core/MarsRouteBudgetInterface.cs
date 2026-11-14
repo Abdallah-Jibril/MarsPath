@@ -94,7 +94,7 @@ namespace MarsPath
                 ? "The Within limits search checks risk, time and energy together. Enter your mission budgets."
                 : "The five route profiles use the selected maximum slope. Enable resource limits to enter mission budgets.";
             GUI.Label(new Rect(1004, 478, 526, 43), explanation, wrapped);
-            GUI.enabled = valid && !budgetReplanning;
+            GUI.enabled = valid && !budgetReplanning && !PlanningDispatchPending && !helmetEntryLoading;
             if (GUI.Button(new Rect(1004, 531, 526, 39), budgetReplanning ? "COMPUTING ROUTES…" : "APPLY & RECOMPUTE", planButton))
                 StartCoroutine(ApplyRouteBudgets(requested));
             GUI.enabled = true;

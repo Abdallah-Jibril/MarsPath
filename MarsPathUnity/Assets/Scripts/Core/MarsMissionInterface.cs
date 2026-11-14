@@ -12,7 +12,7 @@ namespace MarsPath
             if(mission==null||GlobalView!=null&&GlobalView.IsVisible)return;
             EnsureStyles();EnsureMissionStyles();Matrix4x4 previous=GUI.matrix;
             GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,new Vector3(Screen.width/1600f,Screen.height/900f,1));
-            if(missionStarted)DrawEvaInterface();else DrawRegionalPlanning();GUI.matrix=previous;
+            if(missionStarted&&!desktopBrowsingRoutes)DrawEvaInterface();else DrawRegionalPlanning();GUI.matrix=previous;
         }
         private void EnsureMissionStyles()
         {
@@ -129,7 +129,12 @@ namespace MarsPath
         {
             UiCard(new Rect(500,350,600,183),new Color(0.36f,0.91f,0.64f));GUI.Label(new Rect(524,370,550,31),"DESTINATION REACHED",titleStyle);
             GUI.Label(new Rect(524,416,550,28),mission.destination.label,labelStyle);GUI.Label(new Rect(524,452,550,22),"Simulation complete. Review route estimates and source coverage.",smallStyle);
-            if(GUI.Button(new Rect(524,487,550,29),"RETURN TO PLANNING",interfaceButton))ReturnToPlanning();
+            string action = desktopMissionMirror ? "BROWSE ROUTES" : "RETURN TO PLANNING";
+            if (GUI.Button(new Rect(524,487,550,29), action, interfaceButton))
+            {
+                if (desktopMissionMirror) BrowseLiveRoutes();
+                else ReturnToPlanning();
+            }
         }
     }
 }

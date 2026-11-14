@@ -9,6 +9,7 @@ namespace MarsPath
         private static void RunWhenHeadless()
         {
             if (!Application.isBatchMode) return;
+            if (System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "--mars-live-mission-review") >= 0) return;
             foreach(string argument in System.Environment.GetCommandLineArgs())if(argument=="--mars-jezero-showcase-review")return;
             foreach(string argument in System.Environment.GetCommandLineArgs())if(argument=="--mars-mission-zone-review")return;
             foreach(string argument in System.Environment.GetCommandLineArgs())if(argument=="--mars-global-terrain-review")return;

@@ -14,10 +14,7 @@ namespace MarsPath
             // Foreground transitions are local-only. Network refinement owns a
             // separate cancellable coroutine after the region is already usable.
             CancelTerrainRefinement();
-            MarsRegionSourceCache.TryLoadCachedRegion(start,end);
-            MarsOfficialTerrain.RestoreCachedGeometry(start);MarsOfficialTerrain.RestoreCachedGeometry(end);
-            MarsOfficialTerrain.RestoreCachedGeometry(MarsRegionalTerrain.Midpoint(start,end));
-            MarsOfficialTerrain.ActivateCachedImagery(MarsRegionalTerrain.Midpoint(start,end));
+            RestoreLocalRegionSources(start, end);
             if(GlobalView==null||!GlobalView.IsVisible){if(GlobalView!=null)GlobalView.IsBusy=false;yield break;}
             // A continental overview can exceed the bounded DEM crop budget.
             // Still acquire a real 200 m local window around the mission start.
@@ -33,6 +30,16 @@ namespace MarsPath
             if(computed==null){GlobalView.SetError(error??"Unable to construct this regional plan.");yield break;}
             LoadRegionalMission(computed);GlobalView.IsBusy=false;GlobalView.OpenJezeroMission();
             BeginTerrainRefinement();
+        }
+
+        private static void RestoreLocalRegionSources(GeoPoint start, GeoPoint end)
+        {
+            MarsRegionSourceCache.TryLoadCachedRegion(start, end);
+            GeoPoint midpoint = MarsRegionalTerrain.Midpoint(start, end);
+            MarsOfficialTerrain.RestoreCachedGeometry(start);
+            MarsOfficialTerrain.RestoreCachedGeometry(end);
+            MarsOfficialTerrain.RestoreCachedGeometry(midpoint);
+            MarsOfficialTerrain.ActivateCachedImagery(midpoint);
         }
 
         public void LoadRegionalMission(MissionData source)

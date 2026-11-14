@@ -57,6 +57,11 @@ namespace MarsPath
         {
             if (Application.platform == RuntimePlatform.Android) yield break;
             string[] arguments = Environment.GetCommandLineArgs();
+            if (Array.IndexOf(arguments, "--mars-live-mission-review") >= 0)
+            {
+                yield return ReviewLiveMission();
+                yield break;
+            }
             if (Array.IndexOf(arguments, "--mars-quest-globe-ui-review") >= 0)
             {
                 yield return ReviewQuestGlobeUi();
@@ -149,6 +154,10 @@ namespace MarsPath
 
         private IEnumerator ReviewJezeroAudio()
         {
+            // Audibility checks need a focused player, as does the product's
+            // outside-suit mixer. Allow the UI harness to activate the window.
+            float focusDeadline = Time.realtimeSinceStartup + 45;
+            while (!Application.isFocused && Time.realtimeSinceStartup < focusDeadline) yield return null;
             yield return PrepareJezeroShowcase();
             yield return PrepareHelmetEntry(false);
             PauseQuestTraverse();
@@ -156,7 +165,9 @@ namespace MarsPath
             bool started = missionStarted && paused && evaAudio != null && evaAudio.HasClips && evaAudio.AmbiencePlaying;
             if (!started)
             {
-                Debug.LogError("JEZERO_AUDIO_FAILED: missing soundscape, clips, or running ambience.");
+                Debug.LogError($"JEZERO_AUDIO_FAILED: focused={Application.isFocused}, mission={missionStarted}, paused={paused}, " +
+                    $"soundscape={evaAudio != null}, clips={evaAudio != null && evaAudio.HasClips}, " +
+                    $"ambience={evaAudio != null && evaAudio.AmbiencePlaying}.");
                 Application.Quit(2);
                 yield break;
             }
@@ -174,7 +185,7 @@ namespace MarsPath
             yield return new WaitForSecondsRealtime(.6f);
             bool stopped = GlobalView.IsVisible && !evaAudio.AmbiencePlaying;
             bool passed = walked >= 2 && pausedCleanly && stopped;
-            Debug.Log($"JEZERO_AUDIO_{(passed ? "PASSED" : "FAILED")}: seven clips / {walked} footsteps / pause and seek silent {pausedCleanly} / globe silent {stopped}");
+            Debug.Log($"JEZERO_AUDIO_{(passed ? "PASSED" : "FAILED")}: eleven clips / {walked} footsteps / pause and seek silent {pausedCleanly} / globe silent {stopped}");
             Application.Quit(passed ? 0 : 2);
         }
 
