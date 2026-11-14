@@ -1,0 +1,84 @@
+{
+  "source": "Bundled official PDS MOLA 64 ppd and 16 ppd; independent native big-endian raster sampling",
+  "radius_m": 60000,
+  "physical_height_scale": 1,
+  "locations": [
+    {
+      "name": "Gale",
+      "latitude": -5.4,
+      "longitude": 137.8,
+      "samples": 2821,
+      "native_min_m": -4568.217,
+      "native_max_m": 709.489,
+      "native_relief_m": 5277.706,
+      "old_16ppd_max_height_error_m": 825.03,
+      "longitude_wrap_error_m": 7.403286872431636e-10
+    },
+    {
+      "name": "Valles Marineris",
+      "latitude": -13.9,
+      "longitude": -59.2,
+      "samples": 2821,
+      "native_min_m": -5322.009,
+      "native_max_m": 3491.19,
+      "native_relief_m": 8813.199,
+      "old_16ppd_max_height_error_m": 930.601,
+      "longitude_wrap_error_m": 0.0
+    },
+    {
+      "name": "Olympus Mons",
+      "latitude": 18.65,
+      "longitude": -133.8,
+      "samples": 2821,
+      "native_min_m": 15503.88,
+      "native_max_m": 21003.439,
+      "native_relief_m": 5499.558,
+      "old_16ppd_max_height_error_m": 676.771,
+      "longitude_wrap_error_m": 0.0
+    },
+    {
+      "name": "Arabia Terra",
+      "latitude": 20.99,
+      "longitude": 22.478,
+      "samples": 2821,
+      "native_min_m": -2721.945,
+      "native_max_m": -805.551,
+      "native_relief_m": 1916.394,
+      "old_16ppd_max_height_error_m": 290.531,
+      "longitude_wrap_error_m": 4.431512934388593e-10
+    },
+    {
+      "name": "Elysium Planitia",
+      "latitude": 4.5,
+      "longitude": 135.9,
+      "samples": 2821,
+      "native_min_m": -3207.846,
+      "native_max_m": -2387.805,
+      "native_relief_m": 820.041,
+      "old_16ppd_max_height_error_m": 310.504,
+      "longitude_wrap_error_m": 6.407390173990279e-10
+    },
+    {
+      "name": "Utopia Planitia",
+      "latitude": 46.7,
+      "longitude": 117.5,
+      "samples": 2821,
+      "native_min_m": -4988.696,
+      "native_max_m": -4666.859,
+      "native_relief_m": 321.837,
+      "old_16ppd_max_height_error_m": 113.217,
+      "longitude_wrap_error_m": 7.639755494892597e-11
+    },
+    {
+      "name": "Dateline",
+      "latitude": 10,
+      "longitude": 179.99,
+      "samples": 2821,
+      "native_min_m": -3721.234,
+      "native_max_m": -2432.874,
+      "native_relief_m": 1288.359,
+      "old_16ppd_max_height_error_m": 516.776,
+      "longitude_wrap_error_m": 8.394636097364128e-10
+    }
+  ]
+}

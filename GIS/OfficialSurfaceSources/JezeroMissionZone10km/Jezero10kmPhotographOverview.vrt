@@ -1,0 +1,22 @@
+<VRTDataset rasterXSize="4096" rasterYSize="3885">
+  <SRS dataAxisToSRSAxisMapping="1,2">PROJCS["Equirectangular Mars 2000 Sphere IAU",GEOGCS["D_Mars_2000_Sphere",DATUM["Mars_2000_(Sphere)",SPHEROID["Mars_2000_Sphere_IAU",3396190,0],AUTHORITY["ESRI","106971"]],PRIMEM["Reference_Meridian",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Equirectangular"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH]]</SRS>
+  <GeoTransform>  4.5840450000000000e+06,  2.5791015625000000e+00,  0.0000000000000000e+00,  1.0997430000000000e+06,  0.0000000000000000e+00, -2.5791505791505793e+00</GeoTransform>
+  <VRTRasterBand dataType="Byte" band="1" blockXSize="4096">
+    <Metadata>
+      <MDI key="STATISTICS_APPROXIMATE">YES</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">105.83927796379</MDI>
+      <MDI key="STATISTICS_STDDEV">41.557895610657</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">100</MDI>
+    </Metadata>
+    <ColorInterp>Gray</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">Jezero10kmPhotographOverview.png</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="4096" RasterYSize="3885" DataType="Byte" BlockXSize="4096" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="4096" ySize="3885" />
+      <DstRect xOff="0" yOff="0" xSize="4096" ySize="3885" />
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

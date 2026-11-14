@@ -1,0 +1,250 @@
+{
+  "retrievedUTC": "2026-11-08T22:54:03.510671+00:00",
+  "source": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+  "sourceNativeWindow": [
+    6679,
+    6875,
+    10564,
+    10020
+  ],
+  "sourceGridSpacingMeters": 1.0,
+  "heightTransform": [
+    4584045.0,
+    1.0,
+    0.0,
+    1099743.0,
+    0.0,
+    -1.0
+  ],
+  "projection": "PROJCS[\"Equirectangular Mars 2000 Sphere IAU\",GEOGCS[\"D_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere_IAU\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "heightBboxWestSouthEastNorth": [
+    77.33561184681878,
+    18.38428613779989,
+    77.51383291653991,
+    18.553329598478207
+  ],
+  "heightWidth": 10564,
+  "heightHeight": 10020,
+  "validHeightCount": 105851280,
+  "heightSampleCount": 105851280,
+  "invalidHeightCount": 0,
+  "invalidPixelExamples": [],
+  "minimumMeters": -2649.190673828125,
+  "maximumMeters": -2303.26611328125,
+  "nativeHeightCropSha256": "0a667030c8f38591d6b236fce35fa4623f58acb254fa93afe0e1646f898c3228",
+  "heightResampled": false,
+  "producerProduct": "USGS Mars 2020 Terrain Relative Navigation HiRISE DTM mosaic, original native 1 m grid, MOLA topography/DeltaGeoid/blend40 release",
+  "caveat": "This master is a different controlled/blended producer product from individual HiRISE strips; original strip heights must not be assumed identical or mixed across this mission frame.",
+  "imageSource": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first.tif",
+  "imageSourceNativeSpacingMeters": 0.25,
+  "imageRuntimeSpacingMeters": 1.0,
+  "imageResampling": "Nearest-neighbor 4:1 photographic decimation; no elevation resampling",
+  "imageTransform": [
+    4584045.0,
+    1.0,
+    0.0,
+    1099743.0,
+    0.0,
+    -1.0
+  ],
+  "imageWidth": 10564,
+  "imageHeight": 10020,
+  "invalidImageCount": 0,
+  "imageSampleCount": 105851280,
+  "validImageFraction": 1.0,
+  "imageCropSha256": "a124f0762ce57c9da9bce67fda7ff001c397f4419ee269bad364a0d4288457bf",
+  "imageNodata": 0.0,
+  "imagePNGEncoding": "Lossless PNG grayscale; opaque alpha is implicit for entirely source-valid tiles, explicit gray-alpha if a tile has source nodata.",
+  "selectableBboxWestSouthEastNorth": [
+    77.33578971367626,
+    18.38445484384847,
+    77.51365504968241,
+    18.553160892429624
+  ],
+  "selectableWidthKm": 9.999914459326613,
+  "selectableHeightKm": 10.000000000000082,
+  "tiles": [
+    {
+      "index": 0,
+      "nativeWindow": [
+        0,
+        0,
+        2737,
+        2601
+      ],
+      "heightSha256": "a1238b7f5884426843dd9aa51aba5308009bedf9f4c80d0176bb79cdd0b5ec7d",
+      "imageSha256": "89baea614e3b7ee8d75b6a03a5672dee64552f037010adccb3bd00ec21b26b43"
+    },
+    {
+      "index": 1,
+      "nativeWindow": [
+        2609,
+        0,
+        2737,
+        2601
+      ],
+      "heightSha256": "815a2f85348f98a982f93df86b8a2175e11c85115e03ef3bf140d714cdd76974",
+      "imageSha256": "b71bf71a449eeceef3daaa4a9ceef044886dc87116e1fe8b1bd3f88d33d3e468"
+    },
+    {
+      "index": 2,
+      "nativeWindow": [
+        5218,
+        0,
+        2737,
+        2601
+      ],
+      "heightSha256": "debfbd8642f4eb80e70465dc143df4bf22f6b1bf33bb239a896e0d86b8f1cadb",
+      "imageSha256": "5543c3f608df2671af4c6979324821013793af204a0ba6fa2bab9dcea75293d0"
+    },
+    {
+      "index": 3,
+      "nativeWindow": [
+        7827,
+        0,
+        2737,
+        2601
+      ],
+      "heightSha256": "7682f3889cadb89c87149519dd277e4ed79dcab763f37962a56f84c6ba044e0f",
+      "imageSha256": "ff7ac1ac3375e6d628846fe3c70e11c982122e2037ffa99dc17d67342016b76b"
+    },
+    {
+      "index": 4,
+      "nativeWindow": [
+        0,
+        2473,
+        2737,
+        2601
+      ],
+      "heightSha256": "a66bfbe272d16ac4cbcf3dc503a82cc37afd6836a78a09410579dcccd2b5e732",
+      "imageSha256": "75ee60e0774476eee964393e813170ad8d517cef0fce0e9ad9cd94bc2edcc5d2"
+    },
+    {
+      "index": 5,
+      "nativeWindow": [
+        2609,
+        2473,
+        2737,
+        2601
+      ],
+      "heightSha256": "b4e0fd9332d2b976fad1d362813cc04018ce99d02d62154c6d6e04222b2f2589",
+      "imageSha256": "b95eb8d85f65262f78c8844694b4a646cabb1961882485fa18a8d04d1568a6d3"
+    },
+    {
+      "index": 6,
+      "nativeWindow": [
+        5218,
+        2473,
+        2737,
+        2601
+      ],
+      "heightSha256": "8520170f4c66855172599652e443f2f9170e3dc5f75c5c8aa2f84ac201d79504",
+      "imageSha256": "4f6c44ac9aac17418ef7139d3814e80fe6cdbe708242679a0504f14485f9cd57"
+    },
+    {
+      "index": 7,
+      "nativeWindow": [
+        7827,
+        2473,
+        2737,
+        2601
+      ],
+      "heightSha256": "5cdd20338f442a22ec025894694c95022a18d0cf7099656a79399dc7c3d32b9c",
+      "imageSha256": "a47ec427ac2bdfe04dc09562fd105e5977dddecd24dffdf32efd230f9704d9f3"
+    },
+    {
+      "index": 8,
+      "nativeWindow": [
+        0,
+        4946,
+        2737,
+        2601
+      ],
+      "heightSha256": "fba36386f0a4e82a88cd779cfc8044ec485221a4508951b9d47586283b3a122f",
+      "imageSha256": "ee17d2704af4616ccc74562924feb8ca206957151654422917a093f49ad912e9"
+    },
+    {
+      "index": 9,
+      "nativeWindow": [
+        2609,
+        4946,
+        2737,
+        2601
+      ],
+      "heightSha256": "949e3a3ef37b622ca51fab76224f60e76daec4faf815eb62d309d34216fb34b9",
+      "imageSha256": "d88f528e1e0cd0ae6788f1d0c685fd791f592ac9b12c0a50f25e2ec2a584661e"
+    },
+    {
+      "index": 10,
+      "nativeWindow": [
+        5218,
+        4946,
+        2737,
+        2601
+      ],
+      "heightSha256": "f15e338554f678dbb80b23d1d7535c7d1d9cdbd68e8e757fd0abcee49323ebd3",
+      "imageSha256": "8efa452251ea2a4f3f92ae33b9cc6f5382d0920dd9dfd02ceade54e0a7153710"
+    },
+    {
+      "index": 11,
+      "nativeWindow": [
+        7827,
+        4946,
+        2737,
+        2601
+      ],
+      "heightSha256": "55e5adfdb1aa792951025cde73ee278e3fa4321e4e421117e88a735821e882b0",
+      "imageSha256": "28bb0ddc3425f37564babe5aa0473ea5dd3509c04217aaf0fd7a2359469d85b8"
+    },
+    {
+      "index": 12,
+      "nativeWindow": [
+        0,
+        7419,
+        2737,
+        2601
+      ],
+      "heightSha256": "676948eed54c65ec4855e5f8095bc373d9f7c895b482b8d04d4ec94c40403c39",
+      "imageSha256": "553ca533ffff9d936ed8065180ae8532ddb63dab4d17ff5ede8b7c54879c3d2b"
+    },
+    {
+      "index": 13,
+      "nativeWindow": [
+        2609,
+        7419,
+        2737,
+        2601
+      ],
+      "heightSha256": "ac0bb8a6dbd005b6fbbbaf61b827db19033c3d50bd19b71018ce197495ea346b",
+      "imageSha256": "433fa8a2cdf95cb301fcbcd4790368dd06d4494d21f7a0876d4bbab9c73b2549"
+    },
+    {
+      "index": 14,
+      "nativeWindow": [
+        5218,
+        7419,
+        2737,
+        2601
+      ],
+      "heightSha256": "5fdb1661c4ffcd7d59ed1d64aa8ca2ab9f773cd5e27d8991dd529461737f9b68",
+      "imageSha256": "4cba69d080317d3ddf0e44a4914c0b4a60c75b150cde629e9b8c85026b809d5e"
+    },
+    {
+      "index": 15,
+      "nativeWindow": [
+        7827,
+        7419,
+        2737,
+        2601
+      ],
+      "heightSha256": "46f0a3cdf381f20f118566717b2d130062ce14810f1a16d402dd8a87ea67b26c",
+      "imageSha256": "af309f4467e6683e7c523fc6bf7102f6d43ecc1e67b0aad05d3458e6a85dd191"
+    }
+  ],
+  "tileOverlapPixels": 128,
+  "displayLow": 39.0,
+  "displayHigh": 213.0,
+  "runtimePayloadBytes": 547309809,
+  "runtimeStageDirectory": "C:\\Users\\abdul\\Documents\\ChatGPT\\Hackathon\\work\\JezeroMissionZone10kmRuntime",
+  "resourceManifest": "NASA/MissionZone/BundledWindows"
+}

@@ -1,0 +1,97 @@
+{
+  "retrievedUTC": "2026-11-07T22:13:55.197686+00:00",
+  "source": "https://planetarymaps.usgs.gov/mosaic/Mars/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2.tif",
+  "description": "Independent GDAL native source-pixel extraction, not application terrain output; no elevation resampling.",
+  "sourceWidth": 106694,
+  "sourceHeight": 53347,
+  "sourceGridTransform": [
+    -180.0,
+    0.003374120830641,
+    0.0,
+    90.0,
+    0.0,
+    -0.003374120830641
+  ],
+  "sourceProjection": "GEOGCS[\"GCS_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere_IAU_IAG\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST]]",
+  "sourceBandType": "Int16",
+  "nodata": -32768.0,
+  "scale": 1,
+  "offset": 0,
+  "radiusMeters": 3396190.0,
+  "coordinateConvention": "Native geographic Mars 2000 Sphere, degrees longitude and planetocentric latitude, east-positive. GDAL transform units are DEGREES, not metres. Pixel/line values use sample centres.",
+  "requestNominal": {
+    "latitude": 24.8,
+    "longitude": 14.2
+  },
+  "requestFloat32AsDouble": {
+    "latitude": 24.799999237060547,
+    "longitude": 14.199999809265137
+  },
+  "equivalentEquirectangularMeters": {
+    "easting": 841700.693525197,
+    "northing": 1470012.453354989
+  },
+  "nativeSourceCoordinate": {
+    "x": 14.199999809265137,
+    "y": 24.799999237060547
+  },
+  "sourcePixelCenterIndex": {
+    "column": 57555.23364347237,
+    "row": 19323.052426115413
+  },
+  "cropSourceWindow": {
+    "xOffset": 57554,
+    "yOffset": 19322,
+    "width": 4,
+    "height": 4
+  },
+  "nativeValues": [
+    [
+      -2093,
+      -2091,
+      -2090,
+      -2088
+    ],
+    [
+      -2092,
+      -2091,
+      -2090,
+      -2088
+    ],
+    [
+      -2092,
+      -2090,
+      -2089,
+      -2087
+    ],
+    [
+      -2092,
+      -2090,
+      -2089,
+      -2087
+    ]
+  ],
+  "bilinearSourceTopLeft": {
+    "column": 57555,
+    "row": 19323
+  },
+  "bilinearStencil": [
+    [
+      -2091.0,
+      -2090.0
+    ],
+    [
+      -2090.0,
+      -2089.0
+    ]
+  ],
+  "bilinearFractions": {
+    "tx": 0.2336434723692946,
+    "ty": 0.05242611541325459
+  },
+  "bilinearHeightMeters": -2090.7139304122175,
+  "rawCropSha256": "ba68afe084afa096c9f7aa313cb5ad4c9fb610fd4e30e748632fd96cb8a179ae",
+  "geoTiffSha256": "3e83ed3a5e0ee7e209b53635afc6c95380451e8868f6e01a0e74081f81b23e96",
+  "cropFile": "USGS_Global200_Arabia_native4x4.tif",
+  "metadataSource": "GDAL source GeoTIFF affine, projection, band datatype, nodata, scale and offset read independently from the official USGS file"
+}

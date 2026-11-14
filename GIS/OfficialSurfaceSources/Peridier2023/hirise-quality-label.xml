@@ -1,0 +1,33 @@
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1H00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Browse xmlns="http://pds.nasa.gov/pds4/pds/v1"
+  xmlns:pds="http://pds.nasa.gov/pds4/pds/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1
+  http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1H00.xsd">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:mars_mro_hirise_explorationzones_day_2023:data:esp_051901_2055_esp_052046_2055-goodpixelmap</logical_identifier>
+    <version_id>1.0</version_id>
+    <title>Goodness of fit for created DEM - esp_051901_2055_esp_052046_2055-goodpixelmap.png</title>
+    <information_model_version>1.17.0.0</information_model_version>
+    <product_class>Product_Browse</product_class>
+  </Identification_Area>
+  <Reference_List>
+    <Internal_Reference>
+      <lid_reference>urn:nasa:pds:mars_mro_hirise_explorationzones_day_202:data:esp_051901_2055_esp_052046_2055_tied-dem</lid_reference>
+      <reference_type>browse_to_data</reference_type>
+      <comment>This is a reference to the data file corresponding to this graphical image.</comment>
+    </Internal_Reference>
+  </Reference_List>
+  <File_Area_Browse>
+    <File>
+      <file_name>esp_051901_2055_esp_052046_2055-goodpixelmap.png</file_name>
+      <local_identifier>miscellaneous_file</local_identifier>
+      <creation_date_time>2022-10-18</creation_date_time>
+    </File>
+    <Encoded_Image>
+      <local_identifier>esp_051901_2055_esp_052046_2055-goodpixelmap.png</local_identifier>
+      <offset unit="byte">0</offset>
+      <encoding_standard_id>PNG</encoding_standard_id>
+    </Encoded_Image>
+  </File_Area_Browse>
+</Product_Browse>

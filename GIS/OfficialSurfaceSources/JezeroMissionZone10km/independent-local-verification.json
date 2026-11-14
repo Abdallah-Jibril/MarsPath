@@ -1,0 +1,128 @@
+{
+  "allNativeSamplesCovered": true,
+  "maximumOverlappingTiles": 4,
+  "tiles": [
+    {
+      "index": 0,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 1,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 2,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 3,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 4,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 5,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 6,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 7,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 8,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 9,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 10,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 11,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 12,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 13,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 14,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    },
+    {
+      "index": 15,
+      "heightBitwiseEqualToUnchangedMaster": true,
+      "imageDNMatchesDeclaredStretch": true,
+      "imageAlphaMatchesOriginal1mDisplayNodata": true,
+      "heightDimensionsUnder3072": true
+    }
+  ],
+  "sourceHeightCount": 105851280,
+  "sourceInvalidHeightCount": 0,
+  "sourceImageInvalidCount": 0,
+  "nativeHeightWasResampled": false,
+  "heightGapsFilled": false,
+  "imageGapsFilled": false,
+  "imageSourceSpacingMeters": 0.25,
+  "imageRuntimeDisplaySpacingMeters": 1,
+  "oracleCount": 5,
+  "runtimePayloadBytes": 547309809
+}

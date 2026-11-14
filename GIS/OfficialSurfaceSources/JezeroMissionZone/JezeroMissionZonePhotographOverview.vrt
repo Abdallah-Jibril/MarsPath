@@ -1,0 +1,70 @@
+<VRTDataset rasterXSize="2884" rasterYSize="4096">
+  <SRS dataAxisToSRSAxisMapping="1,2">PROJCS["Mars (2015) - Sphere / Ocentric / Equirectangular, clon = 0",GEOGCS["Mars (2015) - Sphere / Ocentric",DATUM["Mars (2015) - Sphere",SPHEROID["Mars (2015) - Sphere",3396190,0,AUTHORITY["IAU","49900"]],AUTHORITY["IAU","49900"]],PRIMEM["Reference Meridian",0,AUTHORITY["IAU","49900"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["IAU","49900"]],PROJECTION["Equirectangular"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["IAU","49910"]]</SRS>
+  <GeoTransform>  4.5879153319865763e+06,  1.4892294386475400e+00,  0.0000000000000000e+00,  1.0973702066208276e+06,  0.0000000000000000e+00, -1.4893399329727686e+00</GeoTransform>
+  <Metadata domain="IMAGE_STRUCTURE">
+    <MDI key="INTERLEAVE">PIXEL</MDI>
+  </Metadata>
+  <VRTRasterBand dataType="Byte" band="1" blockXSize="2884">
+    <Metadata>
+      <MDI key="STATISTICS_APPROXIMATE">YES</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">102.85092349715</MDI>
+      <MDI key="STATISTICS_STDDEV">39.56165401095</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">100</MDI>
+    </Metadata>
+    <ColorInterp>Red</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">JezeroMissionZonePhotographOverview.png</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="2884" RasterYSize="4096" DataType="Byte" BlockXSize="2884" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+      <DstRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="2" blockXSize="2884">
+    <Metadata>
+      <MDI key="STATISTICS_APPROXIMATE">YES</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">102.85092349715</MDI>
+      <MDI key="STATISTICS_STDDEV">39.56165401095</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">100</MDI>
+    </Metadata>
+    <ColorInterp>Green</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">JezeroMissionZonePhotographOverview.png</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties RasterXSize="2884" RasterYSize="4096" DataType="Byte" BlockXSize="2884" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+      <DstRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="3" blockXSize="2884">
+    <Metadata>
+      <MDI key="STATISTICS_APPROXIMATE">YES</MDI>
+      <MDI key="STATISTICS_MINIMUM">0</MDI>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">102.85092349715</MDI>
+      <MDI key="STATISTICS_STDDEV">39.56165401095</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">100</MDI>
+    </Metadata>
+    <ColorInterp>Blue</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">JezeroMissionZonePhotographOverview.png</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties RasterXSize="2884" RasterYSize="4096" DataType="Byte" BlockXSize="2884" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+      <DstRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="4" blockXSize="2884">
+    <ColorInterp>Alpha</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">JezeroMissionZonePhotographOverview.png</SourceFilename>
+      <SourceBand>4</SourceBand>
+      <SrcRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+      <DstRect xOff="0" yOff="0" xSize="2884" ySize="4096" />
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

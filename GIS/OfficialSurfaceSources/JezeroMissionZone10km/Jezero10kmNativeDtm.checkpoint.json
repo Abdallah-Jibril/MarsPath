@@ -1,0 +1,92 @@
+{
+  "source": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+  "window": [
+    6679,
+    6875,
+    10564,
+    10020
+  ],
+  "photoDecimation": false,
+  "stripes": {
+    "0": {
+      "rows": 512,
+      "sha256": "12190f6f57104010690667624097327cf4f3d949976862f58ebb212ef138089e"
+    },
+    "512": {
+      "rows": 512,
+      "sha256": "12caa680762e2cf925e8dcc0240ae6a7660591cc05fc82e185917731c118ec56"
+    },
+    "1024": {
+      "rows": 512,
+      "sha256": "9744347ea9a1c59a1159e31ada23a167691a0652e84dc7e304117eff4203915a"
+    },
+    "1536": {
+      "rows": 512,
+      "sha256": "6062efb820078fd33559709d54feee83fbfa45b2b69ea0b0e0799b807109a9c2"
+    },
+    "2048": {
+      "rows": 512,
+      "sha256": "dc589d15579b08e1c85d900d29df30d0b8ebe69abbd98e0b90ad868d5730dc41"
+    },
+    "2560": {
+      "rows": 512,
+      "sha256": "50fec2e00c43bea0588c5a51bf051365ec2c8538cb81a23b0e8d62478af83188"
+    },
+    "3072": {
+      "rows": 512,
+      "sha256": "66543a4c6619cc670635b448fb18a57e9eb79b761ca27af84e5368fdafd5c1c3"
+    },
+    "3584": {
+      "rows": 512,
+      "sha256": "7d4aa023b077298cec0806158dfb741ffae1fafee0fc6ed5ad5701ac4dcee4f8"
+    },
+    "4096": {
+      "rows": 512,
+      "sha256": "de4b8530eb3a98315d9f1bb85d774dbac0b1440f38af1b97095c1ec1a5f8d9b6"
+    },
+    "4608": {
+      "rows": 512,
+      "sha256": "3c82fac831916eaa7d1b070a07997c65241c8decb4138bf1fe87d9830b8f885a"
+    },
+    "5120": {
+      "rows": 512,
+      "sha256": "e3bef3a89ad4fc60fbfe3eb00a77afa3ae9db971bb4f370e5f8218c48a609c97"
+    },
+    "5632": {
+      "rows": 512,
+      "sha256": "c4959d137c80093462cd6ac3428f1cdf87635c1458871029f4419202eca8ab36"
+    },
+    "6144": {
+      "rows": 512,
+      "sha256": "abfa509a3ed968ec50a3ba9abded6e859b8c936f686dad7a759d60696fc66724"
+    },
+    "6656": {
+      "rows": 512,
+      "sha256": "5a4e784ee50327df22390b159c653dea79435d7e03681cf8d5485f727110b79f"
+    },
+    "7168": {
+      "rows": 512,
+      "sha256": "58509f6d3a4310eba7baf59899f35511923d30ae656ba0632ca813a2c8530779"
+    },
+    "7680": {
+      "rows": 512,
+      "sha256": "1e55a8c86c03d36b23718f9b5a0cc958a0ed6fd495ed676eafe43880f8ad3b6f"
+    },
+    "8192": {
+      "rows": 512,
+      "sha256": "778a3098d9099f0efeb0c492c93c88527c3cefd596eda37851615c875956819d"
+    },
+    "8704": {
+      "rows": 512,
+      "sha256": "a06ae05d030a80ce8adbc469095c0696722e1b692ca345bb8c20f2c59d27077c"
+    },
+    "9216": {
+      "rows": 512,
+      "sha256": "944ba1ba8931c46047d5958e30164d86f6ba729533f5bbc067dd117e00874c76"
+    },
+    "9728": {
+      "rows": 292,
+      "sha256": "e26271de3849fbb5ca8309c240ea9bddfd1ab0bbcd64f914f0a7fb1f91f242ae"
+    }
+  }
+}

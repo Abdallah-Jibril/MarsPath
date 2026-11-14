@@ -1,0 +1,28 @@
+{
+  "retrieved": "2026-11-08T17:53:35.961417+00:00",
+  "source": "Official USGS M2020 Jezero HiRISE native mission-zone crops",
+  "windows": [
+    {
+      "metadata": "NASA/MissionZone/JezeroZoneTile0Height",
+      "heights": "NASA/MissionZone/JezeroZoneTile0Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/JezeroZoneTile1Height",
+      "heights": "NASA/MissionZone/JezeroZoneTile1Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/JezeroZoneTile2Height",
+      "heights": "NASA/MissionZone/JezeroZoneTile2Heights"
+    },
+    {
+      "metadata": "NASA/MissionZone/JezeroZoneTile3Height",
+      "heights": "NASA/MissionZone/JezeroZoneTile3Heights"
+    }
+  ],
+  "images": [
+    "NASA/MissionZone/JezeroZoneTile0Image",
+    "NASA/MissionZone/JezeroZoneTile1Image",
+    "NASA/MissionZone/JezeroZoneTile2Image",
+    "NASA/MissionZone/JezeroZoneTile3Image"
+  ]
+}

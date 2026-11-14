@@ -1,0 +1,210 @@
+{
+  "retrieved": "2026-11-07",
+  "selectedStart": [
+    26.73911,
+    82.70998
+  ],
+  "selectedDestination": [
+    24.24785,
+    84.94257
+  ],
+  "coverage": [
+    {
+      "source": "hirise",
+      "route": "BALANCED",
+      "routeLengthKm": 199.39210510253906,
+      "rectangleIntersectionKm": 0.0,
+      "nearestRectangleMeters": 283.88906314015327,
+      "footprintLengthPercent": 0.0,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "hirise",
+      "route": "SAFEST",
+      "routeLengthKm": 207.36422729492188,
+      "rectangleIntersectionKm": 6.326199630247823,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 3.05203322961466,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "hirise",
+      "route": "FASTEST",
+      "routeLengthKm": 196.73533630371094,
+      "rectangleIntersectionKm": 0.0,
+      "nearestRectangleMeters": 18432.03126976397,
+      "footprintLengthPercent": 0.0,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "hirise",
+      "route": "SCIENCE",
+      "routeLengthKm": 281.42877197265625,
+      "rectangleIntersectionKm": 0.0,
+      "nearestRectangleMeters": 13894.99113987905,
+      "footprintLengthPercent": 0.0,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "hirise",
+      "route": "ENERGY",
+      "routeLengthKm": 199.3920440673828,
+      "rectangleIntersectionKm": 0.0,
+      "nearestRectangleMeters": 44.752368628523264,
+      "footprintLengthPercent": 0.0,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "ctx",
+      "route": "BALANCED",
+      "routeLengthKm": 199.39210510253906,
+      "rectangleIntersectionKm": 42.425711334853965,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 21.279823655026743,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "ctx",
+      "route": "SAFEST",
+      "routeLengthKm": 207.36422729492188,
+      "rectangleIntersectionKm": 48.83821174913218,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 23.561730846251383,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "ctx",
+      "route": "FASTEST",
+      "routeLengthKm": 196.73533630371094,
+      "rectangleIntersectionKm": 5.962680841743274,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 3.029886921745372,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "ctx",
+      "route": "SCIENCE",
+      "routeLengthKm": 281.42877197265625,
+      "rectangleIntersectionKm": 8.974677670028884,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 3.1950002766492247,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    },
+    {
+      "source": "ctx",
+      "route": "ENERGY",
+      "routeLengthKm": 199.3920440673828,
+      "rectangleIntersectionKm": 42.55838997814793,
+      "nearestRectangleMeters": 0,
+      "footprintLengthPercent": 21.342120557030377,
+      "note": "Native rectangular bounds only; source nodata can reduce valid coverage. Distances use the source local sinusoidal metre grid."
+    }
+  ],
+  "qualityMask": {
+    "width": 2553,
+    "height": 3168,
+    "bands": 3,
+    "note": "Original ASP Good Pixel Map; grey means valid stereo correlation, red means failed. Inspect alongside exact DEM nodata; no holes are filled in this pack."
+  },
+  "currentUaDtmScan": {
+    "pages": 58,
+    "uniqueProducts": 1370,
+    "latitudeCandidatesExamined": 92,
+    "candidateWindow": [
+      80,
+      22,
+      88,
+      29
+    ],
+    "hits": [],
+    "limitations": "The latitude-coded screening covers image center latitudes20–29N; rectangular overlap near far edges should be independently checked for other routes. Seven catalog entries can share product pages, hence1,370 unique pages vs advertised1,377 images."
+  },
+  "integrationDecision": "Research-only optional nearby measured terrain example. Not automatically blended into the existing route because native sources differ by30–45m locally and the HiRISE DEM contains correlation artifacts/nodata. Original endpoints remain unchanged.",
+  "hashes": [
+    {
+      "file": "PeridierHiRISE1mNative2048.tif",
+      "bytes": 7237093,
+      "sha256": "8f0d587b056ca764cedd7943c2967a7a60cd0e9eb33b899bc05bdbfac06e3bee"
+    },
+    {
+      "file": "PeridierHiRISE1mNative2048Heights.bytes",
+      "bytes": 16777216,
+      "sha256": "ebb87b1abee296657e724db4e6e75d1e69c7fb0cb1bb67957ca84d74a3b595f2"
+    },
+    {
+      "file": "PeridierHiRISE1mNative2048Ortho.tif",
+      "bytes": 2689665,
+      "sha256": "e6daadbf35e5857994dfe5cf1851d560e96855b6f33e2c083793646e182cdc64"
+    },
+    {
+      "file": "PeridierHiRISE1mNative2048Hillshade.tif",
+      "bytes": 4198002,
+      "sha256": "ea4a8f8ce5eb116c695236111df4cf03fdcb902f4278dad81626fb4a19e4d749"
+    },
+    {
+      "file": "PeridierCTX18mNative.tif",
+      "bytes": 10113583,
+      "sha256": "384c1b0491415bd35c213c0b3beb501942ce8d3936c01ddb9a699204a8b98a91"
+    },
+    {
+      "file": "hirise-dem-label.xml",
+      "bytes": 14352,
+      "sha256": "24aa2ef93e1801ca43525fad36ad33feb1861ca322b54ad2ebe04f346ef55751"
+    },
+    {
+      "file": "hirise-drg-label.xml",
+      "bytes": 14389,
+      "sha256": "4f7e565aaa394adbe451dec9e45d627780148cc245003304a1fc0e09140d370b"
+    },
+    {
+      "file": "hirise-quality-mask.png",
+      "bytes": 90058,
+      "sha256": "8b7816d6e9fd9a5514a3ab71720d1f81e1531aa7cbb5d26bcd0b556a0a295b4a"
+    },
+    {
+      "file": "native-window-validation.json",
+      "bytes": 4758,
+      "sha256": "924fc8d92d5e9a61c4a3229ef31e2f02fc6926ff3cab5dbaeb363c5100b4b798"
+    },
+    {
+      "file": "remote-metadata.json",
+      "bytes": 7293,
+      "sha256": "4e7cfa43faba160abf4957522d2d961152794faec6086a83be5ba70c8a34c073"
+    },
+    {
+      "file": "native-1m-hillshade.png",
+      "bytes": 672732,
+      "sha256": "8b9acbcbb23430ca0dfca054f5fd40734ed25b25c43e6714d4b23ef837a175d7"
+    },
+    {
+      "file": "native-ortho-reference.png",
+      "bytes": 553627,
+      "sha256": "b918fc2e2970e56ed29ba5e879cdbada0ce9f20bd580121c3fa88c14c764f808"
+    },
+    {
+      "file": "hirise-quality-label.xml",
+      "bytes": 1763,
+      "sha256": "b69e97db786c52cafafa0f0825142d931f4cdf4ecc036097e574920c28c54300"
+    },
+    {
+      "file": "current-ua-northern-dtm-search.json",
+      "bytes": 70968,
+      "sha256": "53e80d673efbe6ca0c77cc3f3f6b663273e2ace00583e924c998c8654b7e1911"
+    },
+    {
+      "file": "pds-nearby-candidates.json",
+      "bytes": 761,
+      "sha256": "37f6ae2d6bf12b666897a02c763c0f2d24e426a4963f10d8a25d38b4fdccd09a"
+    },
+    {
+      "file": "actual-selected-route-footprints.json",
+      "bytes": 884003,
+      "sha256": "e7c17e7f2dca2e3f6c9ed2d9422286f2bbe6390f3d4053c84b8cf563da1ffebb"
+    },
+    {
+      "file": "README.md",
+      "bytes": 6136,
+      "sha256": "9c27981c6760b92879bcf7e4a073b2ac1435f62a9591d2cdaa879c349b315b27"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "pair": "esp_051901_2055_esp_052046_2055",
+  "sourceUrl": "https://asc-pds-individual-investigations.s3.us-west-2.amazonaws.com/mars_mro_hirise_explorationzones_day_2023/data/esp_051901_2055_esp_052046_2055_tied-dem.tif",
+  "orthoUrl": "https://asc-pds-individual-investigations.s3.us-west-2.amazonaws.com/mars_mro_hirise_explorationzones_day_2023/data/esp_051901_2055_esp_052046_2055_tied-drg.tif",
+  "qualityUrl": "https://asc-pds-individual-investigations.s3.us-west-2.amazonaws.com/mars_mro_hirise_explorationzones_day_2023/data/esp_051901_2055_esp_052046_2055-goodpixelmap.png",
+  "citation": "Day et al. (2023), NASA PDS DOI 10.17189/ervc-mr85",
+  "projection": "Sinusoidal",
+  "radius": 3396190,
+  "longitudeOfOrigin": 83.68506713829,
+  "nativeGridMeters": 1,
+  "nativeTransform": [
+    -2757.5,
+    1.0,
+    0.0,
+    1502513.5,
+    0.0,
+    -1.0
+  ],
+  "cropTransform": [
+    -721.5,
+    1.0,
+    0.0,
+    1499219.5,
+    0.0,
+    -1.0
+  ],
+  "cropPixelWindow": [
+    2036,
+    3294,
+    2048,
+    2048
+  ],
+  "nativeCropCellsEqualSource": true,
+  "nodata": -32767.0,
+  "validPercent": 94.89109516143799,
+  "minMeters": -3407.537109375,
+  "maxMeters": -3218.214111328125,
+  "slopeP95Degrees": 24.743366241455078,
+  "slopeMaxDegrees": 88.72245788574219,
+  "heightBytesSha256": "ebb87b1abee296657e724db4e6e75d1e69c7fb0cb1bb67957ca84d74a3b595f2",
+  "orthoGridMeters": 1.0269419246,
+  "orthoCropPixelWindow": [
+    1982,
+    3208,
+    1996,
+    1995
+  ],
+  "orthoCropTransform": [
+    -722.4536439125,
+    1.0269419246,
+    0.0,
+    1499219.678925711,
+    0.0,
+    -1.0269419246
+  ],
+  "refs": [
+    {
+      "lat": 25.28841246993496,
+      "lon": 83.6763908492292,
+      "nativePixel": [
+        2292,
+        3550
+      ],
+      "hiriseMeters": -3333.859130859375,
+      "ctx18mMeters": -3335.740061754742,
+      "legacyCtxMeters": -3366.3675667032244,
+      "hiriseMinusCtxMeters": 1.8809308953668733
+    },
+    {
+      "lat": 25.28841246993496,
+      "lon": 83.69072072019412,
+      "nativePixel": [
+        3060,
+        3550
+      ],
+      "hiriseMeters": -3323.04541015625,
+      "ctx18mMeters": -3323.404037985008,
+      "legacyCtxMeters": -3355.8653644472115,
+      "hiriseMinusCtxMeters": 0.35862782875801713
+    },
+    {
+      "lat": 25.28841246993496,
+      "lon": 83.70505059115904,
+      "nativePixel": [
+        3828,
+        3550
+      ],
+      "hiriseMeters": -3318.707275390625,
+      "ctx18mMeters": -3322.709096511954,
+      "legacyCtxMeters": -3361.916788414279,
+      "hiriseMinusCtxMeters": 4.001821121329158
+    },
+    {
+      "lat": 25.27545584540393,
+      "lon": 83.67639177586518,
+      "nativePixel": [
+        2292,
+        4318
+      ],
+      "hiriseMeters": -3335.102783203125,
+      "ctx18mMeters": -3336.8657281293454,
+      "legacyCtxMeters": -3376.206988773369,
+      "hiriseMinusCtxMeters": 1.7629449262203707
+    },
+    {
+      "lat": 25.27545584540393,
+      "lon": 83.69072011638616,
+      "nativePixel": [
+        3060,
+        4318
+      ],
+      "hiriseMeters": -3328.185546875,
+      "ctx18mMeters": -3342.258560734717,
+      "legacyCtxMeters": -3369.1583329848418,
+      "hiriseMinusCtxMeters": 14.073013859716866
+    },
+    {
+      "lat": 25.27545584540393,
+      "lon": 83.70504845690712,
+      "nativePixel": [
+        3828,
+        4318
+      ],
+      "hiriseMeters": -3324.369873046875,
+      "ctx18mMeters": -3325.376466028438,
+      "legacyCtxMeters": -3370.001452889132,
+      "hiriseMinusCtxMeters": 1.0065929815627896
+    },
+    {
+      "lat": 25.262499220872897,
+      "lon": 83.67639270185973,
+      "nativePixel": [
+        2292,
+        5086
+      ],
+      "hiriseMeters": -3335.158203125,
+      "ctx18mMeters": -3343.0608937431007,
+      "legacyCtxMeters": -3377.837870500222,
+      "hiriseMinusCtxMeters": 7.902690618100678
+    },
+    {
+      "lat": 25.262499220872897,
+      "lon": 83.69071951299617,
+      "nativePixel": [
+        3060,
+        5086
+      ],
+      "hiriseMeters": -32767.0,
+      "ctx18mMeters": -3323.1555291513314,
+      "legacyCtxMeters": -3362.8250779687774,
+      "hiriseMinusCtxMeters": null
+    },
+    {
+      "lat": 25.262499220872897,
+      "lon": 83.70504632413261,
+      "nativePixel": [
+        3828,
+        5086
+      ],
+      "hiriseMeters": -3334.619140625,
+      "ctx18mMeters": -3336.4391788210414,
+      "legacyCtxMeters": -3377.480638181059,
+      "hiriseMinusCtxMeters": 1.8200381960414234
+    }
+  ],
+  "files": [
+    "PeridierHiRISE1mNative2048.tif",
+    "PeridierHiRISE1mNative2048Heights.bytes",
+    "PeridierHiRISE1mNative2048Ortho.tif",
+    "PeridierCTX18mNative.tif"
+  ]
+}

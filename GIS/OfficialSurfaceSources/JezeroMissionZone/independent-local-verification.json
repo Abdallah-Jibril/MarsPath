@@ -1,0 +1,42 @@
+{
+  "allTilesCoverNativeRectangle": true,
+  "minimumOverlapPixelCoverageCount": 1,
+  "maximumOverlapPixelCoverageCount": 4,
+  "olderIndependentlyVerified4194304ValueCropBitwiseMatches": true,
+  "tiles": [
+    {
+      "index": 0,
+      "heightBitwiseEqualToOriginal": true,
+      "imageDisplayDNExactlyEqualToDeclaredStretch": true,
+      "imageNodataAlphaExact": true,
+      "heightDimensionsWithin3072": true
+    },
+    {
+      "index": 1,
+      "heightBitwiseEqualToOriginal": true,
+      "imageDisplayDNExactlyEqualToDeclaredStretch": true,
+      "imageNodataAlphaExact": true,
+      "heightDimensionsWithin3072": true
+    },
+    {
+      "index": 2,
+      "heightBitwiseEqualToOriginal": true,
+      "imageDisplayDNExactlyEqualToDeclaredStretch": true,
+      "imageNodataAlphaExact": true,
+      "heightDimensionsWithin3072": true
+    },
+    {
+      "index": 3,
+      "heightBitwiseEqualToOriginal": true,
+      "imageDisplayDNExactlyEqualToDeclaredStretch": true,
+      "imageNodataAlphaExact": true,
+      "heightDimensionsWithin3072": true
+    }
+  ],
+  "originalHeightValidSampleCount": 25344000,
+  "originalHeightSampleCount": 25344000,
+  "originalImageInvalidSampleCount": 12135,
+  "terrainWasResampled": false,
+  "heightGapsFilled": false,
+  "imageGapsFilled": false
+}

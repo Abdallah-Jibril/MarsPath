@@ -1,0 +1,20 @@
+[
+  {
+    "file": "HiRISE-original-DTM-annotated-browse.jpg",
+    "url": "https://hirise-pds.lpl.arizona.edu/PDS/EXTRAS/DTM/ESP/ORB_045900_045999/ESP_045994_1985_ESP_046060_1985/DTEEC_045994_1985_046060_1985_U01.ab.jpg",
+    "bytes": 297643,
+    "status": "downloaded"
+  },
+  {
+    "file": "HiRISE-original-ortho-annotated-browse.jpg",
+    "url": "https://hirise-pds.lpl.arizona.edu/PDS/EXTRAS/DTM/ESP/ORB_045900_045999/ESP_045994_1985_ESP_046060_1985/ESP_045994_1985_RED_C_01_ORTHO.ab.jpg",
+    "bytes": 1458109,
+    "status": "downloaded"
+  },
+  {
+    "file": "NASA-PIA24921-Jezero-delta-enhanced-color-reference.jpg",
+    "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia24/pia24921/PIA24921.jpg?crop=faces%2Cfocalpoint&fit=clip&h=431&w=1536",
+    "bytes": 108635,
+    "status": "downloaded"
+  }
+]

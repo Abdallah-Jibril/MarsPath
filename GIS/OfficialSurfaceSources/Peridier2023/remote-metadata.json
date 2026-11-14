@@ -1,0 +1,230 @@
+[
+  {
+    "width": 6121,
+    "height": 8636,
+    "bands": 1,
+    "transform": [
+      -2757.5,
+      1.0,
+      0.0,
+      1502513.5,
+      0.0,
+      -1.0
+    ],
+    "srs": "PROJCS[\"M_S83.68506713829\",GEOGCS[\"GCS_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",83.68506713829],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 1.0,
+    "nodata": -32767.0,
+    "dataType": "Float32",
+    "cornersLonLat": [
+      [
+        83.63359035785349,
+        25.348311552483697
+      ],
+      [
+        83.74785667627664,
+        25.348311552483697
+      ],
+      [
+        83.74778133211127,
+        25.202617008929014
+      ],
+      [
+        83.63365212730079,
+        25.202617008929014
+      ]
+    ],
+    "kind": "hirise",
+    "pair": "esp_051901_2055_esp_052046_2055",
+    "url": "https://asc-pds-individual-investigations.s3.us-west-2.amazonaws.com/mars_mro_hirise_explorationzones_day_2023/data/esp_051901_2055_esp_052046_2055_tied-dem.tif"
+  },
+  {
+    "width": 1841,
+    "height": 2473,
+    "bands": 1,
+    "transform": [
+      -16515.0,
+      18.0,
+      0.0,
+      1520685.0,
+      0.0,
+      -18.0
+    ],
+    "srs": "PROJCS[\"M_S83.686018117722\",GEOGCS[\"GCS_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",83.686018117722],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 18.0,
+    "nodata": -32767.0,
+    "dataType": "Float32",
+    "cornersLonLat": [
+      [
+        83.37692959994556,
+        25.65487574866294
+      ],
+      [
+        83.99712792280815,
+        25.65487574866294
+      ],
+      [
+        83.99520809804143,
+        24.9038976440088
+      ],
+      [
+        83.37883695156816,
+        24.9038976440088
+      ]
+    ],
+    "kind": "ctx",
+    "pair": "j18_051901_2055_xn_25n276w_j19_052046_2055_xn_25n276w",
+    "url": "https://asc-pds-individual-investigations.s3.us-west-2.amazonaws.com/mars_mro_hirise_explorationzones_day_2023/data/j18_051901_2055_xn_25n276w_j19_052046_2055_xn_25n276w_tied-dem.tif"
+  },
+  {
+    "width": 1427,
+    "height": 1693,
+    "bands": 1,
+    "transform": [
+      -167900.0,
+      200.0,
+      0.0,
+      1789940.0000000002,
+      0.0,
+      -200.0
+    ],
+    "srs": "PROJCS[\"SINUSOIDAL MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS\",3396000,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",87],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 200.0,
+    "nodata": -32768.0,
+    "dataType": "Int16",
+    "cornersLonLat": [
+      [
+        83.72244756272785,
+        30.199059947481327
+      ],
+      [
+        89.29370108028277,
+        30.199059947481327
+      ],
+      [
+        89.17832554369093,
+        24.486353544910756
+      ],
+      [
+        83.88731184012164,
+        24.486353544910756
+      ]
+    ],
+    "kind": "hrsc",
+    "pair": "h2882_0000",
+    "url": "https://maps.planet.fu-berlin.de/mex4/h2882_0000.da4.50.tif"
+  },
+  {
+    "width": 1938,
+    "height": 5100,
+    "bands": 1,
+    "transform": [
+      -76170.0,
+      100.0,
+      0.0,
+      1728300.0,
+      0.0,
+      -100.0
+    ],
+    "srs": "PROJCS[\"SINUSOIDAL MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS\",3396000,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",84],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 100.0,
+    "nodata": -32768.0,
+    "dataType": "Int16",
+    "cornersLonLat": [
+      [
+        82.5283982287036,
+        29.159097683292167
+      ],
+      [
+        86.27260754046998,
+        29.159097683292167
+      ],
+      [
+        86.11953408673602,
+        20.55460782708722
+      ],
+      [
+        82.62751924350351,
+        20.55460782708722
+      ]
+    ],
+    "kind": "hrsc",
+    "pair": "h2926_0000",
+    "url": "https://maps.planet.fu-berlin.de/mex4/h2926_0000.da4.50.tif"
+  },
+  {
+    "width": 1935,
+    "height": 11320,
+    "bands": 1,
+    "transform": [
+      -51435.0,
+      75.0,
+      0.0,
+      1638405.0,
+      0.0,
+      -75.0
+    ],
+    "srs": "PROJCS[\"SINUSOIDAL MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS\",3396000,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",82],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 75.0,
+    "nodata": -32768.0,
+    "dataType": "Int16",
+    "cornersLonLat": [
+      [
+        81.02040066456894,
+        27.64242980952051
+      ],
+      [
+        83.78436204406603,
+        27.64242980952051
+      ],
+      [
+        83.62438385005886,
+        13.318484931249927
+      ],
+      [
+        81.1082273099821,
+        13.318484931249927
+      ]
+    ],
+    "kind": "hrsc",
+    "pair": "h2948_0000",
+    "url": "https://maps.planet.fu-berlin.de/mex4/h2948_0000.da4.50.tif"
+  },
+  {
+    "width": 1274,
+    "height": 7178,
+    "bands": 1,
+    "transform": [
+      -20587.5,
+      75.0,
+      0.0,
+      1635862.5,
+      0.0,
+      -75.0
+    ],
+    "srs": "PROJCS[\"SINUSOIDAL MARS\",GEOGCS[\"GCS_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS\",3396000,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Sinusoidal\"],PARAMETER[\"longitude_of_center\",86],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "nativeGridMeters": 75.0,
+    "nodata": -32768.0,
+    "dataType": "Int16",
+    "cornersLonLat": [
+      [
+        85.60805672581141,
+        27.599533896855018
+      ],
+      [
+        87.42713042823861,
+        27.599533896855018
+      ],
+      [
+        87.33378212914941,
+        18.516735633937508
+      ],
+      [
+        85.63369365237467,
+        18.516735633937508
+      ]
+    ],
+    "kind": "hrsc",
+    "pair": "h7421_0000",
+    "url": "https://maps.planet.fu-berlin.de/mex4/h7421_0000.da4.50.tif"
+  }
+]

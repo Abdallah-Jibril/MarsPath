@@ -1,0 +1,256 @@
+{
+  "product": "DTEEC_045994_1985_046060_1985_U01",
+  "dtmUrl": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/DTEEC_045994_1985_046060_1985_U01.tif",
+  "matchingOrthoUrl": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/ESP_045994_1985_RED_C_01_ORTHO.tif",
+  "originalCropPixels": [
+    2048,
+    4096,
+    2048,
+    2048
+  ],
+  "gridMeters": 1.016553282737732,
+  "crs": "Equirectangular, central meridian 0, standard parallel 0, Mars sphere radius 3396190 m",
+  "verticalReference": "Heights relative to Mars areoid; MOLA-controlled HiRISE DTM",
+  "sha256": "73f13d023d11e045e31ece4b179f3970553fc40c23c44d94b107b4dec7f21de7",
+  "validCount": 4194304,
+  "minimumMeters": -2575.16943359375,
+  "maximumMeters": -2464.037353515625,
+  "imageShape": [
+    2048,
+    2048,
+    4
+  ],
+  "imageBboxWestSouthEastNorth": [
+    77.41850852966309,
+    18.4430193901062,
+    77.45363146212185,
+    18.478142322564963
+  ],
+  "route": {
+    "start": [
+      18.4647,
+      77.42535
+    ],
+    "end": [
+      18.4682,
+      77.42535
+    ],
+    "lengthMeters": 207.46144133150943,
+    "minimumMeters": -2529.392578125,
+    "maximumMeters": -2473.31884765625,
+    "reliefMeters": 56.07373046875
+  },
+  "points": [
+    {
+      "name": "ridge_approach",
+      "column": 400,
+      "row": 785,
+      "nativeHeightMeters": -2529.3720703125,
+      "latitude": 18.464696245812515,
+      "longitude": 77.42534451438148,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2532.575927734375,
+          "maximum": -2526.0966796875,
+          "span": 6.479248046875,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2537.670166015625,
+          "maximum": -2518.544921875,
+          "span": 19.125244140625,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2541.95263671875,
+          "maximum": -2506.512451171875,
+          "span": 35.440185546875,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2545.5400390625,
+          "maximum": -2464.83642578125,
+          "span": 80.70361328125,
+          "validFraction": 1.0
+        }
+      }
+    },
+    {
+      "name": "ridge_low",
+      "column": 400,
+      "row": 785,
+      "nativeHeightMeters": -2529.3720703125,
+      "latitude": 18.464696245812515,
+      "longitude": 77.42534451438148,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2532.575927734375,
+          "maximum": -2526.0966796875,
+          "span": 6.479248046875,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2537.670166015625,
+          "maximum": -2518.544921875,
+          "span": 19.125244140625,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2541.95263671875,
+          "maximum": -2506.512451171875,
+          "span": 35.440185546875,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2545.5400390625,
+          "maximum": -2464.83642578125,
+          "span": 80.70361328125,
+          "validFraction": 1.0
+        }
+      }
+    },
+    {
+      "name": "ridge_crest",
+      "column": 400,
+      "row": 581,
+      "nativeHeightMeters": -2473.266845703125,
+      "latitude": 18.468194819103957,
+      "longitude": 77.42534451438148,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2481.286376953125,
+          "maximum": -2468.897705078125,
+          "span": 12.388671875,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2496.692626953125,
+          "maximum": -2468.28759765625,
+          "span": 28.405029296875,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2513.659912109375,
+          "maximum": -2467.33740234375,
+          "span": 46.322509765625,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2543.82373046875,
+          "maximum": -2464.655029296875,
+          "span": 79.168701171875,
+          "validFraction": 1.0
+        }
+      }
+    },
+    {
+      "name": "strong_120m_relief_center",
+      "column": 304,
+      "row": 880,
+      "nativeHeightMeters": -2514.3369140625,
+      "latitude": 18.463067008250324,
+      "longitude": 77.4236981269502,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2520.73681640625,
+          "maximum": -2508.039794921875,
+          "span": 12.697021484375,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2531.52734375,
+          "maximum": -2495.0869140625,
+          "span": 36.4404296875,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2541.1787109375,
+          "maximum": -2474.706787109375,
+          "span": 66.471923828125,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2544.4296875,
+          "maximum": -2472.004638671875,
+          "span": 72.425048828125,
+          "validFraction": 1.0
+        }
+      }
+    },
+    {
+      "name": "strong_low",
+      "column": 364,
+      "row": 939,
+      "nativeHeightMeters": -2541.272216796875,
+      "latitude": 18.462055165974856,
+      "longitude": 77.42472711909474,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2541.797119140625,
+          "maximum": -2539.39990234375,
+          "span": 2.397216796875,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2542.747802734375,
+          "maximum": -2531.395263671875,
+          "span": 11.3525390625,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2543.173828125,
+          "maximum": -2514.84912109375,
+          "span": 28.32470703125,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2545.63720703125,
+          "maximum": -2474.706787109375,
+          "span": 70.930419921875,
+          "validFraction": 1.0
+        }
+      }
+    },
+    {
+      "name": "strong_high",
+      "column": 250,
+      "row": 824,
+      "nativeHeightMeters": -2474.706787109375,
+      "latitude": 18.46402740091856,
+      "longitude": 77.42277203402011,
+      "neighborhoodSquareSideMeters": {
+        "20": {
+          "minimum": -2483.402099609375,
+          "maximum": -2474.706787109375,
+          "span": 8.6953125,
+          "validFraction": 1.0
+        },
+        "60": {
+          "minimum": -2498.27734375,
+          "maximum": -2474.706787109375,
+          "span": 23.570556640625,
+          "validFraction": 1.0
+        },
+        "120": {
+          "minimum": -2517.439697265625,
+          "maximum": -2474.706787109375,
+          "span": 42.73291015625,
+          "validFraction": 1.0
+        },
+        "360": {
+          "minimum": -2543.173828125,
+          "maximum": -2467.210693359375,
+          "span": 75.963134765625,
+          "validFraction": 1.0
+        }
+      }
+    }
+  ],
+  "bboxWestSouthEastNorth": [
+    77.41848456675119,
+    18.443053111038996,
+    77.45359034874912,
+    18.478158893036934
+  ],
+  "neighborhoodDistanceDefinition": "Square side in equirectangular map metres; local true east distance is map distance times cos(latitude). Native post spacing does not establish vertical accuracy."
+}

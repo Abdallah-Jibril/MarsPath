@@ -1,0 +1,189 @@
+{
+  "dtmSource": {
+    "source": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/DTEEC_045994_1985_046060_1985_U01.tif",
+    "width": 6864,
+    "height": 14175,
+    "transform": [
+      4586874.845967728,
+      1.0165533020257713,
+      0.0,
+      1099451.5897741036,
+      0.0,
+      -1.0165533020257713
+    ],
+    "projection": "PROJCS[\"Mars (2015) - Sphere / Ocentric / Equirectangular, clon = 0\",GEOGCS[\"Mars (2015) - Sphere / Ocentric\",DATUM[\"Mars (2015) - Sphere\",SPHEROID[\"Mars (2015) - Sphere\",3396190,0,AUTHORITY[\"IAU\",\"49900\"]],AUTHORITY[\"IAU\",\"49900\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"49900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"49900\"]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"49910\"]]",
+    "type": "Float32",
+    "nodata": -3.4028226550889045e+38,
+    "scale": null,
+    "offset": null
+  },
+  "cropSourceWindow": [
+    1024,
+    2048,
+    4224,
+    6000
+  ],
+  "cropTransform": [
+    4587915.796549002,
+    1.0165533020257713,
+    0.0,
+    1097369.688611555,
+    0.0,
+    -1.0165533020257713
+  ],
+  "heightBboxWestSouthEastNorth": [
+    77.40091452588314,
+    18.41039118538435,
+    77.47335557285885,
+    18.513290399838482
+  ],
+  "heightWidth": 4224,
+  "heightHeight": 6000,
+  "validHeightCount": 25344000,
+  "heightSampleCount": 25344000,
+  "invalidHeightCount": 0,
+  "heightMinimumMeters": -2616.61669921875,
+  "heightMaximumMeters": -2404.88427734375,
+  "heightFileSha256": "25511bfd2da78df5e8545d0aa545a8882de52edbfe6e748d757f131e53915594",
+  "heightRawValuesSha256": "60880e342879e2d17ff6356b531775334cccfdd97f60d42a514c2d6b80fb43b5",
+  "imageSource": {
+    "source": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/ESP_045994_1985_RED_C_01_ORTHO.tif",
+    "width": 6864,
+    "height": 14175,
+    "transform": [
+      4586876.414511906,
+      1.0165533020257322,
+      0.0,
+      1099450.074676772,
+      0.0,
+      -1.0165533020257322
+    ],
+    "projection": "PROJCS[\"Mars (2015) - Sphere / Ocentric / Equirectangular, clon = 0\",GEOGCS[\"Mars (2015) - Sphere / Ocentric\",DATUM[\"Mars (2015) - Sphere\",SPHEROID[\"Mars (2015) - Sphere\",3396190,0,AUTHORITY[\"IAU\",\"49900\"]],AUTHORITY[\"IAU\",\"49900\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"49900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"49900\"]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"49910\"]]",
+    "type": "UInt16",
+    "nodata": 0.0,
+    "scale": 0.0002267694487077,
+    "offset": 0.0519947235533183
+  },
+  "imageCropSourceWindow": [
+    1022,
+    2046,
+    4225,
+    6001
+  ],
+  "imageCropTransform": [
+    4587915.331986576,
+    1.0165533020257322,
+    0.0,
+    1097370.2066208276,
+    0.0,
+    -1.0165533020257322
+  ],
+  "imageBboxWestSouthEastNorth": [
+    77.40090668843402,
+    18.410382774645026,
+    77.47336488527881,
+    18.513299138968232
+  ],
+  "validImageCount": 25342090,
+  "imageSampleCount": 25354225,
+  "invalidImageCount": 12135,
+  "validImageFraction": 0.9995213815448905,
+  "imageFileSha256": "825d0ba37b788616c8c38a58c17455c3d023b1c878ca1521beca0ef0518b6632",
+  "imageRawValuesSha256": "b502e752f0644e1982af76573dad6ec99cd73b777f3c5900ab1b46d3fc203230",
+  "displayLow": 32.0,
+  "displayHigh": 198.0,
+  "displayScaling": "One shared linear 0.5%-99.5% source-DN stretch for all native image tiles and overview; source nodata is alpha zero. No fabricated or filled image pixels.",
+  "selectableBboxWestSouthEastNorth": [
+    77.40108323193172,
+    18.410559891432932,
+    77.47318686681028,
+    18.513121693789902
+  ],
+  "selectablePhysicalWidthKm": 4.05396281707728,
+  "selectablePhysicalHeightKm": 6.0793198121545045,
+  "supportMarginMeters": 10.0,
+  "tiles": [
+    {
+      "index": 0,
+      "localNativeWindow": [
+        0,
+        0,
+        2176,
+        3064
+      ],
+      "heightResource": "NASA/MissionZone/JezeroZoneTile0Heights",
+      "heightSha256": "c0ad5a7afdd5debabd7b15349e9eaaf2291507906f39e593cee80339fad41ff8",
+      "imageNativeWindowWithinMainCrop": [
+        0,
+        0,
+        2177,
+        3065
+      ],
+      "imageResource": "NASA/MissionZone/JezeroZoneTile0OrthoPixels",
+      "imageSha256": "07f7afbf1ffd30e2635bcbe739fffdf93adc913733ef0c00694ebee25e5acf46"
+    },
+    {
+      "index": 1,
+      "localNativeWindow": [
+        2048,
+        0,
+        2176,
+        3064
+      ],
+      "heightResource": "NASA/MissionZone/JezeroZoneTile1Heights",
+      "heightSha256": "985acc0d5c6b745d2e356e380a35c56bdda2082384271dc750c0cdffc7a493d0",
+      "imageNativeWindowWithinMainCrop": [
+        2048,
+        0,
+        2177,
+        3065
+      ],
+      "imageResource": "NASA/MissionZone/JezeroZoneTile1OrthoPixels",
+      "imageSha256": "cf55173e42c6bb222c646ba62c1085885e4f5a76dd10866ac7f0b317938a570b"
+    },
+    {
+      "index": 2,
+      "localNativeWindow": [
+        0,
+        2936,
+        2176,
+        3064
+      ],
+      "heightResource": "NASA/MissionZone/JezeroZoneTile2Heights",
+      "heightSha256": "1a3a3745974312fe3bbe63bec6b593c00d79e817e6d09381a88671712e1da7be",
+      "imageNativeWindowWithinMainCrop": [
+        0,
+        2936,
+        2177,
+        3065
+      ],
+      "imageResource": "NASA/MissionZone/JezeroZoneTile2OrthoPixels",
+      "imageSha256": "db64677d21cad7431e3f0790bf998c02ace5942fe8033900958d300b02a1af10"
+    },
+    {
+      "index": 3,
+      "localNativeWindow": [
+        2048,
+        2936,
+        2176,
+        3064
+      ],
+      "heightResource": "NASA/MissionZone/JezeroZoneTile3Heights",
+      "heightSha256": "953f584a6d4fdcc602e908f7f05f0ae4bb272f41fe2ffc46669bd5885ff21d6e",
+      "imageNativeWindowWithinMainCrop": [
+        2048,
+        2936,
+        2177,
+        3065
+      ],
+      "imageResource": "NASA/MissionZone/JezeroZoneTile3OrthoPixels",
+      "imageSha256": "eb478fb3cc6ff3e97cfe3a04e00cdffaca576919bd266c0d6572f567b88b5d02"
+    }
+  ],
+  "tileOverlapPixels": 128,
+  "tileOverlapMeters": 130.11882265929873,
+  "runtimePayloadBytes": 144565771,
+  "resourceManifest": "NASA/MissionZone/BundledWindows",
+  "definitionResource": "NASA/MissionZone/JezeroZone",
+  "overviewDisplaySpacingMeters": 1.4893399329727586
+}

@@ -1,0 +1,92 @@
+{
+  "source": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/DTEEC_045994_1985_046060_1985_U01.tif",
+  "sourceHash": "25511bfd2da78df5e8545d0aa545a8882de52edbfe6e748d757f131e53915594",
+  "description": "Independent GDAL original native crop bilinear samples using actual Unity float coordinate values; source-metadata guarded",
+  "points": [
+    {
+      "latitude": 18.42902183532715,
+      "longitude": 77.4140625,
+      "heightMeters": -2552.312319552541,
+      "sourcePixelColumn": 766.1515737719935,
+      "sourcePixelRow": 4913.1564331437885,
+      "nativeStencil": [
+        [
+          -2552.312255859375,
+          -2552.3125
+        ],
+        [
+          -2552.311279296875,
+          -2552.319091796875
+        ]
+      ]
+    },
+    {
+      "latitude": 18.494661331176758,
+      "longitude": 77.4140625,
+      "heightMeters": -2452.782839503028,
+      "sourcePixelColumn": 766.1515737719935,
+      "sourcePixelRow": 1085.7513631741383,
+      "nativeStencil": [
+        [
+          -2452.832275390625,
+          -2452.892333984375
+        ],
+        [
+          -2452.7548828125,
+          -2452.8115234375
+        ]
+      ]
+    },
+    {
+      "latitude": 18.461841583251953,
+      "longitude": 77.4371337890625,
+      "heightMeters": -2552.2320013149756,
+      "sourcePixelColumn": 2111.4265120637256,
+      "sourcePixelRow": 2999.453898158849,
+      "nativeStencil": [
+        [
+          -2552.199951171875,
+          -2552.242431640625
+        ],
+        [
+          -2552.23095703125,
+          -2552.272705078125
+        ]
+      ]
+    },
+    {
+      "latitude": 18.42902183532715,
+      "longitude": 77.460205078125,
+      "heightMeters": -2587.688645905536,
+      "sourcePixelColumn": 3456.7014503545415,
+      "sourcePixelRow": 4913.1564331437885,
+      "nativeStencil": [
+        [
+          -2587.694091796875,
+          -2587.68896484375
+        ],
+        [
+          -2587.697509765625,
+          -2587.670654296875
+        ]
+      ]
+    },
+    {
+      "latitude": 18.494661331176758,
+      "longitude": 77.460205078125,
+      "heightMeters": -2553.7316317936684,
+      "sourcePixelColumn": 3456.7014503545415,
+      "sourcePixelRow": 1085.7513631741383,
+      "nativeStencil": [
+        [
+          -2553.72998046875,
+          -2553.72021484375
+        ],
+        [
+          -2553.747802734375,
+          -2553.728759765625
+        ]
+      ]
+    }
+  ]
+}

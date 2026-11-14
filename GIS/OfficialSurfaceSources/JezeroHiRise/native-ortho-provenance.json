@@ -1,0 +1,43 @@
+{
+  "url": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/ESP_045994_1985_ESP_046060_1985/ESP_045994_1985_RED_A_01_ORTHO.tif",
+  "width": 27456,
+  "height": 56700,
+  "bands": 1,
+  "transform": [
+    4586876.54522392,
+    0.2541382261019006,
+    0.0,
+    1099450.2009349486,
+    0.0,
+    -0.2541382261019006
+  ],
+  "projection": "PROJCS[\"Mars (2015) - Sphere / Ocentric / Equirectangular, clon = 0\",GEOGCS[\"Mars (2015) - Sphere / Ocentric\",DATUM[\"Mars (2015) - Sphere\",SPHEROID[\"Mars (2015) - Sphere\",3396190,0,AUTHORITY[\"IAU\",\"49900\"]],AUTHORITY[\"IAU\",\"49900\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"49900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"49900\"]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"49910\"]]",
+  "bandtype": "UInt16",
+  "nodata": 0.0,
+  "cropPixels": [
+    8253,
+    17984,
+    3072,
+    3072
+  ],
+  "cropTransform": [
+    4588973.948003938,
+    0.2541382261019006,
+    0.0,
+    1094879.779076732,
+    0.0,
+    -0.2541382261019006
+  ],
+  "bboxWestSouthEastNorth": [
+    77.41876618095941,
+    18.45811302564569,
+    77.43193727525775,
+    18.47128411994403
+  ],
+  "displayLow": 7.0,
+  "displayHigh": 214.0,
+  "displayScaling": "Linear 0.5%-99.5% stretch of original measured RED-band radiance/DN; alpha zero only at source nodata. No hallucinated content.",
+  "nativeFileSha256": "0a71ebd6457ade3c92744fcbcf094f3621d60ab0b6e3eef4fc9ad856cc3812dd",
+  "pngSha256": "fb2f3fcafc2b8864842a081f7fb4ce228ba3968f1a60a531b4605d41764df0c0",
+  "sourceMeters": 0.2541382261019006
+}
