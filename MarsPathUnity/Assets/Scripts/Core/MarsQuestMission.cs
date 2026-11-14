@@ -139,7 +139,7 @@ namespace MarsPath
             ? $"DEMO  {Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s  ·  {routeProgress:P1} OF ROUTE"
             : $"{routeProgress:P1} OF ROUTE  ·  {currentSlopeDegrees:0.0}° SURFACE";
         internal string QuestVisorReserves => $"O₂  {oxygen:0.0}%   ·   PWR  {power:0.0}%";
-        internal string QuestVisorEffort => $"{metabolicWatts:0} W   ·   {oxygenFlowGramsPerHour:0} g O₂/h";
+        internal string QuestVisorEffort => $"{electricalWatts:0} W SUIT   ·   {oxygenFlowGramsPerHour:0} g O₂/h";
         internal string QuestVisorAction => arrived ? "A   REPLAY" : reserveStop ? "RESERVE STOP"
             : DemoEnded ? "A   CONTINUE ROUTE" : paused ? "RT   HOLD TO WALK" : "RT   RELEASE TO STOP";
         internal string QuestVisorWarning => TryGetCompactWarning(out string title, out string detail, out _)
@@ -155,7 +155,8 @@ namespace MarsPath
             return $"{CoordinateShort(point)}\n{DataTag}\n" +
                    $"HEIGHT {MarsRegionalTerrain.MeasuredElevation(point):0} m   ·   GRID {grid:0.#} m\n" +
                    $"GRADE {currentDemSlopeDegrees:0.0}°   ·   MAX {facts.maxGradeDegrees:0.0}°{image}\n" +
-                   $"ROUTE ASCENT {facts.ascentMeters:0} m   ·   DESCENT {facts.descentMeters:0} m";
+                   $"ROUTE ASCENT {facts.ascentMeters:0} m   ·   DESCENT {facts.descentMeters:0} m\n" +
+                   $"BODY {metabolicWatts:0} W / SUIT {electricalWatts:0} W\nCONCEPT SUIT · 0.8 kg O₂ · 447 Wh";
         }
 
         internal void SetQuestWalkInput(bool held, bool trackingReady)

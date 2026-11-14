@@ -108,6 +108,10 @@ namespace MarsPath
             public readonly double[] x, y, z, elevation;
             public readonly bool[] blocked;
             public int Count => edges.Length;
+            private double minimumMinutesPerMetre = double.PositiveInfinity;
+            private double minimumEnergyPerMetre = double.PositiveInfinity;
+            public double MinimumMinutesPerMetre => double.IsPositiveInfinity(minimumMinutesPerMetre) ? 0 : minimumMinutesPerMetre;
+            public double MinimumEnergyPerMetre => double.IsPositiveInfinity(minimumEnergyPerMetre) ? 0 : minimumEnergyPerMetre;
 
             public Graph(int count)
             {
@@ -132,6 +136,11 @@ namespace MarsPath
                     !Finite(edge.distance) || !Finite(edge.risk) || !Finite(edge.minutes) || !Finite(edge.energy))
                     throw new ArgumentException("Routing edges need finite nonnegative resource costs.");
                 edges[from].Add(edge);
+                if (edge.distance > 0)
+                {
+                    minimumMinutesPerMetre = Math.Min(minimumMinutesPerMetre, edge.minutes / edge.distance);
+                    minimumEnergyPerMetre = Math.Min(minimumEnergyPerMetre, edge.energy / edge.distance);
+                }
             }
         }
 
@@ -271,7 +280,7 @@ namespace MarsPath
                     Totals candidate = label.totals.Add(edge);
                     int stage = AdvanceStage(edge.destination, label.stage, stops);
                     double remaining = RemainingDistance(graph, edge.destination, stage, end, stops);
-                    if (!WithinBudgets(candidate, remaining, options)) continue;
+                    if (!WithinBudgets(graph, candidate, remaining, options)) continue;
                     int state = stage * graph.Count + edge.destination;
                     List<int> peers = atState[state];
                     if (peers == null) { peers = new List<int>(); atState[state] = peers; }
@@ -301,11 +310,12 @@ namespace MarsPath
             return a.distance <= b.distance && a.risk <= b.risk && a.minutes <= b.minutes && a.energy <= b.energy;
         }
 
-        private static bool WithinBudgets(Totals totals, double remainingDistance, MarsRoutingOptions options)
+        private static bool WithinBudgets(Graph graph, Totals totals, double remainingDistance, MarsRoutingOptions options)
         {
-            // 42 m/min and 0.20 kW are lower bounds shared by the edge model.
-            return totals.risk <= options.MaxRisk && totals.minutes + remainingDistance / 42 <= options.MaxTimeMinutes &&
-                totals.energy + remainingDistance / 42 / 60 * .20 <= options.MaxEnergyKwh;
+            // Derive admissible bounds from this graph, including zero-energy edges.
+            // A hard-coded power floor can overestimate a different suit's demand.
+            return totals.risk <= options.MaxRisk && totals.minutes + remainingDistance * graph.MinimumMinutesPerMetre <= options.MaxTimeMinutes &&
+                totals.energy + remainingDistance * graph.MinimumEnergyPerMetre <= options.MaxEnergyKwh;
         }
 
         private static Result LabelResult(List<Label> labels, int goal, bool exact, int expanded)
@@ -339,7 +349,7 @@ namespace MarsPath
         {
             if (objective == Objective.Safest) return 0;
             double distance = RemainingDistance(graph, node, stage, end, stops);
-            return objective == Objective.Energy ? distance / 42 / 60 * .20 : distance;
+            return objective == Objective.Energy ? distance * graph.MinimumEnergyPerMetre : distance;
         }
 
         private static double Cost(Totals totals, Objective objective)

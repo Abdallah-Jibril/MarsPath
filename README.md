@@ -8,7 +8,7 @@ MarsPath connects Mars mission planning on a laptop with an astronaut's first-pe
 
 The detailed demonstration covers a measured **10 × 10 km region of Jezero Crater** and a short **Belva Crater showcase**. The planner and helmet use the same geographic coordinates and elevation sources.
 
-[Getting started](#getting-started) · [Algorithms](docs/ALGORITHMS.md) · [NASA and planetary data](docs/DATA_SOURCES.md) · [Developer handoff](HANDOFF.md) · [Downloads](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases)
+[Getting started](#getting-started) · [Algorithms](docs/ALGORITHMS.md) · [EVA equations and warnings](docs/PHYSICS_AND_HAZARDS.md) · [NASA and planetary data](docs/DATA_SOURCES.md) · [Developer handoff](HANDOFF.md) · [Downloads](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases)
 
 ![Jezero route comparison using measured terrain](outputs/MarsPathJezeroShowcasePlanner.png)
 
@@ -56,11 +56,17 @@ The implemented engine is **C# inside Unity**. A separate C++ service remains a 
 
 See [data sources and attribution](docs/DATA_SOURCES.md) and the [Jezero coverage audit](GIS/OfficialSurfaceSources/JezeroMissionZone10km/README.md).
 
+### Oxygen, electrical use, and warnings
+
+The shared engineering model separates body metabolism from suit electricity. Signed DEM grades drive gravitational work, the Weir calorimetry conversion estimates oxygen demand, and explicit electrical loads deplete a configured battery. Route scores do not feed into physiology. The parameters distinguish reference values from concept-suit assumptions; no calibrated Mars-human performance or thermal-safety claim is made.
+
+Slope warnings use source-elevation gradients and a declared 10° caution policy. Rock warnings count visible rendered models in a forward corridor; individual rock locations remain illustrative. See [equations, units, examples, sources, and limitations](docs/PHYSICS_AND_HAZARDS.md).
+
 ## Getting started
 
 ### Run a packaged build
 
-Download the Windows ZIP or Quest APK from [Releases](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases).
+Download the Windows ZIP or Quest APK from the [EVA Physics v1 release](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/eva-physics-v1-2026-11-14). Its [package manifest](docs/PHYSICS_PACKAGES.json) identifies the new shared model. The earlier migration package is retained as a historical build.
 
 **Windows:** extract the complete ZIP and open `MarsPath.exe`. Keep its adjacent data folders and libraries together. `Alt+F4` closes the application.
 
@@ -118,7 +124,9 @@ work/               Earlier engineering and source-analysis notes
 
 ## Validation and current limits
 
-The imported baseline includes passing software checks for radio receive/playback in both directions, routing objectives, Jezero demo movement, and Quest globe UI visibility. The current Windows and Quest packages were built before this repository migration. Latest physical confirmation of the new Quest zone reticle and laptop-to-headset voice fix is still pending user feedback.
+The current physics revision passed 46 independent balance/geometry assertions, exhaustive-reference routing checks, encrypted radio checks, real DEM route-facts checks, Windows application flow, and the Belva showcase. Both Windows and Quest packages were rebuilt. See [the verification record](docs/PHYSICS_VALIDATION.md).
+
+These are software checks. Physical acceptance of the rebuilt Quest package, including comfort, tracking, microphone capture, and audibility, remains a device-test step. The locomotion and suit-load assumptions still need empirical calibration.
 
 The radio link does **not** yet synchronize a selected desktop route into a waiting headset mission. See [handoff status](HANDOFF.md#verification-and-open-work) for remaining work.
 

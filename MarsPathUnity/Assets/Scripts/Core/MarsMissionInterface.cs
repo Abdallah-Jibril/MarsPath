@@ -86,7 +86,7 @@ namespace MarsPath
             UiCard(new Rect(1268,22,310,200),UiCyan);GUI.Label(new Rect(1285,36,275,22),"SUIT / MODELED TELEMETRY",captionStyle);
             GUI.Label(new Rect(1285,71,275,24),$"OXYGEN {oxygen:0.0}%",labelStyle);UiBar(new Rect(1285,104,275,7),oxygen/100,UiCyan);
             GUI.Label(new Rect(1285,127,275,24),$"POWER {power:0.0}%",labelStyle);UiBar(new Rect(1285,160,275,7),power/100,UiAmber);
-            GUI.Label(new Rect(1285,184,275,22),$"{metabolicWatts:0} W / {heartRateBpm:0} bpm / {oxygenFlowGramsPerHour:0} g O2/h",captionStyle);
+            GUI.Label(new Rect(1285,184,275,22),$"{electricalWatts:0} W suit / {oxygenFlowGramsPerHour:0} g O2/h",captionStyle);
             DrawCompass();
             GUI.Label(new Rect(478,96,644,23),arrived?"DESTINATION REACHED":$"TRAVERSE PROGRESS {routeProgress*100:0}%",centerStyle);
             UiBar(new Rect(502,130,596,4),routeProgress,routeColor);
@@ -118,7 +118,7 @@ namespace MarsPath
             if(oxygen<=20.01f||power<=15.01f)
             {UiCard(new Rect(487,508,626,119),new Color(1,0.32f,0.23f));GUI.Label(new Rect(505,523,590,24),"LIFE SUPPORT / RESERVE STOP",warningStyle);GUI.Label(new Rect(505,561,590,49),"Traversal paused at the modeled reserve boundary. Return to route planning. Terrain alerts remain visible below.",smallStyle);}
             if(nearbyHazard!=null){heading=nearbyHazard.severity=="HIGH"?"TERRAIN / HIGH CAUTION":"TERRAIN / CAUTION";detail=nearbyHazard.warning;action=nearbyHazard.action;}
-            else if(upcomingSurfaceSlope>10){heading="SLOPE AHEAD / SIMULATED SURFACE";detail=$"Surface ahead up to {upcomingSurfaceSlope:0.0}° / current DEM grade {currentDemSlopeDegrees:0.00}°.";action="Inspect footing. Fine-scale terrain is modeled, not measured by MOLA.";}
+            else if(upcomingSurfaceSlope>MarsHazardPhysics.SlopeWarningDegrees){heading="SLOPE AHEAD / DEM ESTIMATE";detail=$"DEM slope ahead up to {upcomingSurfaceSlope:0.0}° / track grade {currentDemSlopeDegrees:0.00}°.";action="Demonstration threshold; soil traction and fine-scale hazards are unverified.";}
             if(rockAhead){heading=(heading==null?"ROCKS / CAUTION":"ROCKS + "+heading);detail=(detail==null?"Visual boulders lie close to the guidance corridor.":detail);action="Slow down, keep clearance and inspect the highlighted corridor.";}
             if(heading==null)
             {UiCard(new Rect(487,701,626,64),UiCyan);GUI.Label(new Rect(505,711,590,22),"LOCAL SCAN / NO NEARBY VISUAL ALERT",captionStyle);GUI.Label(new Rect(505,737,590,22),"Rock proximity and surface slope active / fine-scale hazards unverified",captionStyle);return;}

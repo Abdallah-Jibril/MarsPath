@@ -24,8 +24,6 @@ namespace MarsPath
         private const int VariantCount = 12;
         private const int MaxPatchFragments = 26;
         private const double Radians = Math.PI / 180.0;
-        private const float AlertRangeMetres = 16f;
-        private const float MinimumExposedRockMetres = .10f;
 
         /// <summary>A footprint of one currently rendered model, not a measured Mars hazard.</summary>
         public readonly struct RockObstacle
@@ -146,7 +144,6 @@ namespace MarsPath
             if (forward.sqrMagnitude < 0.0001f) return false;
             forward.Normalize();
             float units = active.metresPerUnit;
-            float range = AlertRangeMetres / units;
             float closestBoulder = float.MaxValue;
             float closestFieldRock = float.MaxValue;
             float coveredArea = 0f;
@@ -156,18 +153,11 @@ namespace MarsPath
             foreach (RockObstacle rock in active.obstacles)
             {
                 float radiusMetres = rock.Radius * units;
-                if (rock.HeightMetres < MinimumExposedRockMetres || radiusMetres < .12f) continue;
-                Vector3 offset = rock.Center - position;
-                offset.y = 0f;
-                float along = Vector3.Dot(offset, forward);
-                if (along <= 0f || along > range + rock.Radius) continue;
-                float lateralSquared = Mathf.Max(0f, offset.sqrMagnitude - along * along);
+                if (rock.HeightMetres < MarsHazardPhysics.MinimumRockHeightMetres || radiusMetres < MarsHazardPhysics.MinimumRockRadiusMetres) continue;
                 // A widening forward corridor admits a visible debris field on
                 // either shoulder without counting stones behind the observer.
-                float corridor = rock.Radius + Mathf.Clamp(along * .53f, .9f / units, 4.8f / units);
-                if (lateralSquared > corridor * corridor || !VisibleAboveGround(eye, rock, units)) continue;
-
-                float clearance = Mathf.Max(0f, offset.magnitude - rock.Radius) * units;
+                if (!MarsHazardPhysics.InRockCorridor(position,forward,rock.Center,rock.Radius,units,out float clearance,out float lateralSquared)
+                    || !VisibleAboveGround(eye, rock, units)) continue;
                 closestFieldRock = Mathf.Min(closestFieldRock, clearance);
                 exposedCount++;
                 coveredArea += Mathf.PI * radiusMetres * radiusMetres;
@@ -178,7 +168,7 @@ namespace MarsPath
             }
             // Several visible stones and their collective footprint make a
             // field. One large obstacle gets its own singular warning.
-            if (exposedCount >= 4 && coveredArea >= 1.2f && closestFieldRock <= 12f)
+            if (MarsHazardPhysics.IsRockField(exposedCount,coveredArea,closestFieldRock))
             {
                 fieldCount = exposedCount;
                 distance = closestFieldRock;

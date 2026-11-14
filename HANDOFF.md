@@ -88,6 +88,23 @@ Planner and visor use the same geographic terrain and 1:1 vertical scale. Preser
 
 Rock meshes and placements are illustrative. Warnings count rendered obstacles ahead. O2, power, energy, risk, and science are prototype models requiring calibration. QGIS supports preparation and independent checks; Unity reads the prepared products through C# providers.
 
+## EVA physics update
+
+Read [PHYSICS_AND_HAZARDS.md](docs/PHYSICS_AND_HAZARDS.md) before presenting or changing consumption and warning behavior. Windows and Quest load the shared `Resources/Science/MarsEvaModel.json` profile.
+
+- Signed measured grades drive mechanical work; ascent and descent are integrated separately.
+- Metabolic power converts to oxygen through the simplified Weir equation at declared RQ/STPD conditions.
+- Suit electrical use is a separate assumed load, integrated in Wh. Capacity is 446.88 Wh from a clearly labeled legacy EMU battery reference, replacing the former arbitrary 4 kWh.
+- Gait coefficients, electrical loads, 0.8 kg oxygen capacity, and operating reserves remain concept assumptions requiring calibration.
+- Mission pause freezes simulated time. It does not mean a stopped real astronaut consumes no oxygen.
+- The 10° warning is an early-caution policy, while 25° is the configurable graph exclusion threshold. Neither establishes actual boot/regolith traction safety.
+- The source-gradient warning does not use decorative microrelief. Rock alerts describe rendered illustrative objects, not surveyed planetary obstacles.
+- Energy A* and RCSP resource bounds derive their minimum resource cost per metre from the actual graph. Preserve admissibility if load models change.
+
+Run `MarsPath.Editor.MarsPhysicsRegressionChecks.Run` for the independent balance/geometry tests. `CheckAndBuildWindows` also runs randomized routing checks, two-way radio software checks, and the Windows build. Rebuild Quest for shared-code changes. Numerical checks are not human physiology or flight validation.
+
+The [current verification record](docs/PHYSICS_VALIDATION.md) and [physics package manifest](docs/PHYSICS_PACKAGES.json) supersede the imported baseline for this shared model. Download [EVA Physics v1](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/eva-physics-v1-2026-11-14) for matching Windows and Quest packages. The migration release and its checksums remain historical records.
+
 ## Code map
 
 Paths start at `MarsPathUnity/Assets`. Where a row lists additional filenames, they share the first file's directory.
@@ -96,6 +113,7 @@ Paths start at `MarsPathUnity/Assets`. Where a row lists additional filenames, t
 | --- | --- |
 | Startup / screen flow | `Scripts/Core/MarsPathDemoBootstrap.cs`, `MarsRegionalMissionFlow.cs` |
 | Routing / constraints | `Scripts/Data/MarsGraphRouting.cs`, `MarsRoutePlanner.cs`, `MarsPathModels.cs` |
+| EVA physics / source warnings | `Scripts/Data/MarsEvaPhysics.cs`, `MarsHazardPhysics.cs`, `MarsRouteFacts.cs`, `Scripts/Core/MarsEvaSimulation.cs` |
 | Mission zone | `Scripts/Data/MarsMissionZone.cs`, `Resources/NASA/MissionZone/` |
 | Terrain / imagery providers | `Scripts/Data/MarsRegionalTerrain.cs`, `MarsOfficialTerrain.cs`, `MarsCtxImageryCache.cs`, `MarsRegionSourceCache.cs` |
 | Terrain / rocks / arrows | `Scripts/Visualization/MarsTerrainGenerator.cs`, `MarsSurfaceRockScatter.cs`, `MarsPathRouteView.cs` |

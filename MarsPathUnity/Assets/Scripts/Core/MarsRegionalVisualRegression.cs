@@ -33,8 +33,8 @@ namespace MarsPath
                 }
                 else if(terrainRoot.GetComponent<MeshFilter>().sharedMesh.vertexCount<37000)throw new Exception("Planning relief mesh undersampled");
             }
-            // Test the late portion of the 7,000 km route, where float percentage
-            // motion previously alternated between zero steps and large jumps.
+            // Check late presentation frames of a 7,000 km plan. The continuous
+            // preview advances 1.6 m/s without percentage-precision stalls.
             RestartTwoMinuteDemo();StartMission();AdvancePresentation(90,mission.routes[selectedRoute]);
             Vector3 previous=astronaut.transform.position;float min=float.MaxValue,max=0;
             for(int i=0;i<120;i++)
@@ -44,7 +44,7 @@ namespace MarsPath
                 min=Mathf.Min(min,step);max=Mathf.Max(max,step);
                 if(VisibleSurfaceArrows<3)throw new Exception("Sparse surface guidance disappeared near end of continental route");
             }
-            if(min<.010f||max>.017f)throw new Exception($"Late route frame steps stutter: min {min}, max {max}");
+            if(min<.024f||max>.030f)throw new Exception($"Late route frame steps stutter: min {min}, max {max}");
             UseTimedPlayback(1);SeekFullJourney(.86f);previous=astronaut.transform.position;
             float timedMin=float.MaxValue,timedMax=0;
             for(int i=0;i<120;i++)

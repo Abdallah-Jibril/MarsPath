@@ -29,9 +29,11 @@ namespace MarsPath
         private float missionElapsedMinutes;
         private float oxygenFlowGramsPerHour;
         private float metabolicWatts;
+        private float electricalWatts;
         private float heartRateBpm;
         private float currentSlopeDegrees;
         private float currentDemSlopeDegrees;
+        private float currentSignedDemGradeDegrees;
         private readonly MarsEvaSimulation evaSimulation=new MarsEvaSimulation();
         private float playbackSpeed=1f;
         private bool reserveStop;
@@ -254,14 +256,12 @@ namespace MarsPath
             Vector3 direction = (points[segment + 1] - points[segment]).normalized;
             float horizontal = new Vector2(direction.x, direction.z).magnitude;
             currentSlopeDegrees = Mathf.Abs(Mathf.Atan2(direction.y, Mathf.Max(0.001f, horizontal)) * Mathf.Rad2Deg);
-            currentDemSlopeDegrees=currentSlopeDegrees;
+            currentSignedDemGradeDegrees=Mathf.Atan2(direction.y,Mathf.Max(.001f,horizontal))*Mathf.Rad2Deg;
+            currentDemSlopeDegrees=Mathf.Abs(currentSignedDemGradeDegrees);
             if(mission.generatedRegion)
             {
-                // A finite metric footprint avoids float cancellation on a coarse DEM.
-                float step=Mathf.Max(0.5f,20f/MarsRegionalTerrain.MetersPerUnit);
-                Vector3 delta=new Vector3(direction.x,0,direction.z).normalized*step;
-                float rise=MarsRegionalTerrain.ModelElevation(position.x+delta.x,position.z+delta.z)-MarsRegionalTerrain.ModelElevation(position.x-delta.x,position.z-delta.z);
-                currentDemSlopeDegrees=Mathf.Atan2(Mathf.Abs(rise),2*step*MarsRegionalTerrain.MetersPerUnit)*Mathf.Rad2Deg;
+                MarsHazardPhysics.MeasuredSlope(position.x,position.z,direction,out currentSignedDemGradeDegrees);
+                currentDemSlopeDegrees=Mathf.Abs(currentSignedDemGradeDegrees);
             }
             float sample=0.5f;
             float hx=MarsTerrainGenerator.SampleHeight(position.x+sample,position.z)-MarsTerrainGenerator.SampleHeight(position.x-sample,position.z);
@@ -311,6 +311,7 @@ namespace MarsPath
             missionElapsedMinutes=(float)(totalElapsedSeconds/60);
             oxygen=evaSimulation.OxygenPercent; power=evaSimulation.PowerPercent;
             metabolicWatts=evaSimulation.MetabolicWatts; oxygenFlowGramsPerHour=evaSimulation.OxygenGramsPerHour;
+            electricalWatts=evaSimulation.ElectricalWatts;
             heartRateBpm=evaSimulation.HeartRate;
         }
 
@@ -319,11 +320,16 @@ namespace MarsPath
             nearbyHazard = null;
             nearbyHazardDistance = float.MaxValue;
             rockAhead=MarsTerrainGenerator.TryRockAhead(astronaut.transform.position,astronaut.transform.forward,out rockAheadDistance,out rockFieldCount);
-            upcomingSurfaceSlope=currentSlopeDegrees;
+            bool measured=mission.generatedRegion;
+            upcomingSurfaceSlope=measured ? MarsHazardPhysics.MeasuredSlope(astronaut.transform.position.x,
+                astronaut.transform.position.z,astronaut.transform.forward,out _) : currentSlopeDegrees;
+            float units=measured?MarsRegionalTerrain.MetersPerUnit:1;
             for(int i=1;i<=8;i++)
             {
-                Vector3 sample=astronaut.transform.position+astronaut.transform.forward*i;
-                upcomingSurfaceSlope=Mathf.Max(upcomingSurfaceSlope,MarsTerrainGenerator.SurfaceSlope(sample.x,sample.z));
+                Vector3 sample=astronaut.transform.position+astronaut.transform.forward*(i/units);
+                float slope=measured?MarsHazardPhysics.MeasuredSlope(sample.x,sample.z,astronaut.transform.forward,out _)
+                    : MarsTerrainGenerator.SurfaceSlope(sample.x,sample.z);
+                upcomingSurfaceSlope=Mathf.Max(upcomingSurfaceSlope,slope);
             }
             if (surfaceActive||mission.hazards == null) return;
             foreach (HazardData hazard in mission.hazards)

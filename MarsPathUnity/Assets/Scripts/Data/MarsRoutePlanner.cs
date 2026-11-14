@@ -258,7 +258,10 @@ namespace MarsPath
                             .20 * (uncertainty[i] + uncertainty[next]) * .5 +
                             .10 * BlockedNeighborFraction(terrain, nx, nz);
                         double minutes = length / 42 * (1 + grade * .025);
-                        double energy = minutes / 60 * (.20 + .12 * (1 + grade / 25)) + Math.Max(0, rise) * .000001;
+                        double signedGrade = MarsEvaPhysics.SignedGradeDegrees(rise, horizontal);
+                        MarsEvaPhysics.Demand demand = MarsEvaPhysics.Evaluate(length / (minutes * 60), signedGrade,
+                            (terrain.elevations[i] + terrain.elevations[next]) * .5);
+                        double energy = demand.electricalWatts * minutes / 60000;
                         terrain.graph.AddEdge(i, new MarsGraphRouting.Edge(next, length, length / 1000 * density, minutes, energy, rise, grade));
                     }
                 }

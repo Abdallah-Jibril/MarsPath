@@ -96,9 +96,8 @@ namespace MarsPath
             Quaternion heading=Quaternion.Euler(0,currentHeadingDegrees,0);
             astronaut.transform.rotation=metres<.001||rebased?heading:Quaternion.Slerp(astronaut.transform.rotation,heading,1-Mathf.Exp(-Time.deltaTime*7));
             currentLatitude=location.latitude;currentLongitude=location.longitude;currentSlopeDegrees=MarsTerrainGenerator.SurfaceSlope(p.x,p.y);
-            Vector3 forward=heading*Vector3.forward;float step=Mathf.Clamp(MarsRegionalTerrain.SourceSpacingMeters(location)*.5f,2,200);
-            float rise=MarsRegionalTerrain.MeasuredHeight(p.x+forward.x*step,p.y+forward.z*step)-MarsRegionalTerrain.MeasuredHeight(p.x-forward.x*step,p.y-forward.z*step);
-            currentDemSlopeDegrees=Mathf.Atan2(Mathf.Abs(rise),2*step*MarsRegionalTerrain.MetersPerUnit)*Mathf.Rad2Deg;
+            MarsHazardPhysics.MeasuredSlope(p.x,p.y,heading*Vector3.forward,out currentSignedDemGradeDegrees);
+            currentDemSlopeDegrees=Mathf.Abs(currentSignedDemGradeDegrees);
             surfaceRoute.SetMissionPosition(astronaut.transform.position);
             MarsMissionEvidence.Save(mission,mission.routes[selectedRoute],demoPresentation,location,metres,fullTrack.LengthKm*1000,rebased);
         }
@@ -116,10 +115,11 @@ namespace MarsPath
             while(remaining>0.00001f)
             {
                 float untilResupply=expeditionMode?14400-evaSimulation.ElapsedSeconds:remaining;
-                float step=Mathf.Min(remaining,Mathf.Max(0.001f,untilResupply));
-                float previous=evaSimulation.ElapsedSeconds;
-                evaSimulation.Advance(step,route.distanceKm*1000/duration,currentDemSlopeDegrees,route.energyScore);
-                float used=evaSimulation.ElapsedSeconds-previous;totalElapsedSeconds+=evaSimulation.ReserveReached?used:step;remaining-=step;
+                float step=Mathf.Min(5,Mathf.Min(remaining,Mathf.Max(0.001f,untilResupply)));
+                double previous=evaSimulation.ElapsedSecondsExact;
+                JourneyGradeAt(route,duration,totalElapsedSeconds+step*.5,out float grade,out float elevation);
+                evaSimulation.AdvancePhysical(step,route.distanceKm*1000/duration,grade,elevation);
+                double used=evaSimulation.ElapsedSecondsExact-previous;totalElapsedSeconds+=used;remaining-=step;
                 if(evaSimulation.ReserveReached)break;
                 if(expeditionMode&&evaSimulation.ElapsedSeconds>=14399.99f)
                 {resupplyLeg++;evaSimulation.Reset(mission.telemetry);}
@@ -145,7 +145,8 @@ namespace MarsPath
             UpdateAstronautPosition(progress);
             // Refresh live effort at the new station rather than retaining the
             // previous station's slope after a seek.
-            evaSimulation.Advance(0,route.distanceKm*1000/Mathf.Max(1,route.etaMinutes*60),currentDemSlopeDegrees,route.energyScore);
+            evaSimulation.AdvancePhysical(0,route.distanceKm*1000/Mathf.Max(1,route.etaMinutes*60),currentSignedDemGradeDegrees,
+                mission.generatedRegion?MarsRegionalTerrain.MeasuredElevation(JourneyLocation):0);
             UpdateLifeSupport(route);UpdateHazardProximity(route);
             astronaut.transform.rotation=Quaternion.Euler(0,currentHeadingDegrees,0);
             cameraRig.SnapToMission(astronaut.transform);
@@ -165,7 +166,7 @@ namespace MarsPath
             }
             double duration=System.Math.Max(1,route.etaMinutes*60.0),began=System.Math.Max(0,totalElapsedSeconds-legSeconds);
             float speed=route.distanceKm*1000/(float)duration;
-            int count=Mathf.Clamp(Mathf.CeilToInt(legSeconds/300),1,48);
+            int count=Mathf.Clamp(Mathf.CeilToInt(legSeconds/5),1,4096);
             for(int i=0;i<count&&!evaSimulation.ReserveReached;i++)
             {
                 double metres=(began+legSeconds*(i+.5)/count)/duration*track.LengthKm*1000;
@@ -173,9 +174,21 @@ namespace MarsPath
                 double baseline=System.Math.Max(2,MarsRegionalTerrain.SourceSpacingMeters(focus));
                 double a=System.Math.Max(0,metres-baseline),b=System.Math.Min(track.LengthKm*1000,metres+baseline);
                 float rise=MarsRegionalTerrain.MeasuredElevation(track.AtMeters(b))-MarsRegionalTerrain.MeasuredElevation(track.AtMeters(a));
-                float grade=Mathf.Atan2(Mathf.Abs(rise),(float)System.Math.Max(.001,b-a))*Mathf.Rad2Deg;
-                evaSimulation.Advance(legSeconds/count,speed,grade,route.energyScore);
+                float grade=(float)MarsEvaPhysics.SignedGradeDegrees(rise,b-a);
+                evaSimulation.AdvancePhysical(legSeconds/count,speed,grade,MarsRegionalTerrain.MeasuredElevation(focus));
             }
+        }
+        private void JourneyGradeAt(RouteData route,double duration,double elapsed,out float grade,out float elevation)
+        {
+            grade=currentSignedDemGradeDegrees;elevation=0;
+            if(fullTrack==null||!mission.generatedRegion)return;
+            double metres=elapsed/duration*fullTrack.LengthKm*1000;
+            GeoPoint focus=fullTrack.AtMeters(metres);
+            double support=System.Math.Max(1,MarsRegionalTerrain.SourceSpacingMeters(focus));
+            double a=System.Math.Max(0,metres-support),b=System.Math.Min(fullTrack.LengthKm*1000,metres+support);
+            float rise=MarsRegionalTerrain.MeasuredElevation(fullTrack.AtMeters(b))-MarsRegionalTerrain.MeasuredElevation(fullTrack.AtMeters(a));
+            grade=(float)MarsEvaPhysics.SignedGradeDegrees(rise,b-a);
+            elevation=MarsRegionalTerrain.MeasuredElevation(focus);
         }
         public void PrepareFullJourneyCapture(float progress)
         {demoPresentation=false;PrepareJourneyCapture(false);StartMission();SeekFullJourney(progress);paused=true;}

@@ -37,6 +37,10 @@ The interface's Pareto comparison evaluates the five calculated alternatives, ra
 
 Slope and ascent depend on source support and sampling. Image sharpness is independent of height spacing. Oxygen, electrical use, science preference, and risk need mission calibration before operational interpretation.
 
+Electrical edge energy now uses `MarsEvaPhysics` at the edge's signed grade, speed, and elevation. Metabolic work and battery power are separate. The resampled route facts integrate the same calculator over signed profile segments; their sampling can differ from graph-edge totals. See [the complete model and warning equations](PHYSICS_AND_HAZARDS.md).
+
+The energy heuristic and RCSP time/energy pruning multiply the geometric remaining-distance bound by the minimum observed time or energy per metre in the actual graph. This remains admissible for nonnegative costs, including a zero-cost edge. A fixed 200 W lower bound is no longer assumed.
+
 ## Verification
 
 `MarsTeamRoutingCheck.cs` compares objectives and constraints with exhaustive solutions on 40 small randomized graphs, including stages, budgets, and bounded-search status.

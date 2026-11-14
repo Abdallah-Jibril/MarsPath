@@ -95,16 +95,19 @@ namespace MarsPath
             Debug.Log($"JEZERO_SHOWCASE_IMAGE: {imageSpacing:0.00} m photograph on the original 1 m height grid.");
             bool passed = zoomBounded && nativeImage && relief && distinct && surfaceActive && VisibleSurfaceArrows > 0 &&
                 Mathf.Abs(MarsRegionalTerrain.MeasuredElevation(JourneyLocation) - MarsMissionZone.Elevation(JourneyLocation)) < .08f;
+            Debug.Log($"JEZERO_SHOWCASE_ENTRY: passed {passed}, surface {surfaceActive}, arrows {VisibleSurfaceArrows}, height residual {MarsRegionalTerrain.MeasuredElevation(JourneyLocation)-MarsMissionZone.Elevation(JourneyLocation):F4} m.");
             yield return CaptureHelmetReview("MarsPathJezeroShowcaseVisor.png");
 
             AdvancePresentation(60, mission.routes[selectedRoute]);
             cameraRig.SnapToMission(astronaut.transform);
             passed &= routeProgress > .49f && routeProgress < .51f && VisibleSurfaceArrows > 0;
+            Debug.Log($"JEZERO_SHOWCASE_MIDPOINT: passed {passed}, progress {routeProgress:R}, O2 {evaSimulation.OxygenPercent:F3}%, power {evaSimulation.PowerPercent:F3}%, reserve {evaSimulation.ReserveReached}, arrows {VisibleSurfaceArrows}.");
             yield return CaptureHelmetReview("MarsPathJezeroShowcaseMidpoint.png");
 
             AdvancePresentation(60, mission.routes[selectedRoute]);
             passed &= demoDirector.Complete && routeProgress > .999f &&
                 MarsGeospatial.AngularDistanceDegrees(JourneyLocation, mission.destination) < .00001f;
+            Debug.Log($"JEZERO_SHOWCASE_END: passed {passed}, progress {routeProgress:R}, complete {demoDirector.Complete}, endpoint error {MarsGeospatial.AngularDistanceDegrees(JourneyLocation,mission.destination):R} deg.");
 
             QuestReturnToRoutes();
             QuestBackToEndpoints();
@@ -117,6 +120,7 @@ namespace MarsPath
             float deadline = Time.realtimeSinceStartup + 20f;
             while (preparingJezeroShowcase && Time.realtimeSinceStartup < deadline) yield return null;
             passed &= QuestPlanningVisible && !missionStarted && demoPresentation;
+            Debug.Log($"JEZERO_SHOWCASE_RESELECT: passed {passed}, planning {QuestPlanningVisible}, started {missionStarted}, demo {demoPresentation}.");
             int alternative = Array.FindIndex(mission.routes, route => route.available && route.type != mission.routes[0].type);
             passed &= alternative > 0;
             if (alternative > 0) QuestChooseRoute(alternative);
@@ -124,6 +128,7 @@ namespace MarsPath
             deadline = Time.realtimeSinceStartup + 20f;
             while (helmetEntryLoading && Time.realtimeSinceStartup < deadline) yield return null;
             passed &= missionStarted && paused && selectedRoute == alternative && routeProgress == 0;
+            Debug.Log($"JEZERO_SHOWCASE_ALTERNATE: passed {passed}, started {missionStarted}, paused {paused}, route {selectedRoute}/{alternative}, progress {routeProgress:R}.");
             SetQuestWalkInput(true, true);
             passed &= paused;
             SetQuestWalkInput(false, true);
@@ -188,7 +193,10 @@ namespace MarsPath
             }
             minimum *= 60 * MarsRegionalTerrain.MetersPerUnit;
             Debug.Log($"JEZERO_SHOWCASE_VARIANTS: minimum pairwise divergence {minimum:0.0} m.");
-            return minimum >= 12f;
+            // A corrected energy objective may legitimately choose a corridor
+            // close to another profile. Do not distort its costs to meet an
+            // arbitrary twelve-metre visual separation target.
+            return minimum >= Mathf.Max(1,MarsRegionalTerrain.SourceSpacingMeters(mission.currentLocation));
         }
 
         private static float ShowcaseOffset(RouteData source, RouteData other)

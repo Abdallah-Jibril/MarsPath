@@ -73,16 +73,27 @@ namespace MarsPath
             foreach(SourceShare share in list)share.percent=groundTrackKm>0?100*share.distanceKm/groundTrackKm:0;
             sources=list.ToArray();stereoCoveragePercent=100*stereoWeight/Mathf.Max(.001f,totalWeight);globalCoveragePercent=100*globalWeight/Mathf.Max(.001f,totalWeight);
             modeledScienceCandidates=route.sciencePointIds?.Length??0;modeledHazardZones=route.hazardIds?.Length??0;
-            // Apply the same suit-rate model used by playback at representative
-            // speed/grade. This is an estimate of total demand, without resupply.
-            // No percentages are presented as measured suit telemetry.
-            var suit=new MarsEvaSimulation();
-            suit.Reset(mission.telemetry??new TelemetryData{oxygenPercent=96,suitPowerPercent=94,heartRateBpm=78});
-            float seconds=Mathf.Max(1,etaMinutes*60),speed=routeLengthKm*1000/seconds;
-            suit.Advance(0,speed,meanAbsoluteGradeDegrees,route.energyScore);
-            float hours=Mathf.Max(0,etaMinutes)/60;
-            estimatedOxygenGrams=suit.OxygenGramsPerHour*hours;
-            estimatedEnergyKwh=(.20f+suit.MetabolicWatts*.00045f)*hours;
+            // Integrate signed source grades with the same physical calculator as
+            // playback. Route ranking scores are never physiological inputs.
+            // These totals exclude resupply and are not measured suit telemetry.
+            double totalLength=0, oxygenGrams=0, energyKwh=0;
+            for(int i=1;i<sampled.heights.Length;i++)
+            {
+                double rise=sampled.heights[i]-sampled.heights[i-1];
+                totalLength+=Math.Sqrt(sampled.StepMeters*sampled.StepMeters+rise*rise);
+            }
+            double seconds=Math.Max(1,etaMinutes*60.0),speed=totalLength/seconds;
+            for(int i=1;i<sampled.heights.Length;i++)
+            {
+                double rise=sampled.heights[i]-sampled.heights[i-1];
+                double length=Math.Sqrt(sampled.StepMeters*sampled.StepMeters+rise*rise);
+                double hours=totalLength>0 ? seconds*length/totalLength/3600 : seconds/(sampled.heights.Length-1)/3600;
+                var demand=MarsEvaPhysics.Evaluate(speed,MarsEvaPhysics.SignedGradeDegrees(rise,sampled.StepMeters),
+                    (sampled.heights[i]+sampled.heights[i-1])*.5);
+                oxygenGrams+=demand.oxygenGramsPerHour*hours;
+                energyKwh+=demand.electricalWatts*hours/1000;
+            }
+            estimatedOxygenGrams=(float)oxygenGrams;estimatedEnergyKwh=(float)energyKwh;
         }
     }
 }

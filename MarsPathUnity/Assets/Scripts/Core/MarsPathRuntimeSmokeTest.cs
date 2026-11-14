@@ -143,7 +143,8 @@ namespace MarsPath
             rig.ZoomPlanning(100);Check(Mathf.Approximately(rig.PlanningDistance,rig.MinimumPlanningDistance),"Planning camera permits inspection at a geographic-scale-aware distance");rig.ResetPlanningView();
 
             MarsEvaSimulation suit=new MarsEvaSimulation();suit.Reset(local.telemetry);
-            Check(suit.MetabolicWatts>200&&suit.OxygenGramsPerHour>70,"Telemetry populated before first step");
+            Check(Mathf.Abs(suit.MetabolicWatts-139)<.01f&&suit.OxygenGramsPerHour>34&&suit.OxygenGramsPerHour<36,
+                "Initial stationary demand retains the nominal awake reference before walking");
             suit.Advance(1,0.7f,5,90);
             float walked=local.routes[0].distanceKm*1000/(local.routes[0].etaMinutes*60);
             Check(walked>0.1f&&walked<1.5f,"One real second advances a walking distance, not a continental jump");
@@ -189,7 +190,9 @@ namespace MarsPath
         {
             MarsDemoDirector director=new MarsDemoDirector();director.Reset();float previous=0;
             for(int i=0;i<239;i++){director.Advance(0.5f,404);Check(director.Progress>=previous&&director.Progress<1,"Demo progresses monotonically without ending early");previous=director.Progress;}
-            director.Advance(0.5f,404);Check(director.Complete&&director.Elapsed==120&&director.Progress==1,"A seven-day route presentation completes in 120 real seconds");
+            director.Advance(0.5f,404);Check(director.Complete&&director.Elapsed==120&&
+                System.Math.Abs(director.DistanceMeters-192)<.001&&Mathf.Abs(director.Progress-192f/404000)<.000001f,
+                "A long-route presentation completes its continuous 192 m preview in 120 real seconds");
             MarsPathCameraRig rig=Object.FindAnyObjectByType<MarsPathCameraRig>();rig.ZoomPlanning(-100);
             demo.PrepareDemoRegionCapture(false);
             Check(rig.PlanningDistance<180&&rig.RoutesInsideViewport(demo.ActiveMission),"New selected region refits all five routes after extreme previous zoom");

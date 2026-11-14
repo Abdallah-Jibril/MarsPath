@@ -1,0 +1,23 @@
+{
+  "Repository": "Abdallah-Jibril/MarsPath_Hackathon",
+  "ReleaseTag": "eva-physics-v1-2026-11-14",
+  "PackagedAt": "2026-11-14T18:59:23.8214938+02:00",
+  "SourceReference": "The release tag identifies the exact source commit; import provenance remains unchanged.",
+  "Model": "Mars EVA engineering estimate v1",
+  "ModelParametersSHA256": "b360873113c5f36941cc16b6a96a7a8384440d11f3c9292f73613b0b2af75215",
+  "Unity": "6000.6.5f1",
+  "Packages": [
+    {
+      "File": "MarsPath-Windows-EVA-Physics-v1.zip",
+      "Bytes": 1117093434,
+      "SHA256": "caa5f55576a2a873b4db5d0e4072921505640d38f1c6b6e528431af4c1e51131"
+    },
+    {
+      "File": "MarsPath-Quest3-EVA-Physics-v1.apk",
+      "Bytes": 652682031,
+      "SHA256": "7962fabe9ddc181162e9399fe80239c33fd86df6b7c54e7f917eae190f67b980"
+    }
+  ],
+  "Validation": "46 physics assertions, exhaustive-reference routing checks, encrypted radio checks, real DEM route facts, Windows flow and Jezero showcase; see PHYSICS_VALIDATION.md for final recorded results.",
+  "PhysicalAcceptance": "These rebuilt Quest physics calculations still require an on-device user trial; no flight or physiological certification is claimed."
+}

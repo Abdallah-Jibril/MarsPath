@@ -53,3 +53,7 @@ Open `GIS/OfficialSurfaceSources/JezeroMissionZone10km/Jezero10kmReference.qgz` 
 `tools/prepare_jezero_10km_zone.py` and `tools/verify_jezero_10km_zone.py` prepare and validate coverage, registration, overlaps, source processing, and height stencils. Preparation needs QGIS Python. Prepared runtime data can be used without installing QGIS.
 
 Valid samples may still contain stereo artifacts. Sharp imagery does not establish fine height accuracy. Coarse products cannot identify individual rocks. Route risk, science, suit resources, and energy remain demonstration estimates requiring calibration.
+
+## Physiology, energy, and alert provenance
+
+The [EVA physics and hazard note](PHYSICS_AND_HAZARDS.md) provides equations, units, parameter classifications, and primary links. It references NASA OCHMO-TB-047 for nominal crewmember context, the Weir equation for respiratory calorimetry, and the legacy EMU 2000-series battery for an identified capacity reference. These sources do not validate the application's assumed suited-walking or electrical-load coefficients. Rock footprint thresholds and DEM slope caution levels are explicitly documented demonstration policies.

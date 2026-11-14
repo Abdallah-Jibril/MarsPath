@@ -150,7 +150,7 @@ namespace MarsPath
             GUI.Label(new Rect(1248,64,148,27),$"O₂  {oxygen:0.0}%",visorHeading);
             GUI.Label(new Rect(1417,64,146,27),$"PWR  {power:0.0}%",visorHeading);
             UiBar(new Rect(1250,104,143,5),oxygen/100,UiCyan);UiBar(new Rect(1419,104,141,5),power/100,UiAmber);
-            GUI.Label(new Rect(1248,120,310,19),$"{metabolicWatts:0} W effort   ·   {oxygenFlowGramsPerHour:0} g O₂/h",visorMicro);
+            GUI.Label(new Rect(1248,120,310,19),$"{electricalWatts:0} W suit   ·   {oxygenFlowGramsPerHour:0} g O₂/h",visorMicro);
             string mode=demoPresentation?"2 MIN DEMO":"MISSION TIME · ×"+playbackSpeed.ToString("0");
             string status=helmetPreview?"HELMET PREVIEW":arrived?"DESTINATION REACHED":reserveStop?"RESERVE STOP · "+mode:DemoEnded?"DEMO COMPLETE":paused?"PAUSED · "+mode:mode;
             GUI.Label(new Rect(459,107,682,27),status,visorStatus);
@@ -197,8 +197,8 @@ namespace MarsPath
                 else title=hazard.Contains("REGOLITH")?"LOOSE GROUND":"TERRAIN CAUTION";
                 detail=$"{Mathf.Max(0,nearbyHazardDistance):0} m · SLOW DOWN";
             }
-            else if(upcomingSurfaceSlope>10)
-            {title="STEEP SLOPE";detail=$"{upcomingSurfaceSlope:0}° · SLOW DOWN";symbol=MarsHazardIcons.Symbol.Slope;}
+            else if(upcomingSurfaceSlope>MarsHazardPhysics.SlopeWarningDegrees)
+            {title="STEEP SLOPE";detail=$"{upcomingSurfaceSlope:0}° DEM · SLOW DOWN";symbol=MarsHazardIcons.Symbol.Slope;}
             return title != null;
         }
 
@@ -225,10 +225,10 @@ namespace MarsPath
             UiCard(new Rect(1231,397,347,388),UiCyan);GUI.Label(new Rect(1250,412,309,29),"MISSION DETAILS / MODEL",labelStyle);
             GUI.Label(new Rect(1250,458,309,28),$"Estimated route time: {TimeLabel(mission.routes[selectedRoute].etaMinutes)}",smallStyle);
             GUI.Label(new Rect(1250,500,309,43),CoordinateShort(new GeoPoint{latitude=currentLatitude,longitude=currentLongitude}),smallStyle);
-            GUI.Label(new Rect(1250,550,309,28),$"{metabolicWatts:0} W / {heartRateBpm:0} bpm / {oxygenFlowGramsPerHour:0} g O2/h",captionStyle);
-            GUI.Label(new Rect(1250,591,309,27),$"Surface {currentSlopeDegrees:0.0}° / modeled grade {currentDemSlopeDegrees:0.00}°",captionStyle);
+            GUI.Label(new Rect(1250,550,309,28),$"Body {metabolicWatts:0} W / suit {electricalWatts:0} W / O₂ {oxygenFlowGramsPerHour:0} g/h",captionStyle);
+            GUI.Label(new Rect(1250,591,309,27),$"Signed DEM grade {currentSignedDemGradeDegrees:+0.0;-0.0;0.0}° / g 3.71 m/s²",captionStyle);
             GUI.Label(new Rect(1250,634,309,26),DataTag,captionStyle);
-            GUI.Label(new Rect(1250,679,309,85),expeditionMode?"Expedition assumption: resupply every 4 mission hours. Leg "+(resupplyLeg+1)+". Support sites and fine hazards are not verified.":"Single EVA simulation. Fine terrain, suit resources and hazard guidance are prototype models.",captionStyle);
+            GUI.Label(new Rect(1250,679,309,85),expeditionMode?"Concept suit / 0.8 kg O₂ / 447 Wh. Assumed resupply every 4 mission hours; sites are unverified.":"Concept suit / 0.8 kg O₂ / 447 Wh. Weir O₂ conversion; gait and electrical loads require calibration.",captionStyle);
         }
     }
 }
