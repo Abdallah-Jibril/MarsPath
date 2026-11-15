@@ -5,6 +5,6 @@ GIS/**/*.tif filter=lfs diff=lfs merge=lfs -text
 GIS/**/*.bytes filter=lfs diff=lfs merge=lfs -text
 MarsPathUnity/Assets/Resources/NASA/MissionZone/*.bytes filter=lfs diff=lfs merge=lfs -text
 MarsPathUnity/Assets/Resources/**/*.bytes filter=lfs diff=lfs merge=lfs -text
-Presentation/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
-Reports/*.pdf filter=lfs diff=lfs merge=lfs -text
-Reports/*.docx filter=lfs diff=lfs merge=lfs -text
+resources/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+resources/**/*.pdf filter=lfs diff=lfs merge=lfs -text
+resources/**/*.pptx filter=lfs diff=lfs merge=lfs -text

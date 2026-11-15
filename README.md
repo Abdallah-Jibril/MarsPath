@@ -8,9 +8,20 @@ MarsPath connects Mars mission planning on a laptop with an astronaut's first-pe
 
 The detailed demonstration covers a measured **10 × 10 km region of Jezero Crater** and a short **Belva Crater showcase**. The planner and helmet use the same geographic coordinates and elevation sources.
 
-[Watch the 20-second English demo](Presentation/MarsPath_20s_Live_Quest_Demo_EN.mp4) · [Run the demo](#run-the-demo) · [Algorithms](docs/ALGORITHMS.md) · [EVA equations and warnings](docs/PHYSICS_AND_HAZARDS.md) · [NASA and planetary data](docs/DATA_SOURCES.md) · [Developer handoff](HANDOFF.md)
+[Submission resources](resources/README.md) · [Watch the 20-second English demo](resources/MarsPath_20s_Live_Quest_Demo_EN.mp4) · [Run the demo](#run-the-demo) · [Algorithms](docs/ALGORITHMS.md) · [EVA equations and warnings](docs/PHYSICS_AND_HAZARDS.md) · [NASA and planetary data](docs/DATA_SOURCES.md)
 
-![Jezero route comparison using measured terrain](outputs/MarsPathJezeroShowcasePlanner.png)
+## Submission materials
+
+| Material | Location |
+| --- | --- |
+| Application source, scenes, and runtime data | [MarsPathUnity](MarsPathUnity/) |
+| Demo video with English narration | [20-second live Quest walkthrough](resources/MarsPath_20s_Live_Quest_Demo_EN.mp4) |
+| Ready-to-run builds | [Windows ZIP and Quest APK](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/hackathon-demo-2026-11-15) |
+| Team presentation | Awaiting the final team deck, to be added to `resources/` |
+| Planetary data and source references | [GIS datasets](GIS/) and [data attribution](docs/DATA_SOURCES.md) |
+| Algorithms and engineering methods | [Route searches](docs/ALGORITHMS.md) and [EVA calculations](docs/PHYSICS_AND_HAZARDS.md) |
+
+[Resources and submission links](resources/README.md)
 
 ## The challenge
 
@@ -66,7 +77,7 @@ Slope warnings use source-elevation gradients and a declared 10° caution policy
 
 ### Run the current version
 
-Build both apps from `main` with the instructions below. For an earlier packaged build, the [14 November EVA Physics release](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/eva-physics-v1-2026-11-14) provides a Windows ZIP and Quest APK. The [package manifest](docs/PHYSICS_PACKAGES.json) records the provenance of those binaries.
+Download the [15 November Windows and Quest builds](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/hackathon-demo-2026-11-15), or build both apps from source with the instructions below. The [current build manifest](resources/BUILD_MANIFEST.json) records package sizes and SHA-256 checksums.
 
 - **Windows** opens `MarsPathUnity/Builds/Windows/MarsPath.exe` in borderless fullscreen. Keep the executable, data folder, and libraries together. Press `Alt+F4` to close.
 - **Quest 3** requires Developer Mode and authorized USB debugging for APK installation. Open MarsPath from the headset application library after installation. [Installation steps](HANDOFF.md#build-and-install)
@@ -114,11 +125,8 @@ Jezero terrain and imagery are bundled with both apps. USB carries a paired sess
 MarsPathUnity/       Unity runtime, Quest UI, scenes, assets, build methods
 GIS/                QGIS projects, source provenance, native terrain references
 tools/              Data preparation, verification, build and install helpers
-docs/               Algorithms, scientific sources, migration and package records
-Presentation/       Final presentation and supporting demonstration clips
-Reports/            Team report in PDF and editable Word formats
-outputs/            Selected application screenshots and review evidence
-work/               Earlier engineering and source-analysis notes
+docs/               Algorithms, equations, source attribution, validation records
+resources/          Submission demo and final team presentation
 ```
 
 ## Technology
@@ -164,4 +172,4 @@ Repository and package checks are recorded in [Migration Validation](docs/VALIDA
 
 Data and imagery are credited to their producers, including NASA mission teams, JPL-Caltech, USGS Astrogeology, HiRISE, ASU, MSSS, ESA/DLR, and the PDS Geosciences Node where applicable. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-This private repository was initialized on **14 November 2026** by importing an existing MarsPath codebase and data package. Import commits record repository organization and packaging. See [migration provenance](docs/MIGRATION.md).
+This repository was initialized on **14 November 2026** by importing an existing MarsPath codebase and data package. Import commits record repository organization and packaging. See [migration provenance](docs/MIGRATION.md).
