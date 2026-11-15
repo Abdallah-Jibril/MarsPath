@@ -100,6 +100,9 @@ namespace MarsPath
             GUI.Label(new Rect(1180, 710, 264, 30), active.displayName, planLabel);
             float progress = currentLiveState?.progress ?? routeProgress;
             GUI.Label(new Rect(1442, 710, 91, 30), $"{progress:P1}", planLabel);
+            float? heading = currentLiveState?.hasLookHeading == true ? currentLiveState.lookHeading : mirroredLookHeading;
+            GUI.Label(new Rect(1180, 738, 354, 21), heading is float bearing
+                ? $"LOOK HEADING   {MarsCompass.Format(bearing)}" : "WAITING FOR HEAD TRACKING", planCaption);
             UiBar(new Rect(1180, 763, 354, 5), progress, accent);
             string radio = MissionRadioActivity ?? missionRadio?.MicrophoneStatus ??
                 (QuestRadioConnected ? "Y  ·  HOLD TO TALK" : QuestRadioStatus);

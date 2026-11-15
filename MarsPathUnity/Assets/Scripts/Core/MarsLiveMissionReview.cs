@@ -11,6 +11,7 @@ namespace MarsPath
     {
         private IEnumerator ReviewLiveMission()
         {
+            bool captureCompass = Array.IndexOf(Environment.GetCommandLineArgs(), "--capture-live-compass") >= 0;
             RefinementEnabled = false;
             yield return PrepareJezeroShowcase();
             SelectRoute(1);
@@ -116,6 +117,10 @@ namespace MarsPath
                     Vector3.Distance(mainCamera.transform.position,
                         astronaut.transform.TransformPoint(state.headOffset)) < .001f,
                     "Stopped astronaut head yaw, pitch, roll and eye offset synchronize");
+                RequireLive(mirroredLookHeading is float poseOnlyHeading &&
+                    MarsCompass.TryGetHeading(mainCamera.transform.forward, out float renderedHeading) &&
+                    Mathf.Abs(Mathf.DeltaAngle(poseOnlyHeading, renderedHeading)) < .25f,
+                    "The desktop compass stays available when Quest sends only its tracked pose");
                 RequireLive(currentLiveState.facingBlocked && paused &&
                     TryGetCompactWarning(out string facingTitle, out _, out _) && facingTitle == "ROUTE BEHIND YOU",
                     "The live desktop shows the headset direction lock and warning");
@@ -164,12 +169,14 @@ namespace MarsPath
                 yield return PumpUntil(() => source.RemoteMirrorReady);
                 RequireLive(currentLiveState.progress == .58f && routeProgress == stopped && selectedRoute == 1,
                     "Quest progress and readiness continue while laptop terrain stays in the comparison frame");
+                if (captureCompass) yield return CaptureCompassFrame("MarsPathBrowseHeadingReview.png");
                 ReturnToLiveMission();
                 RequireLive(!desktopBrowsingRoutes && selectedRoute == 1 && Mathf.Abs(routeProgress - .58f) < .0001f &&
                     !paused && retainedSurface.activeSelf && MarsRegionalTerrain.Current != mission &&
                     mirroredLookHeading == 90f && MarsCompass.Format(mirroredLookHeading.Value) == "E  090°" &&
                     MarsCompass.TryGetHeading(mainCamera.transform.forward, out float visorBearing) && Mathf.Abs(visorBearing - 90) < .01f,
                     "Back to Live resumes the same mission at the latest progress and eastward gaze");
+                if (captureCompass) yield return CaptureCompassFrame("MarsPathLiveCompassReview.png");
                 state.sequence++; state.clock++;
                 state.moving = false; state.lookHeading = 270f;
                 yield return Deliver(state);
@@ -258,6 +265,19 @@ namespace MarsPath
                 RequireLive(currentLiveState?.sequence == sample.sequence || !sample.inMission,
                     "Live state must arrive");
                 yield return null;
+            }
+
+            IEnumerator CaptureCompassFrame(string name)
+            {
+                yield return new WaitForEndOfFrame();
+                Texture2D frame = ScreenCapture.CaptureScreenshotAsTexture();
+                try
+                {
+                    string path = System.IO.Path.Combine(Application.persistentDataPath, name);
+                    System.IO.File.WriteAllBytes(path, frame.EncodeToPNG());
+                    Debug.Log("MARSPATH_COMPASS_CAPTURE: " + path);
+                }
+                finally { Destroy(frame); }
             }
         }
 

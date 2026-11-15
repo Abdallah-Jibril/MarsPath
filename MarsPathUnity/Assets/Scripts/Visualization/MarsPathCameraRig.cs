@@ -252,6 +252,13 @@ namespace MarsPath
             remoteLookHeading = lookHeading;
             remoteHeadPose = true;
         }
+
+        internal bool TryGetRemoteLookHeading(out float heading)
+        {
+            heading = 0;
+            return remoteHeadPose && astronaut != null &&
+                MarsCompass.TryGetHeading(EyeRotation(astronaut) * Vector3.forward, out heading);
+        }
         private void UpdateQuestAnchor(Transform actor)
         {
             Vector3 ground = actor.position + actor.forward * .08f;

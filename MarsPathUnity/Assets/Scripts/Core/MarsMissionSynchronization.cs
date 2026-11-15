@@ -248,13 +248,17 @@ namespace MarsPath
             if (surfaceActive)
                 UpdateSurfaceDistance(prior.travelledMetres + (state.travelledMetres - prior.travelledMetres) * blend);
             else UpdateAstronautPosition(routeProgress);
-            mirroredLookHeading = state.hasLookHeading ? (prior.hasLookHeading
+            float? lookHeading = state.hasLookHeading ? (prior.hasLookHeading
                 ? Mathf.Repeat(Mathf.LerpAngle(prior.lookHeading, state.lookHeading, poseBlend), 360)
                 : state.lookHeading) : (float?)null;
             if (state.hasHeadPose)
+            {
                 cameraRig.SetRemoteHeadPose(prior.hasHeadPose ? Vector3.Lerp(prior.headOffset, state.headOffset, poseBlend) : state.headOffset,
                     prior.hasHeadPose ? Quaternion.Slerp(prior.headRotation, state.headRotation, poseBlend) : state.headRotation,
-                    mirroredLookHeading);
+                    lookHeading);
+                if (!lookHeading.HasValue && cameraRig.TryGetRemoteLookHeading(out float poseBearing)) lookHeading = poseBearing;
+            }
+            if (lookHeading.HasValue) mirroredLookHeading = lookHeading;
             oxygen = state.oxygen; power = state.power;
             metabolicWatts = state.metabolicWatts; electricalWatts = state.electricalWatts;
             oxygenFlowGramsPerHour = state.oxygenFlow;
@@ -269,24 +273,20 @@ namespace MarsPath
 
         private void DrawLiveMissionProgress(Color accent)
         {
-            Rect card = new Rect(431, 22, 738, 101);
+            Rect card = new Rect(431, 101, 738, 74);
             VisorPanel(card, LiveMissionFresh ? accent : UiAmber);
             string status = currentLiveState == null ? "WAITING FOR QUEST"
                 : !LiveMissionFresh ? "RECONNECTING · HOLDING POSITION"
                 : arrived ? "DESTINATION REACHED" : reserveStop ? "RESERVE STOP"
                 : DemoEnded ? "DEMO COMPLETE" : currentLiveState.facingBlocked ? "FACING AWAY · WALKING LOCKED"
                 : paused ? "ASTRONAUT STOPPED" : "ASTRONAUT WALKING";
-            GUI.Label(new Rect(449, 32, 371, 23), "MISSION CONTROL  /  LIVE QUEST", visorHeading);
-            GUI.Label(new Rect(831, 29, 171, 31), $"{routeProgress * 100:0.0} / 100%", visorLivePercent);
-            GUI.Label(new Rect(449, 60, 371, 23), status, visorSmall);
+            GUI.Label(new Rect(449, 106, 371, 25), "MISSION CONTROL  /  LIVE QUEST", visorHeading);
+            GUI.Label(new Rect(925, 104, 226, 28), $"{routeProgress * 100:0.0} / 100%", visorLivePercent);
+            GUI.Label(new Rect(449, 132, 371, 22), status, visorSmall);
             float travelled = mission.routes[selectedRoute].distanceKm * 1000 * routeProgress;
-            GUI.Label(new Rect(831, 60, 171, 23), $"{travelled:0} / {mission.routes[selectedRoute].distanceKm * 1000:0} m",
+            GUI.Label(new Rect(925, 132, 226, 22), $"{travelled:0} / {mission.routes[selectedRoute].distanceKm * 1000:0} m",
                 visorRouteRight);
-            UiBar(new Rect(449, 94, 553, 5), routeProgress, accent);
-            UiFill(new Rect(1021, 35, 1, 68), new Color(.35f, .68f, .72f, .33f));
-            GUI.Label(new Rect(1032, 37, 127, 22), "LOOK HEADING", visorCenteredSmall);
-            GUI.Label(new Rect(1032, 62, 127, 31), mirroredLookHeading is float bearing ? MarsCompass.Format(bearing) : "—",
-                visorCompassHeading);
+            UiBar(new Rect(449, 160, 702, 5), routeProgress, accent);
         }
     }
 }

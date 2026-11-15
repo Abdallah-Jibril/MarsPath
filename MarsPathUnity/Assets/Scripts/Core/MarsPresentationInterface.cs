@@ -158,8 +158,8 @@ namespace MarsPath
             GUI.BeginGroup(new Rect(0,0,1600,900));
             RouteData route=mission.routes[selectedRoute];Color color=MarsPathRouteView.ParseColor(route.colorHex,UiCyan);
             DrawVisorDistance(route,color);
+            DrawVisorCompassTape(desktopMissionMirror ? mirroredLookHeading : currentHeadingDegrees);
             if (desktopMissionMirror) DrawLiveMissionProgress(color);
-            else DrawVisorCompassTape();
             VisorPanel(new Rect(1230,22,348,130),UiCyan);
             GUI.Label(new Rect(1248,33,310,21),"SUIT / MODELED RESERVES",visorMicro);
             GUI.Label(new Rect(1248,64,148,27),$"O₂  {oxygen:0.0}%",visorHeading);

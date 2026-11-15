@@ -9,7 +9,7 @@ namespace MarsPath
         private int observedVisorRoute=-1;
         private GUIStyle visorHeading,visorSmall,visorMicro,visorStatus,visorCenteredSmall,visorBody,visorButton,visorActiveButton,visorDistance;
         private GUIStyle visorRouteRight,visorDistanceMeta,visorAction,visorActionActive,visorActionLabel,visorKeycap;
-        private GUIStyle visorLivePercent, visorCompassHeading;
+        private GUIStyle visorLivePercent, visorCompassHeading, visorHeadingCentered;
         private Texture2D visorRouteDot;
 
         public void ResetVisorPanels()
@@ -32,6 +32,7 @@ namespace MarsPath
             visorStatus=new GUIStyle(centerStyle){fontSize=17,normal={textColor=new Color(.89f,.97f,.98f)}};
             visorLivePercent = new GUIStyle(visorHeading) { alignment = TextAnchor.MiddleRight, fontSize = 21 };
             visorCompassHeading = new GUIStyle(visorStatus) { fontSize = 22 };
+            visorHeadingCentered = new GUIStyle(visorHeading) { alignment = TextAnchor.MiddleCenter, fontSize = 15 };
             visorCenteredSmall=new GUIStyle(visorSmall){alignment=TextAnchor.MiddleCenter,wordWrap=false};
             visorBody=new GUIStyle(visorSmall){fontSize=14};
             visorDistance=new GUIStyle(metricStyle)
@@ -110,20 +111,31 @@ namespace MarsPath
             UiFill(new Rect(rect.xMax-30,rect.yMax-2,30,2),line);UiFill(new Rect(rect.xMax-2,rect.yMax-14,2,14),line);
             UiFill(new Rect(rect.x+30,rect.y,rect.width-30,1),new Color(.35f,.68f,.72f,.16f));
         }
-        private void DrawVisorCompassTape()
+        private void DrawVisorCompassTape(float? heading)
         {
-            const float left=568,width=464;VisorPanel(new Rect(left,22,width,70),UiCyan);
-            GUI.BeginGroup(new Rect(left+8,25,width-16,63));
-            for(int degree=0;degree<360;degree+=15)
+            Rect tape = new Rect(528, 22, 544, 72);
+            VisorPanel(tape, UiCyan);
+            if (heading is not float bearing)
             {
-                float delta=Mathf.DeltaAngle(currentHeadingDegrees,degree),x=(width-16)/2+delta*3.1f;
-                if(x<6||x>width-22)continue;
-                bool cardinal=degree%90==0;
-                UiFill(new Rect(x,31,1,cardinal?13:7),new Color(.58f,.79f,.81f,.65f));
-                if(degree%30==0)GUI.Label(new Rect(x-24,7,48,21),cardinal?HeadingCardinal(degree):degree.ToString("000"),visorCenteredSmall);
+                GUI.Label(new Rect(tape.x, 33, tape.width, 25), "LOOK HEADING", visorHeadingCentered);
+                GUI.Label(new Rect(tape.x, 62, tape.width, 20), "WAITING FOR HEAD TRACKING", visorCenteredSmall);
+                return;
             }
-            UiFill(new Rect((width-16)/2-1,28,2,21),UiCyan);GUI.EndGroup();
-            GUI.Label(new Rect(704,67,192,23),$"{HeadingCardinal(currentHeadingDegrees)}  {currentHeadingDegrees:000}°",visorCenteredSmall);
+
+            float center = tape.center.x;
+            for (int degree = 0; degree < 360; degree += 15)
+            {
+                float x = center + Mathf.DeltaAngle(bearing, degree) * 3.8f;
+                if (x < tape.x + 24 || x > tape.xMax - 24) continue;
+                bool major = degree % 45 == 0;
+                Color tick = major ? new Color(.73f, .90f, .93f) : new Color(.53f, .73f, .78f);
+                UiFill(new Rect(x, 51, 1, major ? 11 : 6), tick);
+                if (major)
+                    GUI.Label(new Rect(x - 24, 29, 48, 20), MarsCompass.Cardinal(degree), visorHeadingCentered);
+            }
+            UiFill(new Rect(center - 1, 50, 2, 15), UiCyan);
+            GUI.Label(new Rect(tape.x + 16, 67, 124, 20), desktopMissionMirror ? "LOOK HEADING" : "ROUTE HEADING", visorMicro);
+            GUI.Label(new Rect(center - 92, 64, 184, 27), MarsCompass.Format(bearing), visorCompassHeading);
         }
         private string VisorCoverage(GeoPoint point)
         {
