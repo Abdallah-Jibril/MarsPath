@@ -171,5 +171,3 @@ Repository and package checks are recorded in [Migration Validation](docs/VALIDA
 | Abdallah Jibril | Desktop application and Meta Quest 3 implementation |
 
 Data and imagery are credited to their producers, including NASA mission teams, JPL-Caltech, USGS Astrogeology, HiRISE, ASU, MSSS, ESA/DLR, and the PDS Geosciences Node where applicable. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-This repository was initialized on **14 November 2026** by importing an existing MarsPath codebase and data package. Import commits record repository organization and packaging. See [migration provenance](docs/MIGRATION.md).
