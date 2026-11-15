@@ -143,9 +143,10 @@ namespace MarsPath
 
         internal string QuestVisorStatus => !missionStarted ? "LOADING" : arrived ? "ARRIVED" : FormatRouteLength(DistanceRemainingKm);
         internal string QuestVisorRoute => mission.routes[selectedRoute].displayName.ToUpperInvariant();
-        internal string QuestVisorEta => $"{TimeLabel(mission.routes[selectedRoute].etaMinutes * (1 - routeProgress))} EST. LEFT";
-        internal string QuestVisorProgress => demoPresentation && !arrived
-            ? $"DEMO  {Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s  ·  {routeProgress:P1} OF ROUTE"
+        internal string QuestVisorEta => demoPresentation ? "TO DESTINATION"
+            : $"{TimeLabel(mission.routes[selectedRoute].etaMinutes * (1 - routeProgress))} EST. LEFT";
+        internal string QuestVisorProgress => demoPresentation
+            ? $"DEMO {DemoCountdown}{(DemoEnded ? "" : " LEFT")}   ·   {routeProgress:P1} OF ROUTE"
             : $"{routeProgress:P1} OF ROUTE  ·  {currentSlopeDegrees:0.0}° SURFACE";
         internal string QuestVisorReserves => $"O₂  {oxygen:0.0}%   ·   PWR  {power:0.0}%";
         internal string QuestVisorEffort => $"{electricalWatts:0} W SUIT   ·   {oxygenFlowGramsPerHour:0} g O₂/h";
@@ -201,6 +202,7 @@ namespace MarsPath
         {
             if (!missionStarted) return;
             questWaitForTriggerRelease = true;
+            demoLastTick = null;
             paused = true;
         }
 

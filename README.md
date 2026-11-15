@@ -29,7 +29,7 @@ MarsPath is an independent prototype for **Interplanetary Survival Guide: Martia
 | **Mission Control radio** | Hold to speak between Windows and Quest through authorized USB or compatible local Wi-Fi. |
 | **Desktop presentation** | Demonstrate the planner and helmet view without a headset, in borderless fullscreen. |
 
-The showcase button opens route comparison so the user chooses a route before starting. The two-minute demonstration moves continuously from the selected start; longer tracks offer continuation after the presentation segment.
+The showcase button opens route comparison so the user chooses a route before starting. The two-minute demonstration follows the complete selected Jezero route in 120 seconds of walking. The countdown pauses with the astronaut and resumes from the same point. Longer routes outside the measured sector support a continuous preview followed by optional continuation.
 
 ## Route algorithms
 

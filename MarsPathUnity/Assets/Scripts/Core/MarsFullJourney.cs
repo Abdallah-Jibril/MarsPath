@@ -141,7 +141,7 @@ namespace MarsPath
             resupplyLeg=expeditionMode?(int)System.Math.Floor(totalElapsedSeconds/14400):0;
             float legSeconds=(float)(expeditionMode?totalElapsedSeconds-resupplyLeg*14400:totalElapsedSeconds);
             ReconstructSeekResources(route,legSeconds);
-            routeProgress=progress;reserveStop=evaSimulation.ReserveReached;arrived=progress>=1;paused=wasPaused||reserveStop||arrived;
+            routeProgress=progress;reserveStop=ReserveBlocksTraversal;arrived=progress>=1;paused=wasPaused||reserveStop||arrived;
             UpdateAstronautPosition(progress);
             // Refresh live effort at the new station rather than retaining the
             // previous station's slope after a seek.

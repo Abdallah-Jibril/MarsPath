@@ -36,6 +36,24 @@ namespace MarsPath
             yield return new WaitForSeconds(.08f);
             RequireLive(!paused && routeProgress > lockedProgress, "Facing the route permits the held trigger to move again");
             SetQuestWalkInput(false, true);
+            float releasedAt = routeProgress;
+            float releasedSeconds = DemoElapsed;
+            yield return new WaitForSecondsRealtime(.15f);
+            RequireLive(paused && routeProgress == releasedAt && DemoElapsed == releasedSeconds,
+                "Releasing the right trigger freezes the countdown and route position");
+            RouteData demoRoute = mission.routes[selectedRoute];
+            SetQuestWalkInput(true, true);
+            TickTwoMinuteDemo(demoRoute, 1000);
+            RequireLive(DemoElapsed == releasedSeconds && routeProgress == releasedAt,
+                "Resuming does not count the stopped interval");
+            TickTwoMinuteDemo(demoRoute, 1001);
+            RequireLive(!paused && Mathf.Abs(DemoElapsed - (releasedSeconds + 1)) < .001f && routeProgress > releasedAt,
+                "Resuming advances the countdown and route from the same point");
+            TickTwoMinuteDemo(demoRoute, 1000 + MarsDemoDirector.DurationSeconds);
+            RequireLive(DemoEnded && arrived && paused && routeProgress == 1 &&
+                DemoElapsed == MarsDemoDirector.DurationSeconds && DemoCountdown == "0:00" &&
+                MarsGeospatial.AngularDistanceDegrees(JourneyLocation, mission.destination) < .00001,
+                "A Jezero route longer than the earlier preview reaches its destination at 120 active seconds");
             ReturnToPlanning();
             const int payloadSize = 1936;
             var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -75,7 +93,8 @@ namespace MarsPath
                 RequireLive(!missionStarted && !desktopMissionMirror, "Quest preparation keeps the desktop in the planner");
                 source.ReportRoute(session, MarsMissionRadio.RouteDelivery.Started);
                 yield return PumpUntil(() => missionStarted && !helmetEntryLoading);
-                RequireLive(selectedRoute == 1 && routeProgress == 0 && paused, "Selected route enters at zero and waits");
+                RequireLive(selectedRoute == 1 && routeProgress == 0 && DemoElapsed == 0 && paused,
+                    "Selected route enters at zero and waits");
                 var state = new MarsMissionLiveState
                 {
                     session = session.ToString("N"), sequence = 1, clock = 1,
@@ -95,9 +114,13 @@ namespace MarsPath
                 state.progress = .42f; state.moving = false;
                 yield return Deliver(state);
                 float stopped = routeProgress;
+                float stoppedDemoTime = DemoElapsed;
+                state.sequence++; state.clock++;
+                yield return Deliver(state);
                 yield return new WaitForSeconds(.15f);
-                RequireLive(routeProgress == stopped && paused && oxygen == 94 && power == 92,
-                    "Stop freezes progress and preserves source reserves");
+                RequireLive(routeProgress == stopped && paused && oxygen == 94 && power == 92 &&
+                    DemoElapsed == stoppedDemoTime,
+                    "The mirror preserves the stopped countdown, progress, and reserves");
                 GeoPoint expected = fullTrack.At(.42f);
                 RequireLive(MarsGeospatial.AngularDistanceDegrees(JourneyLocation, expected) < .00001 &&
                     TryGetCompactWarning(out string title, out _, out _) && title == "STEEP SLOPE",
@@ -193,25 +216,19 @@ namespace MarsPath
                 RequireLive(paused && Mathf.Abs(routeProgress - .68f) < .0001f,
                     "Returning during a link gap holds the latest confirmed position rather than the old view");
 
-                state.sequence++; state.clock++;
-                state.progress = .86f; state.moving = false; state.demoComplete = true; state.demoSeconds = 120;
-                yield return Deliver(state);
-                RequireLive(DemoEnded && paused && Mathf.Abs(DemoElapsed - 120) < .001,
-                    "Partial-route demo completion follows the headset");
-                state.sequence++; state.clock++; state.demo = false; state.demoComplete = false;
-                state.progress = .9f; state.moving = true;
-                yield return Deliver(state);
-                RequireLive(!DemoMode && !paused, "Source can continue from the preview into the full mission");
-
                 double receivedAt = liveReceivedAt;
                 liveReceivedAt = Time.unscaledTimeAsDouble - 2;
                 float beforeStale = routeProgress;
+                float timeBeforeStale = DemoElapsed;
                 yield return new WaitForSeconds(.1f);
-                RequireLive(paused && routeProgress == beforeStale, "A stale connection freezes the last confirmed location");
+                RequireLive(paused && routeProgress == beforeStale && DemoElapsed == timeBeforeStale,
+                    "A stale connection freezes the last confirmed location and countdown");
                 liveReceivedAt = receivedAt;
                 state.sequence++; state.clock++; state.progress = 1; state.moving = false; state.arrived = true;
+                state.demoComplete = true;
                 yield return Deliver(state);
-                RequireLive(arrived && routeProgress == 1 && paused, "Arrival synchronizes");
+                RequireLive(arrived && routeProgress == 1 && paused && DemoEnded && DemoCountdown == "0:00",
+                    "The laptop mirrors arrival at 100 percent and 0:00");
                 BrowseLiveRoutes();
                 state.sequence++; state.clock++; state.inMission = false;
                 yield return Deliver(state);
@@ -226,7 +243,7 @@ namespace MarsPath
                 Destroy(questRoot);
             }
             Debug.Log(passed ? "MARSPATH_LIVE_REVIEW_PASSED: selected route, zero start, source movement, stop, " +
-                "Quest acknowledgement, facing gate, reserves, hazards, head pose, compass, route browsing and latest live return, stale link, demo continuation and arrival."
+                "Quest acknowledgement, facing gate, reserves, hazards, head pose, compass, route browsing and latest live return, stale link, paused countdown and end-to-end demo arrival."
                 : "MARSPATH_LIVE_REVIEW_FAILED");
             Application.Quit(passed ? 0 : 2);
 
@@ -250,7 +267,8 @@ namespace MarsPath
             {
                 sample.missionSeconds = sample.progress * mission.routes[selectedRoute].etaMinutes * 60;
                 sample.travelledMetres = sample.progress * fullTrack.LengthKm * 1000;
-                sample.demoSeconds = sample.demoComplete ? 120 : sample.progress * 120;
+                sample.demoSeconds = sample.demoComplete
+                    ? MarsDemoDirector.DurationSeconds : sample.progress * MarsDemoDirector.DurationSeconds;
                 GeoPoint point = fullTrack.At(sample.progress);
                 sample.latitude = point.latitude; sample.longitude = point.longitude;
                 source.SendLiveState(sample.Encode());

@@ -186,26 +186,35 @@ namespace MarsPath
                 UpdateQuestFacing();
                 SetQuestWalkInput(MarsQuestControls.RightTriggerPressed(), cameraRig.QuestWalkTrackingReady);
             }
-            if (!missionStarted || paused || arrived || routeView.SelectedWorldPoints == null)
+            if (!missionStarted || arrived || reserveStop || routeView.SelectedWorldPoints == null)
             {
                 SetAstronautWalking(false);
                 return;
             }
 
             RouteData route = mission.routes[selectedRoute];
-            float seconds=Mathf.Min(Time.deltaTime,0.25f)*playbackSpeed;
-            if(demoPresentation)AdvancePresentation(Mathf.Min(Time.deltaTime,.15f),route);
-            else {AdvanceJourney(seconds,route);UpdateTimedJourneyPosition(route);}
+            bool wasPaused = paused;
+            if (demoPresentation && !helmetPreview) TickTwoMinuteDemo(route, Time.unscaledTimeAsDouble);
+            if (wasPaused)
+            {
+                SetAstronautWalking(false);
+                return;
+            }
+            if (!demoPresentation)
+            {
+                AdvanceJourney(Mathf.Min(Time.deltaTime, .25f) * playbackSpeed, route);
+                UpdateTimedJourneyPosition(route);
+            }
             UpdateLifeSupport(route);
             UpdateHazardProximity(route);
-            if(evaSimulation.ReserveReached){paused=true;reserveStop=true;SetAstronautWalking(false);}
-            if (routeProgress >= 1f)
+            if (ReserveBlocksTraversal) { paused = true; reserveStop = true; }
+            if (arrived || !demoPresentation && routeProgress >= 1f)
             {
                 arrived = true;
                 nearbyHazard = null;
                 SetAstronautWalking(false);
             }
-            else if(!paused)SetAstronautWalking(true);
+            else SetAstronautWalking(!paused);
         }
 
         private void UpdateFullscreenResolution()

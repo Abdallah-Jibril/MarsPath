@@ -217,24 +217,27 @@ namespace MarsPath
                 Debug.Log($"MISSION_ZONE_VISOR: {accepted} / same original station {JourneyLocation.latitude:R},{JourneyLocation.longitude:R} / zone {stationHeight:0.000}m, physical {physical:0.000}m / arrows {VisibleSurfaceArrows} / movement {moved}");
                 yield return CaptureHelmetReview("MarsPathMissionZoneVisor"+accepted+".png");
                 RestartTwoMinuteDemo();
-                RouteData previewRoute=mission.routes[selectedRoute];
-                AdvancePresentation(14.95f,previewRoute);
+                RouteData demoRoute=mission.routes[selectedRoute];
+                AdvancePresentation(14.95,demoRoute);
                 double before=surfaceMetres;
-                AdvancePresentation(.1f,previewRoute);
-                passed&=surfaceMetres>before&&surfaceMetres-before<.25;
-                AdvancePresentation(19.95f,previewRoute);paused=true;
+                AdvancePresentation(.1,demoRoute);
+                double expectedStep=fullTrack.LengthKm*1000*.1/MarsDemoDirector.DurationSeconds;
+                passed&=System.Math.Abs(surfaceMetres-before-expectedStep)<.01;
+                AdvancePresentation(19.95,demoRoute);paused=true;
                 passed&=DemoMode&&MarsMissionZone.Contains(JourneyLocation)&&ZoneReviewSamePoint(JourneyLocation,fullTrack.At(JourneyProgress))&&OfficialMeshMatches(surfaceRoot)&&VisibleSurfaceArrows>0;
                 cameraRig.SnapToMission(astronaut.transform);
                 if(accepted==0)yield return CaptureHelmetReview("MarsPathMissionZoneDemo.png");
                 if(wide)
                 {
-                    AdvancePresentation(85,previewRoute);
-                    double atEnd=surfaceMetres;
-                    passed&=DemoEnded&&paused&&!arrived&&System.Math.Abs(atEnd-192)<.01;
-                    ContinueAfterDemo();
-                    passed&=!DemoMode&&System.Math.Abs(surfaceMetres-atEnd)<.02;
-                    AdvanceJourney(.1f,previewRoute);UpdateTimedJourneyPosition(previewRoute);
-                    passed&=surfaceMetres>atEnd&&surfaceMetres-atEnd<1;
+                    evaSimulation.Reset(new TelemetryData{oxygenPercent=20.1f,suitPowerPercent=94,heartRateBpm=75});
+                    AdvancePresentation(84,demoRoute);
+                    bool beforeEnd=!arrived&&DemoElapsed==119&&evaSimulation.ReserveReached&&!reserveStop&&
+                        System.Math.Abs(routeProgress-119f/120)<.0001f;
+                    AdvancePresentation(2,demoRoute);
+                    bool reachedEnd=DemoEnded&&paused&&arrived&&DemoElapsed==120&&routeProgress==1&&
+                        ZoneReviewSamePoint(JourneyLocation,b)&&System.Math.Abs(surfaceMetres-fullTrack.LengthKm*1000)<.01;
+                    passed&=beforeEnd&&reachedEnd;
+                    Debug.Log($"MISSION_ZONE_DEMO_TIMING: before destination at 119s {beforeEnd}; reached the destination at 120s {reachedEnd} / {surfaceMetres:0} m");
                 }
                 if(wide)acceptedWide++;else acceptedShort++;
                 accepted++;

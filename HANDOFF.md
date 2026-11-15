@@ -27,7 +27,7 @@ The showcase loads reference endpoints and opens comparison. It must allow selec
 
 Reference Belva endpoints are approximately **18.475002° N, 77.377312° E** and **18.476877° N, 77.377708° E**. The reference Balanced track is approximately 144 m and includes measured ascent and descent.
 
-The two-minute demo moves continuously from the selected start. It covers the short reference track or the first 192 m of a longer route, then offers continuation. Full mission mode exposes mission-time speeds ×1, ×30, and ×50. Avoid reintroducing unexplained jumps between route highlights.
+The two-minute demo completes the selected Jezero route in 120 active seconds. Releasing the trigger or losing a valid walking state freezes position and countdown together. Longer Jezero routes play at a faster presentation pace. Outside the measured sector, the demo previews up to 192 m and offers continuation. Full mission mode exposes mission-time speeds ×1, ×30, and ×50.
 
 The shortcut opens borderless fullscreen. Interface text is English. Coordinate parsing also accepts additional numeral forms.
 

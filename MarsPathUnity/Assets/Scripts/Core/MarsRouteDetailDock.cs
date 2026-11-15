@@ -29,7 +29,7 @@ namespace MarsPath
             }
             UiFill(new Rect(400,645,1160,2),new Color(.13f,.27f,.30f));
             GUI.Label(new Rect(405,653,670,29),route.displayName.ToUpperInvariant()+" / ROUTE BRIEF",planLabel);
-            string[] labels={"ROUTE LENGTH","TIME ESTIMATE","ASCENT / DESCENT","MAX TRACK GRADE"};
+            string[] labels={"ROUTE LENGTH","FULL ROUTE ETA","ASCENT / DESCENT","MAX TRACK GRADE"};
             string[] values={FormatRouteLength(facts.routeLengthKm),TimeLabel(facts.etaMinutes),$"+{facts.ascentMeters:0} / −{facts.descentMeters:0} m",facts.maxGradeDegrees.ToString("0.0")+"°"};
             for(int i=0;i<4;i++)
             {float x=405+i*177;GUI.Label(new Rect(x,690,172,22),labels[i],planCaption);GUI.Label(new Rect(x,715,172,32),values[i],profileMetric);if(i>0)UiFill(new Rect(x-13,694,1,49),new Color(.16f,.29f,.32f));}
@@ -96,7 +96,10 @@ namespace MarsPath
             RouteData active = mission.routes[selectedRoute];
             Color accent = LiveMissionFresh ? UiCyan : UiAmber;
             PlanningCard(new Rect(1160, 668, 394, 146), accent);
-            GUI.Label(new Rect(1180, 681, 353, 22), LiveMissionFresh ? "LIVE ON QUEST" : "WAITING FOR QUEST UPDATE", planCaption);
+            string liveStatus = LiveMissionFresh ? "LIVE ON QUEST" : "WAITING FOR QUEST UPDATE";
+            if (currentLiveState?.demo == true)
+                liveStatus += $"   ·   DEMO {MarsDemoDirector.RemainingLabel(currentLiveState.demoSeconds)}";
+            GUI.Label(new Rect(1180, 681, 353, 22), liveStatus, planCaption);
             GUI.Label(new Rect(1180, 710, 264, 30), active.displayName, planLabel);
             float progress = currentLiveState?.progress ?? routeProgress;
             GUI.Label(new Rect(1442, 710, 91, 30), $"{progress:P1}", planLabel);

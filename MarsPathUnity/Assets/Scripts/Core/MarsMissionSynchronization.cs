@@ -280,6 +280,8 @@ namespace MarsPath
                 : arrived ? "DESTINATION REACHED" : reserveStop ? "RESERVE STOP"
                 : DemoEnded ? "DEMO COMPLETE" : currentLiveState.facingBlocked ? "FACING AWAY · WALKING LOCKED"
                 : paused ? "ASTRONAUT STOPPED" : "ASTRONAUT WALKING";
+            if (demoPresentation && !reserveStop)
+                status = $"DEMO {DemoCountdown}{(DemoEnded ? "" : " LEFT")}  ·  {status}";
             GUI.Label(new Rect(449, 106, 371, 25), "MISSION CONTROL  /  LIVE QUEST", visorHeading);
             GUI.Label(new Rect(925, 104, 226, 28), $"{routeProgress * 100:0.0} / 100%", visorLivePercent);
             GUI.Label(new Rect(449, 132, 371, 22), status, visorSmall);

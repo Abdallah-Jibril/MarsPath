@@ -63,7 +63,8 @@ namespace MarsPath
             string unit=km>10?"km":"m";
             GUI.Label(new Rect(41,57,310,54),$"{distance} <size=22><color=#B5CCD2>{unit}</color></size>",visorDistance);
             UiFill(new Rect(42,115,306,1),new Color(accent.r,accent.g,accent.b,.27f));
-            GUI.Label(new Rect(42,124,306,23),"TO DESTINATION  ·  "+TimeLabel(route.etaMinutes*remaining)+" est.",visorDistanceMeta);
+            string eta = demoPresentation ? "" : "  ·  " + TimeLabel(route.etaMinutes * remaining) + " est.";
+            GUI.Label(new Rect(42,124,306,23),"TO DESTINATION" + eta,visorDistanceMeta);
         }
         private void DrawVisorActions(Color routeColor)
         {
@@ -81,8 +82,16 @@ namespace MarsPath
             }
             bool previousEnabled=GUI.enabled;
             GUI.enabled=previousEnabled&&!reserveStop;
-            if(DrawVisorAction(new Rect(504,820,176,52),helmetPreview?"START EVA":DemoEnded?"CONTINUE ROUTE":paused?"RESUME":"PAUSE",null,routeColor,true))
-            {if(helmetPreview)StartFromHelmetPreview();else if(DemoEnded)ContinueAfterDemo();else paused=!paused;}
+            bool replayDemo = DemoEnded && arrived;
+            string playbackAction = helmetPreview ? "START EVA" : replayDemo ? "REPLAY DEMO"
+                : DemoEnded ? "CONTINUE ROUTE" : paused ? "RESUME" : "PAUSE";
+            if (DrawVisorAction(new Rect(504, 820, 176, 52), playbackAction, null, routeColor, true))
+            {
+                if (helmetPreview) StartFromHelmetPreview();
+                else if (replayDemo) StartMission();
+                else if (DemoEnded) ContinueAfterDemo();
+                else paused = !paused;
+            }
             GUI.enabled=previousEnabled;
             if(DrawVisorAction(new Rect(701,820,198,52),cameraRig.HelmetView?"CHASE VIEW":"VISOR VIEW","V",UiCyan,false))
             {cameraRig.SetHelmetView(!cameraRig.HelmetView);ResetVisorPanels();}

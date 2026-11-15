@@ -172,8 +172,8 @@ namespace MarsPath
                 string status=helmetPreview?"HELMET PREVIEW":arrived?"DESTINATION REACHED":reserveStop?"RESERVE STOP · "+mode:DemoEnded?"DEMO COMPLETE":paused?"PAUSED · "+mode:mode;
                 GUI.Label(new Rect(459,107,682,27),status,visorStatus);
                 UiBar(new Rect(568,145,464,3),demoPresentation?DemoElapsed/MarsDemoDirector.DurationSeconds:routeProgress,color);
-                string countdown = demoPresentation && !DemoEnded && !arrived
-                    ? $"{Mathf.CeilToInt(MarsDemoDirector.DurationSeconds - DemoElapsed)}s LEFT   ·   " : string.Empty;
+                string countdown = demoPresentation
+                    ? $"{DemoCountdown}{(DemoEnded ? "" : " LEFT")}   ·   " : string.Empty;
                 GUI.Label(new Rect(484,161,632,23),countdown +
                     $"{routeProgress*100:0.0}% OF ROUTE   ·   SURFACE {currentSlopeDegrees:0.0}°",visorCenteredSmall);
             }
@@ -211,6 +211,8 @@ namespace MarsPath
             {title="RESERVE STOP";detail="LIFE SUPPORT · PAUSED";symbol=MarsHazardIcons.Symbol.LifeSupport;}
             else if (QuestFacingBlocked)
             { title = questRouteFacing.Title; detail = questRouteFacing.Instruction; symbol = MarsHazardIcons.Symbol.Direction; }
+            else if (FullRouteDemo && evaSimulation.ReserveReached)
+            { title = "MODELED RESERVE LIMIT"; detail = "SUIT MODEL AT RESERVE · DEMO CONTINUES"; symbol = MarsHazardIcons.Symbol.LifeSupport; }
             else if(rockAhead)
             {
                 title=rockFieldCount>0?"ROCK FIELD AHEAD":"BOULDER AHEAD";
@@ -252,7 +254,7 @@ namespace MarsPath
         private void DrawMissionDetailSheet()
         {
             UiCard(new Rect(1231,397,347,388),UiCyan);GUI.Label(new Rect(1250,412,309,29),"MISSION DETAILS / MODEL",labelStyle);
-            GUI.Label(new Rect(1250,458,309,28),$"Estimated route time: {TimeLabel(mission.routes[selectedRoute].etaMinutes)}",smallStyle);
+            GUI.Label(new Rect(1250,458,309,28),$"Full route ETA: {TimeLabel(mission.routes[selectedRoute].etaMinutes)}",smallStyle);
             GUI.Label(new Rect(1250,500,309,43),CoordinateShort(new GeoPoint{latitude=currentLatitude,longitude=currentLongitude}),smallStyle);
             GUI.Label(new Rect(1250,550,309,28),$"Body {metabolicWatts:0} W / suit {electricalWatts:0} W / O₂ {oxygenFlowGramsPerHour:0} g/h",captionStyle);
             GUI.Label(new Rect(1250,591,309,27),$"Signed DEM grade {currentSignedDemGradeDegrees:+0.0;-0.0;0.0}° / g 3.71 m/s²",captionStyle);

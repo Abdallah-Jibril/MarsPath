@@ -235,7 +235,7 @@ Rocks use repeatable geographic seeds and clustered procedural placement. Shapes
 ## 10. Time, reserves, and demonstration behavior
 
 - Resource loss follows **simulated mission seconds**, not frame count. ×30 advances thirty mission seconds per real second, and consumes thirty times the corresponding resource demand for a constant state.
-- The two-minute mode compresses a selected continuous route segment into the presentation. Its wall-clock duration is not the real EVA travel time; resources follow the represented mission time.
+- In two-minute mode, 120 active seconds present the complete Jezero route or a continuous preview outside the sector. The presentation timer pauses with movement. The suit model uses represented mission time. In the full-route Jezero demo, the view can progress after the model reaches a reserve boundary, and the model holds its reserve values.
 - Controller release or pause freezes the **simulation clock**. It does not imply an astronaut can stop breathing by releasing a trigger. A stationary state still has nonzero demand when mission time advances.
 - Resource integration stops exactly at the first configured reserve boundary, rather than continuing at zero oxygen or power.
 - Expedition mode assumes resupply every four mission hours. Those support locations are not verified. Reserve exhaustion can stop a leg earlier. This assumption is unsuitable for an operational route approval.
