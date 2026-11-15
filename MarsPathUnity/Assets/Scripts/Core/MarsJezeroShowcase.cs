@@ -8,6 +8,10 @@ namespace MarsPath
     {
         private MissionData jezeroShowcaseMission;
         private bool preparingJezeroShowcase;
+        private static GeoPoint BelvaStart() => new GeoPoint
+        {
+            latitude = 18.47500229f, longitude = 77.37731171f, label = "Belva inner rim approach"
+        };
 
         private IEnumerator PrepareJezeroShowcase()
         {
@@ -16,10 +20,7 @@ namespace MarsPath
             try
             {
                 if (Application.platform == RuntimePlatform.Android) RefinementEnabled = false;
-                var start = new GeoPoint
-                {
-                    latitude = 18.47500229f, longitude = 77.37731171f, label = "Belva inner rim approach"
-                };
+                GeoPoint start = BelvaStart();
                 var end = new GeoPoint
                 {
                     latitude = 18.4778f, longitude = 77.3778f, label = "Belva inner slope waypoint"
@@ -55,7 +56,20 @@ namespace MarsPath
 
         private IEnumerator Start()
         {
-            if (Application.platform == RuntimePlatform.Android) yield break;
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                yield return null;
+                bool WaitingInLobby() => questMissionControl && GlobalView.IsVisible &&
+                    !GlobalView.IsBusy && !questDispatchLoading;
+                yield return MarsOfficialTerrain.WarmMissionZone(WaitingInLobby);
+                if (WaitingInLobby())
+                {
+                    _ = MarsMissionZone.Image;
+                    yield return null;
+                    if (WaitingInLobby()) MarsOfficialTerrain.WarmMissionZoneImagery(BelvaStart());
+                }
+                yield break;
+            }
             string[] arguments = Environment.GetCommandLineArgs();
             if (Array.IndexOf(arguments, "--mars-live-mission-review") >= 0)
             {

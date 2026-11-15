@@ -58,7 +58,10 @@ namespace MarsPath
         private string questDispatchError, dispatchRouteName, dispatchError;
         private GUIStyle plannerRadioActivity;
         private DispatchedPlan pendingDesktopPlan;
+        private MissionData pendingDesktopSource;
         private Guid pendingDesktopSession;
+        private double dispatchBegan;
+        private bool dispatchReceiptLogged;
 
         internal bool QuestMissionControlMode => questMissionControl;
         internal bool QuestDispatchLoading => questDispatchLoading;
@@ -110,14 +113,18 @@ namespace MarsPath
                 return;
             }
             dispatchError = null;
+            double began = Time.realtimeSinceStartupAsDouble;
             var plan = new DispatchedPlan { mission = mission, selectedRoute = selectedRoute, demo = demoPresentation };
             byte[] encoded = plan.Encode();
             dispatchRouteName = mission.routes[selectedRoute].displayName.ToUpperInvariant();
             if (missionRadio.QueueRoute(encoded))
             {
                 pendingDesktopPlan = DispatchedPlan.Decode(encoded);
+                pendingDesktopSource = mission;
                 pendingDesktopSession = missionRadio.DispatchId;
-                Debug.Log($"MARSPATH_CONTROL: dispatch {mission.routes[selectedRoute].id}, demo={demoPresentation}");
+                dispatchBegan = began;
+                dispatchReceiptLogged = false;
+                Debug.Log($"MARSPATH_CONTROL: dispatch {mission.routes[selectedRoute].id}, demo={demoPresentation}, {encoded.Length} bytes");
             }
             else dispatchError = "COULD NOT SEND ROUTE · TRY AGAIN";
         }
@@ -128,24 +135,39 @@ namespace MarsPath
             if (missionRadio.DispatchId != pendingDesktopSession)
             {
                 pendingDesktopPlan = null;
+                pendingDesktopSource = null;
                 dispatchError = "DISPATCH CHANGED · SELECT THE ROUTE AGAIN";
                 return;
             }
             if (missionRadio.DispatchStatus != Started)
             {
-                if (!missionRadio.DispatchPending) pendingDesktopPlan = null;
+                if (!dispatchReceiptLogged && missionRadio.DispatchStatus == Preparing)
+                {
+                    dispatchReceiptLogged = true;
+                    Debug.Log($"MARSPATH_DISPATCH: Quest received plan in {Time.realtimeSinceStartupAsDouble - dispatchBegan:F2}s round trip");
+                }
+                if (!missionRadio.DispatchPending)
+                {
+                    pendingDesktopPlan = null;
+                    pendingDesktopSource = null;
+                }
                 return;
             }
             DispatchedPlan plan = pendingDesktopPlan;
             Guid session = pendingDesktopSession;
+            bool reusePlanner = MarsMissionZone.IsMission(plan.mission) &&
+                ReferenceEquals(mission, pendingDesktopSource) && !missionStarted &&
+                !planningSceneDeferred && terrainRoot != null && routesRoot != null;
             pendingDesktopPlan = null;
+            pendingDesktopSource = null;
             try
             {
-                // Replay the exact queued plan after the headset has acknowledged
-                // loading it. No disconnected press can silently start a local trip.
-                LoadRegionalMission(plan.mission);
+                // The measured Jezero plan is already displayed and cannot refine
+                // in the background. Replay the frozen snapshot if the plan changed.
+                if (!reusePlanner) LoadRegionalMission(plan.mission);
                 SelectRoute(plan.selectedRoute);
                 demoPresentation = plan.demo;
+                Debug.Log($"MARSPATH_DISPATCH: Quest acknowledged in {Time.realtimeSinceStartupAsDouble - dispatchBegan:F2}s, reused planner={reusePlanner}");
                 BeginDesktopMirror(session);
             }
             catch (Exception exception)
@@ -179,6 +201,7 @@ namespace MarsPath
 
         private IEnumerator LoadDispatchedPlan(Guid id, byte[] payload)
         {
+            double loadBegan = Time.realtimeSinceStartupAsDouble;
             questDispatchLoading = true;
             questLiveSession = id;
             liveSequence = 0;
@@ -192,14 +215,17 @@ namespace MarsPath
                 {
                     DispatchedPlan plan = DispatchedPlan.Decode(payload);
                     CancelTerrainRefinement();
-                    RestoreLocalRegionSources(plan.mission.currentLocation, plan.mission.destination);
-                    if (MarsMissionZone.IsMission(plan.mission) && !MarsMissionZone.Available)
+                    bool measuredZone = MarsMissionZone.IsMission(plan.mission);
+                    if (measuredZone && !MarsMissionZone.Available)
                         throw new InvalidOperationException("The measured Jezero dataset is missing.");
+                    RestoreLocalRegionSources(plan.mission.currentLocation, plan.mission.destination, terrainOnly: measuredZone);
                     GlobalView.SetEndpoints(plan.mission.currentLocation, plan.mission.destination);
-                    LoadRegionalMission(plan.mission);
+                    LoadRegionalMissionData(plan.mission, measuredZone && plan.mission.generatedRegion);
                     SelectRoute(plan.selectedRoute);
                     demoPresentation = plan.demo;
                     inspectProgress = 0;
+                    if (measuredZone)
+                        Debug.Log($"MARSPATH_DISPATCH: Quest plan initialized in {Time.realtimeSinceStartupAsDouble - loadBegan:F2}s");
                     loaded = true;
                 }
                 catch (Exception exception)
@@ -237,6 +263,7 @@ namespace MarsPath
             {
                 PauseQuestTraverse();
                 missionRadio.ReportRoute(id, Started);
+                Debug.Log($"MARSPATH_DISPATCH: Quest terrain ready in {Time.realtimeSinceStartupAsDouble - loadBegan:F2}s, deferred planner={planningSceneDeferred}");
                 Debug.Log($"MARSPATH_CONTROL: Quest entered {mission.routes[selectedRoute].id}, demo={demoPresentation}, " +
                     $"points={mission.routes[selectedRoute].waypoints.Length}, progress={routeProgress:P1}");
             }

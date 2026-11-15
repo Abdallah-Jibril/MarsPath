@@ -72,6 +72,7 @@ namespace MarsPath
             var source = questRoot.AddComponent<MarsMissionRadio>();
             missionRadio.Initialize(false);
             source.Initialize(true);
+            GameObject plannedTerrain = terrainRoot;
             EnterHelmetFromPlanner();
             RequireLive(!missionStarted && !desktopMissionMirror && PlanningDispatchPending,
                 "A disconnected desktop launch queues the route without starting a local mission");
@@ -95,6 +96,7 @@ namespace MarsPath
                 yield return PumpUntil(() => missionStarted && !helmetEntryLoading);
                 RequireLive(selectedRoute == 1 && routeProgress == 0 && DemoElapsed == 0 && paused,
                     "Selected route enters at zero and waits");
+                RequireLive(terrainRoot == plannedTerrain, "The live Jezero mirror reuses the existing planner terrain");
                 var state = new MarsMissionLiveState
                 {
                     session = session.ToString("N"), sequence = 1, clock = 1,

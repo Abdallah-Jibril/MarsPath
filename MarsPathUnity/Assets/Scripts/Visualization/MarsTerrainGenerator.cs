@@ -69,6 +69,9 @@ namespace MarsPath
             imageryMetresPerUnit=regionalMode?MarsRegionalTerrain.MetersPerUnit:1;
             LoadJezeroHeightData();
             bool journeyMap=regionalMode&&!MarsRegionalTerrain.HumanScale;
+            bool measuredSurface = regionalMode && MarsRegionalTerrain.HumanScale;
+            bool zoneSurface = measuredSurface && MarsRegionalTerrain.UsesMeasuredZoneSurface;
+            double terrainBegan = Time.realtimeSinceStartupAsDouble;
             float visualSize=journeyMap?TerrainSize*1.25f:VisualTerrainSize;
             float spacing=regionalMode?MarsRegionalTerrain.SourceSpacingMeters(sourceMission.regionCenter):20f;
             int resolution=regionalMode?(MarsRegionalTerrain.HumanScale?(spacing<=2?385:spacing<=25?193:97):Mathf.Clamp(Mathf.CeilToInt(visualSize*MarsRegionalTerrain.MetersPerUnit/spacing)+1,193,513)):Resolution;
@@ -98,32 +101,45 @@ namespace MarsPath
                 {
                     float worldX = ((float)x / (resolution - 1) - 0.5f) * visualSize;
                     float worldZ = ((float)z / (resolution - 1) - 0.5f) * visualSize;
-                    float height = SampleHeight(worldX, worldZ);
-                    GeoPoint location=regionalMode?MarsRegionalTerrain.ToGeo(worldX,worldZ):null;
+                    float height, latitude = 0, longitude = 0;
+                    if (zoneSurface)
+                        height = MarsRegionalTerrain.SampleZoneSurface(worldX, worldZ, out latitude, out longitude);
+                    else
+                    {
+                        height = SampleHeight(worldX, worldZ);
+                        if (regionalMode)
+                        {
+                            GeoPoint location = MarsRegionalTerrain.ToGeo(worldX, worldZ);
+                            latitude = location.latitude;
+                            longitude = location.longitude;
+                        }
+                    }
                     int index = z * resolution + x;
-                    if(regionalMode)geographicUvs[index]=MarsGeospatial.ToEquirectangularUv(location.latitude,location.longitude);
+                    if(regionalMode)geographicUvs[index]=MarsGeospatial.ToEquirectangularUv(latitude,longitude);
                     Vector3 vertex=new Vector3(worldX,height,worldZ);
                     vertices[index] = vertex;
                     uvs[index] = new Vector2(
                         Mathf.Clamp01(worldX / TerrainSize + 0.5f),
                         Mathf.Clamp01(worldZ / TerrainSize + 0.5f));
                     if(regionalMode)uvs[index]=new Vector2(worldX/18f,worldZ/18f);
-                    if(regionalMode&&sourceMission.usesJezeroDem&&!journeyMap)uvs[index]=MarsRegionalTerrain.FullOrthoUv(worldX,worldZ);
+                    if(regionalMode&&sourceMission.usesJezeroDem&&!journeyMap)uvs[index]=MarsRegionalTerrain.FullOrthoUvAt(latitude,longitude);
                     if(journeyMap)
                     {
-                        Vector2 globalUv=MarsGeospatial.ToEquirectangularUv(location.latitude,location.longitude);
-                        globalUv.x=(sourceMission.regionCenter.longitude+180f)/360f+MarsGeospatial.NormalizeLongitude(location.longitude-sourceMission.regionCenter.longitude)/360f;
+                        Vector2 globalUv=geographicUvs[index];
+                        globalUv.x=(sourceMission.regionCenter.longitude+180f)/360f+MarsGeospatial.NormalizeLongitude(longitude-sourceMission.regionCenter.longitude)/360f;
                         uvs[index]=globalUv;
                     }
 
-                    float shade = Mathf.InverseLerp(-3f, 10f, height);
-                    float mineralVariation = Mathf.PerlinNoise((worldX + 30f) * 0.14f, (worldZ - 40f) * 0.14f);
-                    Color low = new Color(0.72f, 0.58f, 0.50f);
-                    Color high = new Color(1.05f, 0.93f, 0.82f);
-                    Color mineral = new Color(0.94f, 0.73f, 0.59f);
-                    colors[index] = Color.Lerp(Color.Lerp(low, high, shade), mineral, mineralVariation * 0.24f);
-                    if(journeyMap)colors[index]=Color.white;
-                    if(regionalMode&&MarsRegionalTerrain.HumanScale)colors[index]=Color.white;
+                    if (regionalMode) colors[index] = Color.white;
+                    else
+                    {
+                        float shade = Mathf.InverseLerp(-3f, 10f, height);
+                        float mineralVariation = Mathf.PerlinNoise((worldX + 30f) * 0.14f, (worldZ - 40f) * 0.14f);
+                        Color low = new Color(0.72f, 0.58f, 0.50f);
+                        Color high = new Color(1.05f, 0.93f, 0.82f);
+                        Color mineral = new Color(0.94f, 0.73f, 0.59f);
+                        colors[index] = Color.Lerp(Color.Lerp(low, high, shade), mineral, mineralVariation * 0.24f);
+                    }
 
                     if (x < resolution - 1 && z < resolution - 1)
                     {
@@ -152,8 +168,7 @@ namespace MarsPath
             mesh.colors = colors;
             mesh.uv = uvs;
             mesh.uv2=geographicUvs;
-            mesh.RecalculateNormals();
-            if(regionalMode&&MarsRegionalTerrain.HumanScale)
+            if(measuredSurface)
             {
                 measuredNormals=new MarsMeasuredNormalField(visualSize*.5f+12,spacing,visualSize/(resolution-1));
                 var normals=new Vector3[vertices.Length];
@@ -161,8 +176,10 @@ namespace MarsPath
                 {Vector3 p=vertices[i];normals[i]=measuredNormals.At(p.x,p.z);}
                 mesh.normals=normals;
             }
+            else mesh.RecalculateNormals();
             mesh.RecalculateTangents();
             mesh.RecalculateBounds();
+            double nearReady = Time.realtimeSinceStartupAsDouble;
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();
             filter.sharedMesh = mesh;
@@ -210,6 +227,7 @@ namespace MarsPath
                 terrainMaterial.SetFloat("_GeodesicUv",1);
                 terrainMaterial.SetVector("_GeoFrame",new Vector4(sourceMission.regionCenter.latitude*Mathf.Deg2Rad,sourceMission.regionCenter.longitude*Mathf.Deg2Rad,MarsRegionalTerrain.MetersPerUnit/(float)MarsRegionalTerrain.RadiusMeters,0));
             }
+            double materialReady = Time.realtimeSinceStartupAsDouble;
             if(!journeyMap)BuildDistantTerrain(terrainMaterial,mesh,resolution);
             else
             {
@@ -218,16 +236,22 @@ namespace MarsPath
             }
             // Orbital planning uses analytical camera controls and no surface
             // collision. Only the metre-scale ground needs a physics collider.
-            if(!regionalMode||MarsRegionalTerrain.HumanScale)
+            double horizonReady = Time.realtimeSinceStartupAsDouble;
+            if(!regionalMode||measuredSurface)
             {MeshCollider collider=gameObject.AddComponent<MeshCollider>();collider.sharedMesh=mesh;}
+            double colliderReady = Time.realtimeSinceStartupAsDouble;
             // Measured scenes get their landforms from the DTM. Decorative
             // boulders are retained only in the legacy illustrative mock scene.
             if(!regionalMode)BuildRockField();
-            else if(MarsRegionalTerrain.HumanScale)
+            else if(measuredSurface)
             {
                 gameObject.AddComponent<MarsSurfaceRockScatter>().Build(sourceMission);
                 gameObject.AddComponent<MarsSurfaceGravel>().Build(sourceMission,vertices,resolution,visualSize);
             }
+            if (zoneSurface)
+                Debug.Log($"MARSPATH_SURFACE: near={nearReady - terrainBegan:F2}s, material={materialReady - nearReady:F2}s, " +
+                    $"horizon={horizonReady - materialReady:F2}s, collider={colliderReady - horizonReady:F2}s, " +
+                    $"surface detail={Time.realtimeSinceStartupAsDouble - colliderReady:F2}s");
             // The source panorama is retained in the project for reference and
             // later skybox work. A cylinder looked like an overhead ceiling from
             // the EVA camera, so the prototype relies on terrain + atmospheric fog.
@@ -411,11 +435,24 @@ namespace MarsPath
             int bridgeStart=axis.FindLastIndex(value=>value < -edge);
             int bridgeEnd=n-1-bridgeStart;
             float originElevation=MarsRegionalTerrain.MeasuredElevation(mission.regionCenter);
+            bool zoneSurface = MarsRegionalTerrain.UsesMeasuredZoneSurface;
             for(int z=0;z<n;z++)for(int x=0;x<n;x++)
             {
-                int k=z*n+x;float px=axis[x],pz=axis[z];vertices[k]=MarsMeasuredHorizon.Project(px,pz,SampleHeight(px,pz),originElevation);colors[k]=Color.white;
-                uv[k]=mission.usesJezeroDem?MarsRegionalTerrain.FullOrthoUv(px,pz):new Vector2(px/18,pz/18);
-                GeoPoint p=MarsRegionalTerrain.ToGeo(px,pz);geographic[k]=MarsGeospatial.ToEquirectangularUv(p.latitude,p.longitude);
+                int k = z * n + x;
+                float px = axis[x], pz = axis[z], height, latitude, longitude;
+                if (zoneSurface)
+                    height = MarsRegionalTerrain.SampleZoneSurface(px, pz, out latitude, out longitude);
+                else
+                {
+                    height = SampleHeight(px, pz);
+                    GeoPoint location = MarsRegionalTerrain.ToGeo(px, pz);
+                    latitude = location.latitude;
+                    longitude = location.longitude;
+                }
+                vertices[k] = MarsMeasuredHorizon.Project(px, pz, height, originElevation);
+                colors[k] = Color.white;
+                uv[k] = mission.usesJezeroDem ? MarsRegionalTerrain.FullOrthoUvAt(latitude, longitude) : new Vector2(px / 18, pz / 18);
+                geographic[k] = MarsGeospatial.ToEquirectangularUv(latitude, longitude);
                 if(x==n-1||z==n-1)continue;
                 if(x>=bridgeStart&&x<bridgeEnd&&z>=bridgeStart&&z<bridgeEnd)continue;
                 float farX=Mathf.Max(Mathf.Abs(px),Mathf.Abs(axis[x+1])),farZ=Mathf.Max(Mathf.Abs(pz),Mathf.Abs(axis[z+1]));

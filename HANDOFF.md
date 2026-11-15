@@ -68,6 +68,8 @@ The Quest right trigger does not recenter the camera. Looking more than 75° awa
 
 Desktop helmet launch always queues the selected route for Mission Control, even if the headset is temporarily unavailable. It stays in the planner until Quest acknowledges loading the frozen plan. It then prepares the matching desktop mirror at zero and announces readiness. There is no disconnected fallback to an advancing local mission. The separate **LAPTOP PREVIEW** button supports local visual inspection.
 
+The Quest lobby preloads the bundled Jezero DEM and initial Belva imagery. The dispatched headset builds the walking surface directly, and Windows reuses the current Jezero planner when it matches the transmitted plan. The 15 November local Wi-Fi trials reached Quest readiness in 2.55 s and 2.47 s, with both live views ready in 3.64 s and 3.54 s. [Timing method and trial details](docs/LIVE_MISSION_AUDIO_VALIDATION.md#15-november-faster-mission-entry-over-local-wi-fi)
+
 The astronaut starts stationary and holds the right trigger to walk. Right B returns from a dispatched mission to the waiting lobby. A opens the independent Quest planner from the lobby. In independent planning, B returns from the zone or globe as indicated on screen.
 
 Hold Y from the laptop route comparison or helmet. Hold the left trigger from the Quest lobby or helmet. Take turns and release the button after speaking. The radio stays available while walking is paused.

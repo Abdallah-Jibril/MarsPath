@@ -62,10 +62,18 @@ namespace MarsPath
         {
             if(surfaceRoot!=null){surfaceRoot.SetActive(false);Destroy(surfaceRoot);}
             surfaceAnchorMetres=metres;surfaceMetres=metres;surfaceCenter=fullTrack.AtMeters(metres);
-            MarsCtxImageryCache.ActivateAt(surfaceCenter);
+            bool measuredZone = MarsMissionZone.IsMission(mission);
+            double sourcesBegan = Time.realtimeSinceStartupAsDouble;
+            if (!measuredZone) MarsCtxImageryCache.ActivateAt(surfaceCenter);
             MarsOfficialTerrain.RestoreCachedGeometry(surfaceCenter);
             if(!MarsOfficialTerrain.ActivateCachedImagery(surfaceCenter))
-            {GeoPoint ia=MarsGeospatial.Destination(surfaceCenter,270,1.3f),ib=MarsGeospatial.Destination(surfaceCenter,90,1.3f);MarsRegionSourceCache.TryLoadCachedImagery(ia,ib);}
+            {
+                if (measuredZone) MarsCtxImageryCache.ActivateAt(surfaceCenter);
+                GeoPoint ia = MarsGeospatial.Destination(surfaceCenter, 270, 1.3f);
+                GeoPoint ib = MarsGeospatial.Destination(surfaceCenter, 90, 1.3f);
+                MarsRegionSourceCache.TryLoadCachedImagery(ia, ib);
+            }
+            if (measuredZone) Debug.Log($"MARSPATH_SURFACE: local sources={Time.realtimeSinceStartupAsDouble - sourcesBegan:F2}s");
             MissionData patch=new MissionData{generatedRegion=true,regionCenter=surfaceCenter,currentLocation=surfaceCenter,destination=fullTrack.AtMeters(metres+100),
                 regionSpanKm=0.12f,usesJezeroDem=MarsRegionalTerrain.InJezeroCrop(surfaceCenter),terrainProfile=mission.terrainProfile,region=mission.region,telemetry=mission.telemetry,routingOptions=mission.routingOptions};
             MarsRegionalTerrain.Configure(patch);

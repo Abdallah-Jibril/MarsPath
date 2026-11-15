@@ -18,6 +18,8 @@ namespace MarsPath
         private static byte[] mola, jezero,fullJezero;
         public static bool HasFullJezero=>fullJezero!=null&&fullJezero.Length==4456*5067*2;
         private static Vector3 center, east, north;
+        private static double zoneSinLatitude, zoneCosLatitude, zoneLongitude;
+        internal static bool UsesMeasuredZoneSurface { get; private set; }
         private static float seed, centerElevation, visualGain;
         private static string profile;
         // Planning is an azimuthal-equidistant relief map at every distance.
@@ -37,6 +39,15 @@ namespace MarsPath
             Current = mission;
             MetersPerUnit = Mathf.Max(1f, mission.regionSpanKm * 1000f / MarsTerrainGenerator.TerrainSize);
             GeoPoint origin = mission.regionCenter ?? mission.currentLocation;
+            UsesMeasuredZoneSurface = HumanScale && MarsMissionZone.IsMission(mission) &&
+                MarsMissionZone.BoundsContain(origin);
+            if (UsesMeasuredZoneSurface)
+            {
+                double latitude = origin.latitude * Math.PI / 180;
+                zoneSinLatitude = Math.Sin(latitude);
+                zoneCosLatitude = Math.Cos(latitude);
+                zoneLongitude = origin.longitude * Math.PI / 180;
+            }
             center = MarsGeospatial.ToUnitSphere(origin.latitude, origin.longitude);
             east = MarsGeospatial.ToUnitSphere(0f, origin.longitude + 90f);
             north = Vector3.Cross(east, center).normalized;
@@ -108,8 +119,10 @@ namespace MarsPath
             // and made the map's outer surface disagree with the walking view.
             // All providers below are local/cache lookups: sampling starts no
             // downloads and uses the same measured hierarchy at every scale.
-            return (WorldElevation(x,z)-centerElevation)*visualGain-1.5f;
+            return RelativeHeight(WorldElevation(x,z));
         }
+
+        private static float RelativeHeight(float elevation) => (elevation - centerElevation) * visualGain - 1.5f;
 
         public static bool InJezeroCrop(GeoPoint point)
         {LoadData();return TryFullJezero(point,out _);}
@@ -129,8 +142,13 @@ namespace MarsPath
         private static short ReadFull(int x,int y){int offset=(y*4456+x)*2;return (short)(fullJezero[offset]|fullJezero[offset+1]<<8);}
         public static Vector2 FullOrthoUv(float x,float z)
         {
-            GeoPoint p=ToGeo(x,z);const double radius=3396190;
-            double east=radius*Math.Cos(18.4663*Math.PI/180)*p.longitude*Math.PI/180,north=radius*p.latitude*Math.PI/180;
+            GeoPoint point = ToGeo(x, z);
+            return FullOrthoUvAt(point.latitude, point.longitude);
+        }
+        internal static Vector2 FullOrthoUvAt(float latitude, float longitude)
+        {
+            const double radius=3396190;
+            double east=radius*Math.Cos(18.4663*Math.PI/180)*longitude*Math.PI/180,north=radius*latitude*Math.PI/180;
             return new Vector2((float)((east-4329192.10812596)/(17766*5.00206468110263)),(float)(1-(1143347.424175-north)/(20234*5.00226297161329)));
         }
 
@@ -147,8 +165,40 @@ namespace MarsPath
         }
         private static float WorldElevation(float x,float z)
         {
+            if (UsesMeasuredZoneSurface)
+            {
+                ProjectZoneSurface(x, z, out double latitude, out double longitude);
+                return ZoneSurfaceElevation(latitude, longitude);
+            }
             GeoPoint point=ToGeo(x,z);float basis=BaseElevation(point);
             return MarsOfficialTerrain.TryWorld(Current.regionCenter??Current.currentLocation,x,z,MetersPerUnit,out float official,out float blend)?Mathf.Lerp(basis,official,blend):basis;
+        }
+        internal static float SampleZoneSurface(float x, float z, out float latitude, out float longitude)
+        {
+            ProjectZoneSurface(x, z, out double lat, out double lon);
+            latitude = (float)lat;
+            longitude = (float)lon;
+            return RelativeHeight(ZoneSurfaceElevation(lat, lon));
+        }
+        private static void ProjectZoneSurface(float x, float z, out double latitude, out double longitude)
+        {
+            // Same geodesic as the official world sampler. The components of the
+            // unit bearing are x/distance and z/distance near this equatorial zone.
+            double distance = Math.Sqrt((double)x * x + (double)z * z);
+            double angle = distance * MetersPerUnit / RadiusMeters;
+            double cosine = Math.Cos(angle);
+            double sineOverDistance = distance > 0 ? Math.Sin(angle) / distance : 0;
+            double sinLatitude = zoneSinLatitude * cosine + zoneCosLatitude * z * sineOverDistance;
+            latitude = Math.Asin(sinLatitude) * 180 / Math.PI;
+            longitude = (zoneLongitude + Math.Atan2(zoneCosLatitude * x * sineOverDistance,
+                cosine - zoneSinLatitude * sinLatitude)) * 180 / Math.PI;
+        }
+        private static float ZoneSurfaceElevation(double latitude, double longitude)
+        {
+            bool measured = MarsOfficialTerrain.TrySample(latitude, longitude, out float official, out float blend);
+            if (measured && blend >= 1) return official;
+            float basis = BaseElevation(new GeoPoint { latitude = (float)latitude, longitude = (float)longitude });
+            return measured ? Mathf.Lerp(basis, official, blend) : basis;
         }
         public static float MeasuredHeight(float x,float z)=>WorldElevation(x,z);
         public static float MeasuredElevation(GeoPoint point){LoadData();return Elevation(point,InJezeroCrop(point));}

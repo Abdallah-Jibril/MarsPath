@@ -32,23 +32,38 @@ namespace MarsPath
             BeginTerrainRefinement();
         }
 
-        private static void RestoreLocalRegionSources(GeoPoint start, GeoPoint end)
+        private static void RestoreLocalRegionSources(GeoPoint start, GeoPoint end, bool terrainOnly = false)
         {
-            MarsRegionSourceCache.TryLoadCachedRegion(start, end);
+            if (terrainOnly) MarsRegionSourceCache.TryLoadCachedElevation(start, end);
+            else MarsRegionSourceCache.TryLoadCachedRegion(start, end);
             GeoPoint midpoint = MarsRegionalTerrain.Midpoint(start, end);
             MarsOfficialTerrain.RestoreCachedGeometry(start);
             MarsOfficialTerrain.RestoreCachedGeometry(end);
             MarsOfficialTerrain.RestoreCachedGeometry(midpoint);
-            MarsOfficialTerrain.ActivateCachedImagery(midpoint);
+            if (!terrainOnly) MarsOfficialTerrain.ActivateCachedImagery(midpoint);
         }
 
-        public void LoadRegionalMission(MissionData source)
+        private bool planningSceneDeferred;
+
+        public void LoadRegionalMission(MissionData source) => LoadRegionalMissionData(source, false);
+
+        private void LoadRegionalMissionData(MissionData source, bool deferPlanningScene)
         {
             StopFullSurface();
-            if(terrainRoot!=null){terrainRoot.SetActive(false);Destroy(terrainRoot);}
-            if(routesRoot!=null){routesRoot.SetActive(false);Destroy(routesRoot);}
             mission=source;selectedRoute=0;missionStarted=false;paused=false;arrived=false;routeProgress=0;nearbyHazard=null;
             elevationProfile=null;planningTerrainDirty=false;helmetPreview=false;
+            planningSceneDeferred = deferPlanningScene;
+            if (deferPlanningScene)
+            {
+                // A dispatched headset goes straight to the measured surface.
+                // Keep the old planner hidden until a planner is actually opened.
+                MarsRegionalTerrain.Configure(mission);
+                terrainRoot.SetActive(false);
+                routesRoot.SetActive(false);
+                return;
+            }
+            if(terrainRoot!=null){terrainRoot.SetActive(false);Destroy(terrainRoot);}
+            if(routesRoot!=null){routesRoot.SetActive(false);Destroy(routesRoot);}
             if(MarsRegionSourceCache.CoversImagery(mission.regionCenter))mission.dataNotice+="\n"+MarsRegionSourceCache.ImageryStatus+". Source image detail is separate from elevation resolution.";
             terrainRoot=new GameObject("Selected Regional Terrain");terrainRoot.transform.SetParent(transform,false);terrainRoot.AddComponent<MarsTerrainGenerator>().Build(mission);
             routesRoot=new GameObject("Computed Regional Routes");routesRoot.transform.SetParent(transform,false);routeView=routesRoot.AddComponent<MarsPathRouteView>();routeView.PlanningCamera=cameraRig.PlanningCamera;routeView.Build(mission);

@@ -381,10 +381,11 @@ namespace MarsPath
             selectedRoute = index;
             routeProgress = 0f;
             arrived = false;
+            nearbyHazard = null;
+            if (planningSceneDeferred) return;
             routeView.Select(index);
             RebuildPathDistances();
             routeView.SetMissionMode(false);
-            nearbyHazard = null;
             UpdateAstronautPosition(0f);
         }
 
@@ -405,8 +406,11 @@ namespace MarsPath
             power = mission.telemetry.suitPowerPercent;
             missionElapsedMinutes = 0f;
             heartRateBpm = mission.telemetry.heartRateBpm;
-            routeView.SetMissionMode(true);
-            routeView.SetMissionProgress(0f);
+            if (!planningSceneDeferred)
+            {
+                routeView.SetMissionMode(true);
+                routeView.SetMissionProgress(0f);
+            }
             cameraRig.SetHelmetView(true);
             cameraRig.SetMissionMode(true, astronaut.transform);
             StartFullSurface();
@@ -446,12 +450,12 @@ namespace MarsPath
         public void ReturnToGlobalMap()
         {
             CancelTerrainRefinement();MarsRegionSourceCache.Cancel();
-            ReturnToPlanning();
+            ReturnToPlanning(returningToGlobe: true);
             SetAstronautWalking(false);
             GlobalView.Show();
         }
 
-        private void ReturnToPlanning()
+        private void ReturnToPlanning(bool returningToGlobe = false)
         {
             EndDesktopMirror();
             questRouteFacing.Reset();
@@ -459,16 +463,22 @@ namespace MarsPath
             if(helmetPreview){demoPresentation=previewDemoChoice;helmetPreview=false;}
             elevationProfile=null;
             StopFullSurface();
-            if(planningTerrainDirty)
+            missionStarted = false;
+            paused = false;
+            arrived = false;
+            nearbyHazard = null;
+            if (planningSceneDeferred && returningToGlobe)
+            {
+                terrainRoot.SetActive(false);
+                routesRoot.SetActive(false);
+                return;
+            }
+            if(planningTerrainDirty || planningSceneDeferred)
             {
                 int chosen=selectedRoute;planningTerrainDirty=false;
                 MarsRegionSourceCache.TryLoadCachedImagery(mission.currentLocation,mission.destination);
                 LoadRegionalMission(mission);SelectRoute(chosen);return;
             }
-            missionStarted = false;
-            paused = false;
-            arrived = false;
-            nearbyHazard = null;
             routeView.SetMissionMode(false);
             cameraRig.SetMissionMode(false, astronaut.transform);
             cameraRig.FrameRoutes(mission);

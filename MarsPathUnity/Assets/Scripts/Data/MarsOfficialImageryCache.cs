@@ -95,7 +95,15 @@ namespace MarsPath
         public static bool ActivateCachedImagery(GeoPoint focus)
         {
             EnsureBundled();LoadLocalWindowIndex();
-            ImageRecord best=BestImage(focus);
+            return ActivateImagery(focus, BestImage(focus));
+        }
+        internal static void WarmMissionZoneImagery(GeoPoint focus)
+        {
+            EnsureMissionZone();
+            ActivateImagery(focus, BestMissionImage(focus, false));
+        }
+        private static bool ActivateImagery(GeoPoint focus, ImageRecord best)
+        {
             if(best==null)return false;
             if(activeImageKey!=best.key||activeImage==null||MarsRegionSourceCache.OrbitalTexture!=activeImage)
             {

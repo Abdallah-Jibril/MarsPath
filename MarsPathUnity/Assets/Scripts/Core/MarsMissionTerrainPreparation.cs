@@ -10,7 +10,13 @@ namespace MarsPath
         {
             GeoPoint entry=track.At(from);
             if(MarsMissionZone.IsMission(mission))
-            {MarsOfficialTerrain.ActivateCachedImagery(entry);terrainPreparationMessage="OFFLINE MEASURED TERRAIN READY";helmetEntryPercent=1;yield return null;yield break;}
+            {
+                // The first surface window selects imagery at its own centre.
+                terrainPreparationMessage = "PREPARING OFFLINE TERRAIN";
+                helmetEntryPercent = .15f;
+                yield return null;
+                yield break;
+            }
             bool geometryFinished=true;
             float entryBegan=Time.realtimeSinceStartup;
             System.Func<bool> entryCancelled=()=>GlobalView.IsVisible&&!dispatched||Time.realtimeSinceStartup-entryBegan>5;

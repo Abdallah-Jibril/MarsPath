@@ -16,22 +16,55 @@ namespace MarsPath
         }
         private static void PrepareOfficialImagePixels(Color32[] pixels,int width,int height)
         {
+            EnsureImagePremultiply();
+            if (FullyOpaque(pixels))
+            {
+                // For an opaque raster, the distance transform is exactly its
+                // distance to the rectangular border. Interior pixels never change.
+                for (int y = 0; y < height; y++)
+                {
+                    int vertical = Mathf.Min(y, height - y - 1);
+                    if (vertical < ImageFeatherPixels)
+                    {
+                        for (int x = 0; x < width; x++)
+                            FeatherImagePixel(pixels, y * width + x, Mathf.Min(vertical, Mathf.Min(x, width - x - 1)));
+                    }
+                    else
+                    {
+                        int border = Mathf.Min(ImageFeatherPixels, (width + 1) / 2);
+                        for (int x = 0; x < border; x++)
+                        {
+                            FeatherImagePixel(pixels, y * width + x, x);
+                            int opposite = width - x - 1;
+                            if (opposite != x) FeatherImagePixel(pixels, y * width + opposite, x);
+                        }
+                    }
+                }
+                return;
+            }
             var edge=new byte[pixels.Length];
             for(int i=0;i<edge.Length;i++)edge[i]=pixels[i].a==0?(byte)0:(byte)255;
             for(int y=0;y<height;y++)for(int x=0;x<width;x++)
             {int i=y*width+x;if(x==0||y==0||x==width-1||y==height-1)edge[i]=0;else edge[i]=(byte)Mathf.Min(edge[i],Mathf.Min(edge[i-1],edge[i-width])+1);}
             for(int y=height-2;y>0;y--)for(int x=width-2;x>0;x--)
             {int i=y*width+x;edge[i]=(byte)Mathf.Min(edge[i],Mathf.Min(edge[i+1],edge[i+width])+1);}
-            EnsureImagePremultiply();
             for(int i=0;i<pixels.Length;i++)
-            {
-                Color32 p=pixels[i];
-                byte alpha=(byte)Mathf.RoundToInt(p.a*Mathf.SmoothStep(0,1,Mathf.Clamp01(edge[i]/(float)ImageFeatherPixels)));
-                if(alpha==255)continue; // Retain central native display colours exactly.
-                if(alpha==0){pixels[i]=new Color32(0,0,0,0);continue;}
-                int k=alpha<<8;
-                pixels[i]=new Color32(imagePremultiply[k+p.r],imagePremultiply[k+p.g],imagePremultiply[k+p.b],alpha);
-            }
+                if (edge[i] < ImageFeatherPixels || pixels[i].a != 255) FeatherImagePixel(pixels, i, edge[i]);
+        }
+        private static bool FullyOpaque(Color32[] pixels)
+        {
+            foreach (Color32 pixel in pixels)
+                if (pixel.a != 255) return false;
+            return true;
+        }
+        private static void FeatherImagePixel(Color32[] pixels, int index, int distance)
+        {
+            Color32 p = pixels[index];
+            byte alpha = (byte)Mathf.RoundToInt(p.a * Mathf.SmoothStep(0, 1, Mathf.Clamp01(distance / (float)ImageFeatherPixels)));
+            if (alpha == 255) return;
+            if (alpha == 0) { pixels[index] = new Color32(0, 0, 0, 0); return; }
+            int k = alpha << 8;
+            pixels[index] = new Color32(imagePremultiply[k + p.r], imagePremultiply[k + p.g], imagePremultiply[k + p.b], alpha);
         }
         private static void EnsureImagePremultiply()
         {
@@ -58,7 +91,13 @@ namespace MarsPath
             float recovered=transition.r/255f,original=180/255f;
             if(QualitySettings.activeColorSpace==ColorSpace.Linear){recovered=Mathf.GammaToLinearSpace(recovered);original=Mathf.GammaToLinearSpace(original);}
             recovered/=transition.a/255f;
-            return centre.r==180&&centre.a==255&&border.r==0&&border.a==0&&hole.a==0&&transition.a>0&&transition.a<255&&Mathf.Abs(recovered-original)<.025f;
+            if (!(centre.r==180&&centre.a==255&&border.r==0&&border.a==0&&hole.a==0&&transition.a>0&&transition.a<255&&Mathf.Abs(recovered-original)<.025f))
+                return false;
+            var opaque = new Color32[size * size];
+            for (int i = 0; i < opaque.Length; i++) opaque[i] = new Color32(180, 180, 180, 255);
+            PrepareOfficialImagePixels(opaque, size, size);
+            return opaque[64 * size].Equals(border) && opaque[64 * size + 10].Equals(transition) &&
+                opaque[80 * size + 80].Equals(centre);
         }
     }
 }

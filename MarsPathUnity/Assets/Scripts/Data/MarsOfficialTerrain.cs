@@ -53,7 +53,7 @@ namespace MarsPath
         }
         public static bool TryElevation(GeoPoint point,out float height)
         {return TrySample(point.latitude,point.longitude,out height,out _);}
-        private static bool TrySample(double latitude,double longitude,out float height,out float blend)
+        internal static bool TrySample(double latitude,double longitude,out float height,out float blend)
         {
             EnsureBundled();
             if(MarsMissionZone.ElevationsActive)EnsureMissionZone();

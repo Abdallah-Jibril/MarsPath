@@ -84,3 +84,18 @@ For the requested 2–3 m demonstration setup without earphones, the trial used 
 Both rebuilt applications were opened for the proximity trial. The refreshed APK installed successfully and its on-device SHA-256 matched the release artifact. Initial connected-device diagnostics used the native output exclusively, with nonzero received speech, no native underruns, and no capture or send-queue skips in that interval. The user accepted the listening result for the tested presentation setup on 15 November 2026; other room acoustics, devices, and network conditions still require their own check.
 
 Additional evidence: `tmp/sustained-voice-windows.log`, `tmp/sustained-radio-laptop.log`, and `tmp/sustained-quest-radio.log`.
+
+## 15 November: faster mission entry over local Wi-Fi
+
+The Quest lobby prepares the packaged Jezero elevation tiles and initial Belva imagery. The dispatched Quest builds the walking scene directly. Windows reuses the current planner for the same frozen Jezero plan. The near surface and horizon reuse the geographic projection for height and texture sampling. The tests retain the 1 m height grid, the selected route, and the readiness handshake.
+
+| Selected route | Quest preparation reply | Quest ready | Laptop live view ready |
+| --- | ---: | ---: | ---: |
+| Belva Balanced, 202 m | 0.59 s | 2.55 s | 3.64 s |
+| Jezero zone Science priority, 5.51 km | 0.58 s | 2.47 s | 3.54 s |
+
+The test started after the Quest lobby was connected and ready. All three columns use the laptop's elapsed clock from **Enter Helmet Demo**. The first measures receipt of the Quest's preparation reply. The second measures receipt of the Quest's acknowledgment that its walking scene is ready. The third measures when Windows finishes creating its live view.
+
+Both applications logged a Wi-Fi connection. The cable stayed attached for installation and headset diagnostics. In both runs the selected route entered at zero and the laptop followed real controller-driven motion. The laptop and Quest recorded nonzero voice activity in both directions during the Belva trial. The measured values apply to these two routes and the tested LAN.
+
+The Windows radio regression, live runtime review, and Belva showcase all passed. Local diagnostics are in `tmp/jezero-five-second-windows.log`, `tmp/five-sec-live-mission-review.log`, `tmp/five-sec-jezero-showcase-review.log`, and `tmp/five-sec-wifi-laptop.log`.
