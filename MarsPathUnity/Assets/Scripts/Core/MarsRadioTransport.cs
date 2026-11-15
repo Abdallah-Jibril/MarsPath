@@ -11,7 +11,7 @@ namespace MarsPath
     /// <summary>One ordered reader and writer keep encrypted traffic independent of rendering.</summary>
     internal sealed class MarsRadioTransport : IDisposable
     {
-        private const int MaximumQueuedVoiceFrames = 25;
+        private const int MaximumQueuedVoiceFrames = 6;
         private readonly TcpClient client;
         private readonly MarsRadioPairing pairing;
         private readonly int payloadBytes;

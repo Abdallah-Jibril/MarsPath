@@ -26,7 +26,7 @@ MarsPath is an independent prototype for **Interplanetary Survival Guide: Martia
 | **Jezero mission zone** | Choose endpoints freely inside the supported 10 × 10 km region. |
 | **Route comparison** | Inspect alternatives, route length, estimated time, sampled ascent/descent, maximum track grade, and an elevation profile. |
 | **Helmet navigation** | Follow surface arrows, look around with tracked head movement, and view compact terrain warnings. |
-| **Mission Control radio** | Hold to speak between Windows and Quest through authorized USB or compatible local Wi-Fi. |
+| **Mission Control** | Send the selected laptop route to a waiting Quest and talk over the same USB or local Wi-Fi link. |
 | **Desktop presentation** | Demonstrate the planner and helmet view without a headset, in borderless fullscreen. |
 
 The showcase button opens route comparison so the user chooses a route before starting. The two-minute demonstration follows the complete selected Jezero route in 120 seconds of walking. The countdown pauses with the astronaut and resumes from the same point. Longer routes outside the measured sector support a continuous preview followed by optional continuation.
@@ -128,7 +128,7 @@ The current physics revision passed 46 independent balance/geometry assertions, 
 
 These are software checks. Physical acceptance of the rebuilt Quest package, including comfort, tracking, microphone capture, and audibility, remains a device-test step. The locomotion and suit-load assumptions still need empirical calibration.
 
-The radio link does **not** yet synchronize a selected desktop route into a waiting headset mission. See [handoff status](HANDOFF.md#verification-and-open-work) for remaining work.
+For a two-device session, open MarsPath on Quest and leave it on **Waiting for Mission Control**. On the laptop, select a route and mode, and press **Enter Helmet Demo** or **Start Full Mission**. The laptop waits for Quest to acknowledge loading the selected route, then both views hold at zero until the astronaut walks. The astronaut holds the **right trigger** while facing the route. Looking away locks walking and displays a turn warning; returning to face the route permits movement. Radio stays available while movement is locked. The laptop follows position, route percentage, reserves, warnings, and tracked head direction. Laptop **D** opens details, **V** switches view, and **Y** transmits radio. **LAPTOP PREVIEW** provides separate local inspection. See [Mission Control and radio setup](HANDOFF.md#mission-control-and-radio).
 
 Repository and package checks are recorded in [Migration Validation](docs/VALIDATION.md).
 

@@ -54,7 +54,9 @@ namespace MarsPath
         private bool talkRequested, waitForTalkRelease = true;
         private float[] outputMono;
         private int sentVoiceFrames, lastLoggedSent, lastLoggedReceived;
+        private int skippedCaptureFrames;
         private float capturePeak, nextAudioDiagnostic;
+        private volatile bool nativePlaybackActive;
 #if UNITY_ANDROID && !UNITY_EDITOR
         private MarsQuestVoiceOutput questOutput;
         private bool nativeOutputUnavailable;
@@ -80,6 +82,9 @@ namespace MarsPath
             voice.spatialBlend = 0;
             voice.dopplerLevel = 0;
             voice.bypassReverbZones = true;
+            voice.reverbZoneMix = 0;
+            voice.spatialize = false;
+            voice.spatializePostEffects = false;
             voice.bypassListenerEffects = true;
             voice.loop = true;
             voice.volume = 1f;
@@ -369,6 +374,7 @@ namespace MarsPath
         {
             peer = client;
             peerUsesUsb = viaUsb;
+            playback.ConfigureLatency(viaUsb);
             transport = new MarsRadioTransport(client, authenticated, PayloadBytes,
                 (byte)MessageKind.LiveState, ReceiveVoice);
         }
@@ -397,10 +403,12 @@ namespace MarsPath
             int position = Microphone.GetPosition(microphoneDevice);
             if (position < 0) return;
             int available = (position - capturePosition + microphone.samples) % microphone.samples;
-            if (available > captureFrameSamples * 25)
+            const int maximumCaptureFrames = 6;
+            if (available > captureFrameSamples * maximumCaptureFrames)
             {
-                capturePosition = (position - captureFrameSamples * 25 + microphone.samples) % microphone.samples;
-                available = captureFrameSamples * 25;
+                skippedCaptureFrames += available / captureFrameSamples - maximumCaptureFrames;
+                capturePosition = (position - captureFrameSamples * maximumCaptureFrames + microphone.samples) % microphone.samples;
+                available = captureFrameSamples * maximumCaptureFrames;
             }
             while (available >= captureFrameSamples && Connected)
             {
@@ -455,6 +463,10 @@ namespace MarsPath
             {
                 try
                 {
+                    // A native output and the Unity DSP callback must never
+                    // consume or play the same receive stream concurrently.
+                    nativePlaybackActive = true;
+                    if (voice.isPlaying) voice.Stop();
                     questOutput ??= new MarsQuestVoiceOutput(playback);
                     if (questOutput.Failure != null) throw new InvalidOperationException(questOutput.Failure);
                     return;
@@ -463,6 +475,7 @@ namespace MarsPath
                 {
                     Debug.LogWarning("MARSPATH_VOICE: media output fallback: " + exception.Message);
                     questOutput?.Dispose(); questOutput = null;
+                    nativePlaybackActive = false;
                     nativeOutputUnavailable = true;
                 }
             }
@@ -478,6 +491,11 @@ namespace MarsPath
         [UnityEngine.Scripting.Preserve]
         private void OnAudioFilterRead(float[] data, int channels)
         {
+            if (nativePlaybackActive)
+            {
+                Array.Clear(data, 0, data.Length);
+                return;
+            }
             if (channels == 1) { playback.Read(data); return; }
             int frames = data.Length / channels;
             if (outputMono == null || outputMono.Length != frames) outputMono = new float[frames];
@@ -496,11 +514,12 @@ namespace MarsPath
             lastLoggedReceived = transport.ReceivedVoiceFrames;
             string output = "Unity DSP";
 #if UNITY_ANDROID && !UNITY_EDITOR
-            if (questOutput != null) output = "Android media, written=" + questOutput.WrittenSamples;
+            if (questOutput != null) output = "Android media, " + questOutput.Diagnostics;
 #endif
             Debug.Log($"MARSPATH_VOICE: {(headset ? "Quest" : "Laptop")}, sent={sentVoiceFrames}, " +
                 $"micPeak={capturePeak:0.0000}, received={lastLoggedReceived}, playing={voice.isPlaying}, " +
-                $"sink={output}, outputRate={AudioSettings.outputSampleRate}, {playback.Diagnostics()}");
+                $"sink={output}, outputRate={AudioSettings.outputSampleRate}, captureSkipped={skippedCaptureFrames}, " +
+                $"sendDropped={transport.DroppedVoiceFrames}, {playback.Diagnostics()}");
         }
 
         private void StopMicrophone()
@@ -525,6 +544,7 @@ namespace MarsPath
 #if UNITY_ANDROID && !UNITY_EDITOR
             questOutput?.Dispose(); questOutput = null;
 #endif
+            nativePlaybackActive = false;
             if (voice != null) voice.Stop();
             playback.Clear();
         }

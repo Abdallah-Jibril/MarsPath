@@ -77,6 +77,10 @@ namespace MarsPath.Editor
                 CheckRouteFacing();
                 CheckCompass();
                 CheckSpeechCleanup();
+                CheckSinglePlaybackOutput(desktopRadio, questRadio);
+                CheckVoiceLatency();
+                CheckVoiceBacklogLimits();
+                CheckSendBacklogLimits(desktopRadio, questRadio);
             }
             finally
             {
@@ -86,7 +90,7 @@ namespace MarsPath.Editor
                 UnityEngine.Object.DestroyImmediate(questRoot);
                 AudioListener.pause = previousAudioPause;
             }
-            Debug.Log("MARSPATH_RADIO_REGRESSION_PASSED: background encrypted transport, exact route handoff, live state and ready gate, voice without render ticks, jitter buffer and half-duplex.");
+            Debug.Log("MARSPATH_RADIO_REGRESSION_PASSED: background encrypted transport, exact route handoff, live state and ready gate, voice without render ticks, adaptive jitter buffer, single playback output and half-duplex.");
         }
 
         private static void Attach(Component radio, TcpClient client, object pairing, bool headset)
@@ -193,7 +197,13 @@ namespace MarsPath.Editor
             object receivingTransport = Get(receiver, "transport");
             int count = (int)Property(receivingTransport, "ReceivedVoiceFrames");
             object sendingTransport = Get(sender, "transport");
-            for (int i = 0; i < 10; i++) Call(sendingTransport, "Send", payload, true, false);
+            for (int i = 0; i < 10; i++)
+            {
+                Call(sendingTransport, "Send", payload, true, false);
+                var deliveryDeadline = DateTime.UtcNow.AddSeconds(3);
+                while ((int)Property(receivingTransport, "ReceivedVoiceFrames") < count + i + 1 && DateTime.UtcNow < deliveryDeadline)
+                    Thread.Sleep(1);
+            }
             // Deliberately do not tick the Unity receiver while audio arrives.
             var deadline = DateTime.UtcNow.AddSeconds(3);
             while ((int)Property(receivingTransport, "ReceivedVoiceFrames") < count + 10 && DateTime.UtcNow < deadline)
@@ -211,24 +221,162 @@ namespace MarsPath.Editor
             Type type = typeof(MarsPathDemoBootstrap).Assembly.GetType("MarsPath.MarsVoicePlayback", true);
             object jitter = Activator.CreateInstance(type, true);
             var pcm = new byte[1920];
-            for (int i = 0; i < 960; i++) { pcm[i * 2] = 0xcc; pcm[i * 2 + 1] = 0x0c; }
             // Irregular render delivery batches still provide exactly 50 frames each second.
             int[] deliveries = { 4, 0, 1, 0, 2, 0, 1, 0, 1, 1 };
             int totalWritten = 0, totalRead = 0;
-            for (int step = 0; step < 200; step++)
+            for (int step = 0; step < 3000; step++)
             {
                 int frames = deliveries[step % deliveries.Length];
-                for (int i = 0; i < frames; i++) { Call(jitter, "Write", pcm, 0, 960, true); totalWritten += 960; }
+                for (int i = 0; i < frames; i++)
+                {
+                    FillVoiceFrame(pcm, (short)(100 + totalWritten / 960));
+                    Call(jitter, "Write", pcm, 0, 960, true);
+                    totalWritten += 960;
+                }
                 if (step < 8) continue;
                 var output = new float[960];
                 Call(jitter, "Read", output);
+                float expected = (100 + totalRead / 960) * 3.6f / 32768f;
                 totalRead += output.Length;
-                Require(Array.TrueForAll(output[96..], sample => Math.Abs(sample - .36f) < .002f),
-                    "Jitter buffer must keep continuous speech across irregular packet batches");
+                Require(Array.TrueForAll(output[96..], sample => Math.Abs(sample - expected) < .00002f),
+                    "A 60-second utterance must preserve every frame in order without replaying earlier speech");
             }
             Require((int)Property(jitter, "Underflows") == 0 && (int)Property(jitter, "Overflows") == 0,
                 "Steady speech must not underrun or overflow");
             Require((int)Property(jitter, "BufferedSamples") == totalWritten - totalRead, "Buffered sample conservation");
+            Debug.Log("MARSPATH_SUSTAINED_VOICE_PASSED: 60 simulated seconds, variable delivery batches, no repeated frames or growing backlog.");
+        }
+
+        private static void FillVoiceFrame(byte[] pcm, short value)
+        {
+            for (int i = 0; i < 960; i++) { pcm[i * 2] = (byte)value; pcm[i * 2 + 1] = (byte)(value >> 8); }
+        }
+
+        private static void CheckVoiceBacklogLimits()
+        {
+            Type type = typeof(MarsPathDemoBootstrap).Assembly.GetType("MarsPath.MarsVoicePlayback", true);
+            object buffer = Activator.CreateInstance(type, true);
+            Call(buffer, "ConfigureLatency", true);
+            var pcm = new byte[1920];
+            for (int frame = 0; frame < 25; frame++)
+            {
+                FillVoiceFrame(pcm, (short)(100 + frame));
+                Call(buffer, "Write", pcm, 0, 960, true);
+                Require((int)Property(buffer, "BufferedSamples") <= 14400,
+                    "Delayed incoming speech cannot accumulate more than 300 ms");
+            }
+            long skipped = (long)Property(buffer, "SkippedSamples");
+            int remaining = (int)Property(buffer, "BufferedSamples");
+            Require(skipped > 0 && skipped + remaining == 25 * 960,
+                "Late speech is explicitly skipped instead of retained for delayed replay");
+            var output = new float[960];
+            for (int sample = 0; sample < remaining; sample += 960)
+            {
+                Call(buffer, "Read", output);
+                float expected = (100 + (skipped + sample) / 960) * 3.6f / 32768f;
+                Require(Array.TrueForAll(output[96..], value => Math.Abs(value - expected) < .00002f),
+                    "Backlog recovery resumes at the newest speech in its original order");
+            }
+            Call(buffer, "Read", output);
+            Require(Array.TrueForAll(output[96..], value => value == 0), "Drained speech is not replayed");
+            Debug.Log("MARSPATH_VOICE_CATCHUP_PASSED: bounded receive delay, current speech retained, no stale replay after a burst.");
+        }
+
+        private static void CheckSendBacklogLimits(Component sender, Component receiver)
+        {
+            Call(receiver, "ClearPlayback");
+            object sending = Get(sender, "transport"), receiving = Get(receiver, "transport");
+            int receivedBefore = (int)Property(receiving, "ReceivedVoiceFrames");
+            int droppedBefore = (int)Property(sending, "DroppedVoiceFrames");
+            var payload = new byte[PayloadBytes];
+            payload[0] = 1;
+            // Hold the writer briefly to model a congested connection without
+            // relying on OS socket-buffer sizes or timing-sensitive sleeps.
+            lock (Get(sending, "sendLock"))
+            {
+                for (int frame = 0; frame < 25; frame++)
+                {
+                    for (int i = 0; i < 960; i++)
+                    {
+                        payload[1 + i * 2] = (byte)(100 + frame);
+                        payload[2 + i * 2] = 0;
+                    }
+                    Call(sending, "Send", payload, true, false);
+                }
+                Require((int)Property(sending, "DroppedVoiceFrames") - droppedBefore == 19,
+                    "A blocked sender retains the newest 120 ms instead of 500 ms of old speech");
+            }
+            var deadline = DateTime.UtcNow.AddSeconds(3);
+            while ((int)Property(receiving, "ReceivedVoiceFrames") < receivedBefore + 6 && DateTime.UtcNow < deadline)
+                Thread.Sleep(1);
+            Require((int)Property(receiving, "ReceivedVoiceFrames") == receivedBefore + 6,
+                "Only the newest six queued speech frames cross the encrypted connection");
+            var output = new float[960];
+            object buffer = Get(receiver, "playback");
+            for (int frame = 19; frame < 25; frame++)
+            {
+                Call(buffer, "Read", output);
+                float expected = (100 + frame) * 3.6f / 32768f;
+                Require(Array.TrueForAll(output[96..], value => Math.Abs(value - expected) < .00002f),
+                    "Congestion recovery preserves current speech and does not retransmit discarded frames");
+            }
+            Call(receiver, "ClearPlayback");
+            Debug.Log("MARSPATH_VOICE_SEND_BOUND_PASSED: blocked sender keeps only current speech and sends it once.");
+        }
+
+        private static void CheckSinglePlaybackOutput(Component sender, Component receiver)
+        {
+            CheckVoice(sender, receiver, .36f, false);
+            object playback = Get(receiver, "playback");
+            int buffered = (int)Property(playback, "BufferedSamples");
+            Set(receiver, "nativePlaybackActive", true);
+            try
+            {
+                var unity = new float[1920];
+                Array.Fill(unity, 1f);
+                Call(receiver, "OnAudioFilterRead", unity, 2);
+                Require(Array.TrueForAll(unity, value => value == 0) &&
+                    (int)Property(playback, "BufferedSamples") == buffered,
+                    "The Unity mixer stays silent without consuming native Quest speech");
+                var native = new float[960];
+                Call(playback, "Read", native);
+                Require(Array.Exists(native, value => Math.Abs(value) > .1f) &&
+                    (int)Property(playback, "BufferedSamples") == buffered - native.Length,
+                    "A native output consumes the queued speech exactly once");
+            }
+            finally { Call(receiver, "ClearPlayback"); }
+            Require(!(bool)Get(receiver, "nativePlaybackActive"),
+                "Clearing native playback permits the Unity fallback again");
+            Debug.Log("MARSPATH_VOICE_OUTPUT_PASSED: one receive stream, one output and no queued replay after clearing.");
+        }
+
+        private static void CheckVoiceLatency()
+        {
+            Type type = typeof(MarsPathDemoBootstrap).Assembly.GetType("MarsPath.MarsVoicePlayback", true);
+            object buffer = Activator.CreateInstance(type, true);
+            var pcm = new byte[1920];
+            for (int i = 0; i < 960; i++) { pcm[i * 2] = 0xcc; pcm[i * 2 + 1] = 0x0c; }
+            Call(buffer, "ConfigureLatency", true);
+            Require((int)Property(buffer, "PrefillMilliseconds") == 40, "USB starts with a 40 ms speech prefill");
+            for (int i = 0; i < 2; i++) Call(buffer, "Write", pcm, 0, 960, true);
+            var output = new float[960];
+            Call(buffer, "Read", output);
+            Require(Array.TrueForAll(output[96..], sample => Math.Abs(sample - .36f) < .002f),
+                "USB speech starts after two frames instead of waiting for seven");
+            Call(buffer, "Clear");
+            for (int burst = 0; burst < 6; burst++)
+            {
+                for (int i = 0; i < 7; i++) Call(buffer, "Write", pcm, 0, 960, true);
+                for (int i = 0; i < 8; i++) Call(buffer, "Read", output);
+            }
+            Require((int)Property(buffer, "Underflows") > 0 &&
+                (int)Property(buffer, "PrefillMilliseconds") == 140,
+                "Packet gaps grow the buffer within its existing 140 ms ceiling");
+            Call(buffer, "ConfigureLatency", false);
+            Call(buffer, "Clear");
+            Require((int)Property(buffer, "PrefillMilliseconds") == 60,
+                "Wi-Fi restarts with a 60 ms speech prefill");
+            Debug.Log("MARSPATH_VOICE_LATENCY_PASSED: 40 ms USB, 60 ms Wi-Fi, adaptive gap recovery up to 140 ms.");
         }
 
         private static object Call(object target, string method, params object[] arguments)

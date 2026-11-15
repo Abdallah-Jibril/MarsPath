@@ -22,6 +22,30 @@ Detailed demonstrations cover Jezero's western delta and Belva. Global navigatio
 
 HiRISE is a NASA Mars Reconnaissance Orbiter instrument. HRSC is an ESA/DLR instrument. Retain the individual producers' credits. Mars Trek is a reference portal; Unity reads prepared products and documented services rather than embedding the Trek website as its terrain engine.
 
+## Match to the challenge resource list
+
+This audit distinguishes actual data inputs from reference portals and other products published by the same agency. Shared agency attribution does not mean the exact listed website or dataset was integrated.
+
+| Challenge resource | Verified project role | Evidence and scope |
+| --- | --- | --- |
+| [JPL Mars Trek](https://trek.nasa.gov/mars/) | Documented source exploration and geographic comparison | Reference portal; the Unity terrain engine reads prepared source products rather than a live Trek embed or API. |
+| [USGS–NASA planetary mapping portal](https://astrogeology-usgs.hub.arcgis.com/pages/interactive-maps-mars) | Related USGS planetary products are direct inputs | The shipped Jezero DTM and matching orthomosaic are Mars 2020 TRN HiRISE products. No geological-unit layer from the listed interactive-map portal is integrated. |
+| [Curiosity proposed Mount Sharp route](https://science.nasa.gov/resource/curiositys-proposed-path-up-mount-sharp/) | Not an input | The five Jezero alternatives are computed by the project's graph searches, not copied from this route map. |
+| [NASA Worldview](https://worldview.earthdata.nasa.gov/) | Not integrated | Worldview serves Earth-observation imagery; it supplies no Mars terrain to this project. |
+| [Perseverance Raw Images Gallery](https://mars.nasa.gov/mars2020/multimedia/raw-images/) | Related Perseverance photographs are used; direct gallery ingestion is not evidenced | The rock material uses the published NASA WATSON Dourbes image PIA24940, Figure 1. Belva and delta panoramas are appearance references. These are credited published image products, not an asserted Raw Images API integration. |
+
+The direct NASA-related input families include MRO/HiRISE elevation, registered orbital imagery, MGS/MOLA global topography, Viking global imagery, and rover photographs. This supports a claim of multiple NASA data products, but does not establish use of two or three of the exact five challenge links. Any formal minimum-resource rule must be checked against the challenge's actual requirements.
+
+## Additional providers and research references
+
+- **ESA / DLR / Freie Universität Berlin:** HRSC Mars Express elevation strips and regional support. The original science-team service is [HRSC webGIS](https://maps.planet.fu-berlin.de/); the project also contains the joint HRSC/MOLA 200 m blend. These regional sources are separate from the 1 m HiRISE master used by the detailed Jezero demo.
+- **USGS / IAU Gazetteer:** named landmark coordinates and labels, documented in the globe source notes. This is a separate use from geological classification.
+- **Weir (1949), with Chen et al. (2018):** the respiratory-calorimetry equation used to convert modeled metabolic power into oxygen demand. **Cavagna et al. (2000)** supplies partial-gravity walking research context, not a fitted calibration of this suit model. Exact primary links and limitations are in [Physics and Hazards](PHYSICS_AND_HAZARDS.md#12-primary-references).
+- **University of Arizona and Washington University PDS hosting:** source catalogues and NASA mission-data distribution. University hosting does not make the underlying NASA instrument data an independent non-NASA observation.
+- **Esri:** hosting of NASA/JPL/USGS Viking imagery used in the regional visual basemap. Hosting is distinct from producing a new planetary dataset.
+
+Unity, OpenXR, QGIS, and GDAL are implementation or preparation tools, not additional Mars observation sources. Preserve source-product credits and the existing third-party notices. Use of NASA material does not imply NASA endorsement.
+
 ## Jezero production region
 
 | Quantity | Published package |

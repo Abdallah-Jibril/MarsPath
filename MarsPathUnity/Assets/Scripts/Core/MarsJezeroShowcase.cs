@@ -22,7 +22,7 @@ namespace MarsPath
                 };
                 var end = new GeoPoint
                 {
-                    latitude = 18.47687721f, longitude = 77.37770844f, label = "Belva inner slope waypoint"
+                    latitude = 18.4778f, longitude = 77.3778f, label = "Belva inner slope waypoint"
                 };
                 GlobalView.OpenMissionZone();
                 GlobalView.SetEndpoints(start, end);
@@ -114,6 +114,22 @@ namespace MarsPath
                 MarsGeospatial.AngularDistanceDegrees(JourneyLocation, mission.destination) < .00001f;
             Debug.Log($"JEZERO_SHOWCASE_END: passed {passed}, progress {routeProgress:R}, complete {demoDirector.Complete}, endpoint error {MarsGeospatial.AngularDistanceDegrees(JourneyLocation,mission.destination):R} deg.");
 
+            QuestReturnToRoutes();
+            QuestSetDemoMode(false);
+            yield return PrepareHelmetEntry(false);
+            PauseQuestTraverse();
+            RouteData fullRoute = mission.routes[selectedRoute];
+            double fullSeconds = fullRoute.etaMinutes * 60.0;
+            AdvanceJourney(120, fullRoute);
+            UpdateTimedJourneyPosition(fullRoute);
+            bool fullTime = !DemoMode && DemoElapsed == 0 && !arrived && routeProgress < 1 &&
+                System.Math.Abs(totalElapsedSeconds - 120) < .001 &&
+                System.Math.Abs(routeProgress - 120 / fullSeconds) < .0001;
+            Debug.Log($"JEZERO_SHOWCASE_FULL_TIME: 120 mission seconds gives {routeProgress:P2}; full ETA {fullSeconds:0.00} seconds; correct {fullTime}.");
+            AdvanceJourney((float)(fullSeconds - totalElapsedSeconds + 1), fullRoute);
+            UpdateTimedJourneyPosition(fullRoute);
+            passed &= fullTime && routeProgress == 1 &&
+                MarsGeospatial.AngularDistanceDegrees(JourneyLocation, mission.destination) < .00001;
             QuestReturnToRoutes();
             QuestBackToEndpoints();
             GlobalView.CloseMissionZone();

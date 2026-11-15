@@ -7,7 +7,8 @@ namespace MarsPath
     internal sealed class MarsVoicePlayback
     {
         internal const int SampleRate = 48000;
-        private const int PrefillSamples = SampleRate * 140 / 1000;
+        private const int MaximumPrefillSamples = SampleRate * 140 / 1000;
+        private const int MaximumBufferedSamples = SampleRate * 300 / 1000;
         private readonly float[] samples = new float[SampleRate];
         private readonly object gate = new object();
         private int read, write, buffered, fadeIn;
@@ -15,14 +16,28 @@ namespace MarsPath
         private float lastSample;
         private double lastPacket = -10;
         private long decodedSamples, playedSamples;
+        private long skippedSamples;
         private int largestRead;
         private float inputPeak, outputPeak;
         private float receiveGainScale = 1;
+        private int minimumPrefillSamples = SampleRate * 60 / 1000;
+        private int prefillSamples = SampleRate * 60 / 1000;
         internal int Underflows { get; private set; }
         internal int Overflows { get; private set; }
+        internal long SkippedSamples { get { lock (gate) return skippedSamples; } }
         internal int BufferedSamples { get { lock (gate) return buffered; } }
+        internal int PrefillMilliseconds { get { lock (gate) return prefillSamples * 1000 / SampleRate; } }
         internal static double Clock => Stopwatch.GetTimestamp() / (double)Stopwatch.Frequency;
         internal bool Receiving { get { lock (gate) return buffered > 0 || Clock - lastPacket < .40; } }
+
+        internal void ConfigureLatency(bool viaUsb)
+        {
+            lock (gate)
+            {
+                minimumPrefillSamples = SampleRate * (viaUsb ? 40 : 60) / 1000;
+                prefillSamples = minimumPrefillSamples;
+            }
+        }
 
         internal void Write(byte[] payload, int offset, int count, bool headset)
         {
@@ -39,12 +54,17 @@ namespace MarsPath
                 // so sustained vowels do not sit against the soft peak limiter.
                 float targetGain = Math.Min(1, .78f / Math.Max(.0001f, framePeak * (headset ? 3.6f : 2.3f)));
                 receiveGainScale = targetGain < receiveGainScale ? targetGain : Math.Min(targetGain, receiveGainScale + .008f);
-                if (buffered + count > samples.Length)
+                if (buffered + count > MaximumBufferedSamples)
                 {
-                    int skip = buffered + count - samples.Length;
+                    // A slow renderer or a delayed TCP burst must not turn live
+                    // conversation into a growing queue of old speech.
+                    int target = Math.Max(count, prefillSamples + SampleRate * 40 / 1000);
+                    int skip = Math.Min(buffered, buffered + count - target);
                     read = (read + skip) % samples.Length;
                     buffered -= skip;
+                    skippedSamples += skip;
                     Overflows++;
+                    fadeIn = 96;
                 }
                 for (int i = 0; i < count; i++)
                 {
@@ -67,7 +87,7 @@ namespace MarsPath
                 if (priming)
                 {
                     // Drain a short final syllable after the sender releases talk.
-                    if (buffered < Math.Max(PrefillSamples, output.Length) &&
+                    if (buffered < Math.Max(prefillSamples, output.Length) &&
                         (buffered == 0 || Clock - lastPacket < .18)) return;
                     priming = false;
                     fadeIn = 96;
@@ -88,7 +108,11 @@ namespace MarsPath
                 {
                     int fade = Math.Min(96, output.Length - available);
                     for (int i = 0; i < fade; i++) output[available + i] = lastSample * (1 - (i + 1f) / fade);
-                    if (Clock - lastPacket < .12) Underflows++;
+                    if (Clock - lastPacket < .12)
+                    {
+                        Underflows++;
+                        prefillSamples = Math.Min(MaximumPrefillSamples, prefillSamples + SampleRate * 20 / 1000);
+                    }
                     priming = true;
                     lastSample = 0;
                 }
@@ -108,7 +132,8 @@ namespace MarsPath
         internal string Diagnostics()
         {
             lock (gate) return $"decoded={decodedSamples}, played={playedSamples}, buffered={buffered}, " +
-                $"rxPeak={inputPeak:0.0000}, outputPeak={outputPeak:0.0000}, quantum={largestRead}, underruns={Underflows}";
+                $"rxPeak={inputPeak:0.0000}, outputPeak={outputPeak:0.0000}, quantum={largestRead}, " +
+                $"prefillMs={prefillSamples * 1000 / SampleRate}, underruns={Underflows}, skipped={skippedSamples}";
         }
 
         internal void Clear()
@@ -120,6 +145,7 @@ namespace MarsPath
                 lastPacket = -10;
                 lastSample = 0;
                 receiveGainScale = 1;
+                prefillSamples = minimumPrefillSamples;
             }
         }
     }

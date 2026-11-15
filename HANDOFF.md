@@ -25,7 +25,7 @@ The laptop and standalone headset share terrain and routing code, with separate 
 
 The showcase loads reference endpoints and opens comparison. It must allow selecting another route before starting. The 10 × 10 km map supports free endpoint selection within measured coverage; endpoints need at least 80 m separation.
 
-Reference Belva endpoints are approximately **18.475002° N, 77.377312° E** and **18.476877° N, 77.377708° E**. The reference Balanced track is approximately 144 m and includes measured ascent and descent.
+Reference Belva endpoints are approximately **18.475002° N, 77.377312° E** and **18.477800° N, 77.377800° E**. The reference Balanced track is approximately 202 m, with roughly 8 m ascent and 43 m descent. Its full-route ETA is about 6.55 mission minutes; demo playback completes it in 120 active seconds.
 
 The two-minute demo completes the selected Jezero route in 120 active seconds. Releasing the trigger or losing a valid walking state freezes position and countdown together. Longer Jezero routes play at a faster presentation pace. Outside the measured sector, the demo previews up to 192 m and offers continuation. Full mission mode exposes mission-time speeds ×1, ×30, and ×50.
 
@@ -35,12 +35,12 @@ The shortcut opens borderless fullscreen. Interface text is English. Coordinate 
 
 | Quest input | Global Mars / Jezero zone | Route comparison | Helmet mission |
 | --- | --- | --- | --- |
-| Right index trigger | Place endpoint / select UI | Select route / UI | Hold to walk; release to stop |
-| Left index trigger | — | — | Hold to transmit voice |
+| Right index trigger | Place endpoint / select UI | Select route / UI | Hold to walk while facing the route; release to stop |
+| Left index trigger | Hold to transmit from Mission Control lobby | — | Hold to transmit voice |
 | Left stick | Rotate globe / pan zone | Orbit terrain | — |
 | Right stick | Up/down to zoom | Left/right pan; up/down zoom | — |
-| Right A | Switch start/destination | Enter selected route | Continue / replay after arrival |
-| Right B | Zone back to globe | Back to endpoints | Close radio panel / back to routes |
+| Right A | Enter independent planning from the lobby / switch pins in the planner | Enter selected route | Continue / replay after arrival |
+| Right B | Zone back to globe / globe back to Mission Control | Back to endpoints | Close radio panel / return to Mission Control or local routes |
 | Left X | Compare routes | Route details | Live details |
 | Left Y | Jezero showcase comparison | — | Toggle radio status |
 | Head movement | Look around | Look around | Look around while stopped or moving |
@@ -53,14 +53,28 @@ Release the trigger after entering a mission or accepting microphone permission,
 | Right drag | Orbit planner / mission look |
 | Wheel / + / − | Bounded planner zoom |
 | FIT VIEW | Reset framing |
-| Hold Y | Transmit during a mission |
+| Hold Y | Transmit from route comparison or a mission |
 | V | Switch visor/chase |
 | Esc | Mission menu |
 | Alt+F4 | Close application |
 
-## Radio behavior
+## Mission Control and radio
 
-Both applications must be inside a mission. Their routes and demo/full choices may differ, and radio can work while walking is paused. Endpoint and route-comparison screens do not keep mission radio active.
+Quest opens in the Global Mars **Waiting for Mission Control** lobby. When the laptop comparison screen shows **Quest Waiting**, choose a route and press **Enter Helmet Demo** or **Start Full Mission**. Both apps enter the selected route at zero. Quest waits until the laptop confirms readiness, then the astronaut controls movement with the right trigger.
+
+Quest publishes movement, progress, geographic position, demo/full state, reserves, effort, terrain alerts, and tracked head pose up to 30 times per second. The laptop visor mirrors head yaw, pitch, roll, and eye offset even when the astronaut is stopped. Its chase view remains available with V. Releasing the Quest trigger stops both views. A stale link holds the last confirmed position and displays a reconnecting indicator. The laptop can use D for details and Esc for its local menu. Returning from Quest with B returns the laptop to route comparison.
+
+The Quest right trigger does not recenter the camera. Looking more than 75° away from the horizontal route direction locks walking. The lock releases within 50° of the route, providing hysteresis at the boundary. A backwards view shows **ROUTE BEHIND YOU / TURN AROUND · WALK LOCKED**; other off-route headings show the left/right correction. A missing valid heading also holds position. These are interface thresholds, not measured terrain safety limits. Returning to face the route permits movement while the trigger is held. Releasing it stops movement. Radio and head-pose synchronization remain active while the direction lock is on. Route bends update the virtual heading during traversal. Standing-height calibration remains unchanged. Windows runs in the background and allows one application instance.
+
+Desktop helmet launch always queues the selected route for Mission Control, even if the headset is temporarily unavailable. It stays in the planner until Quest acknowledges loading the frozen plan. It then prepares the matching desktop mirror at zero and announces readiness. There is no disconnected fallback to an advancing local mission. The separate **LAPTOP PREVIEW** button supports local visual inspection.
+
+The astronaut starts stationary and holds the right trigger to walk. Right B returns from a dispatched mission to the waiting lobby. A opens the independent Quest planner from the lobby. In independent planning, B returns from the zone or globe as indicated on screen.
+
+Hold Y from the laptop route comparison or helmet. Hold the left trigger from the Quest lobby or helmet. Take turns and release the button after speaking. The radio stays available while walking is paused.
+
+Quest speech playback uses a 48 kHz mono PCM Android `AudioTrack` with media/speech attributes and blocking writes on a dedicated thread. This gives received speech a hardware-paced output independent of Unity's source virtualization and render timing. Unity DSP remains the desktop output and the Quest fallback if native output cannot initialize. The shared jitter buffer, receive gain, peak limiter, encryption, automatic USB/Wi-Fi selection, and half-duplex rules still apply. Headset suspension and push-to-talk clear queued playback. `MARSPATH_VOICE` logs separate capture peak, decoded samples, consumed samples, output peak, and native written samples. `Receiving` confirms traffic; verify audibility in both directions on the device after installing a new build.
+
+The EVA effects are synthesized simulation assets: eight boot-contact/grit variations with distance-driven timing and a soft looping helmet ventilation/breathing layer. They are not recorded astronaut audio. Mars attenuation is an acoustic design reference, described in [NASA's Perseverance sound report](https://www.nasa.gov/solar-system/what-sounds-captured-by-nasas-perseverance-rover-reveal-about-mars/). Radio activity ducks the effects. Regenerate assets with `py -3.9 tools/prepare_eva_audio.py` or another Python 3 interpreter.
 
 Initial pairing is provisioned automatically over authorized USB. Windows prefers USB while attached, then attempts discovery of the paired headset over a compatible local network. USB needs no internet. Wi-Fi requires local device-to-device connectivity; institutional client isolation may block it despite working internet access.
 
@@ -74,9 +88,13 @@ Initial pairing is provisioned automatically over authorized USB. Windows prefer
 
 Discovery uses UDP 42740. Quest listens on TCP 42741; USB forwarding uses desktop TCP 42739. Pairing material stays in local application data. Never commit pairing keys, credentials, or microphone recordings.
 
-The current fix prefers the physical Windows microphone over virtual Quest Link inputs, keeps reception active while local push-to-talk is held, raises quiet received voice, and limits loud peaks. The software check reaches the encrypted receive/playback buffer; physical microphone capture and speaker audibility need live testing.
+The radio selects a physical Windows microphone, passes one speaker at a time, and boosts incoming Quest speech with a peak limiter. Dedicated reader/writer tasks carry encrypted frames independently of terrain rendering. Playback starts with a 40 ms USB or 60 ms Wi-Fi prefill and adapts up to 140 ms after packet gaps. Quest speech has one active output, requests low-latency Android playback, and disables spatialization for the radio. Route state is coalesced to its latest value to prevent growing live latency. Both apps need the same protocol revision.
 
-Desktop-to-headset **route dispatch** remains unimplemented. Voice connection is independent of route synchronization.
+Live speech prioritizes freshness over retaining delayed syllables: capture and unsent-voice queues each retain at most six 20 ms frames. If the receive queue exceeds 300 ms, it skips to the current speech near the adaptive prefill target. These are queue limits, not a guarantee of end-to-end latency on a stalled network. Diagnostics report capture skips, dropped sends, and skipped receive samples. Regression checks cover a 60-second simulated utterance with distinct sequential frames, irregular delivery, and recovery from a blocked sender or delayed receive burst.
+
+For a same-room presentation approximately 2–3 m apart, verify the acoustic setup at that actual distance. The user confirmed clear long transmissions when the headset was moved into a separate room, so proximity contributes to the reported echo. Direct speech audible to the wearer and headset-speaker leakage into the laptop microphone are distinct possible paths; this trial does not identify which dominates. Prefer a moderate headset volume and quiet speech close to the laptop's physical microphone. Isolating wired earphones are an alternative when available. The app does not perform acoustic echo cancellation and cannot cancel speech that reaches the wearer's ears directly through the room. USB and Wi-Fi do not remove that physical path.
+
+The software regression covers encrypted route transfer, duplicate protection, the laptop-ready gate, live state, two-way voice arriving without render ticks, speech sample conservation, and irregular packet batches. The player flag `--mars-live-mission-review` exercises zero start, non-Balanced route, movement, stop, source reserves and alerts, stale updates, session identity, continuation, arrival, and return. Physical speech quality requires listening on the target hardware.
 
 ## Terrain contract
 
@@ -130,6 +148,10 @@ Paths start at `MarsPathUnity/Assets`. Where a row lists additional filenames, t
 
 The latest zone-map crosshair is foreground UI above the map so aiming is visible before clicking. The globe menu also uses foreground UI to prevent controls disappearing inside the sphere. Terrain warnings are red, peripheral, and pulse every 1.8 seconds without disappearing.
 
+### Speech clarity refinement
+
+The user confirmed that laptop-to-Quest voice was audible and clear after switching to the native media output, then requested less residual hiss. Native Quest speech now has a second-order 90 Hz high-pass and 5.5 kHz low-pass. Frame-based receive gain retains the boost for quiet speech and reduces amplification of strong frames before the soft limiter. This refinement applies receive gain on both platforms. Automated frequency checks preserve 500 Hz speech energy and attenuate 20 Hz rumble and 14 kHz hiss. Use signed JNI byte arrays for PCM to avoid per-frame conversion warnings. On 15 November 2026 the user accepted the refreshed build with no audible echo at approximately 70% Quest speaker volume and nearby presentation spacing. See [the live audio verification](docs/LIVE_MISSION_AUDIO_VALIDATION.md) for software counters, queue limits, and the scope of that physical trial.
+
 ## Build and install
 
 Clone with Git LFS and open the matching Unity version. Close any editor using the project before batch builds. From the repository root:
@@ -166,9 +188,10 @@ Builds are release assets, outside source Git. Extract the complete Windows arch
 | Check | Imported baseline status |
 | --- | --- |
 | Windows and Quest builds | Built successfully before migration |
-| Radio microphone choice, gain, encrypted two-way playback, reception while transmitting | Software regression passed |
-| Installed Quest APK hash, permission, pairing, USB forwarding | Verified on 14 November |
-| Latest zone reticle and laptop-to-Quest live voice | Awaiting latest physical user feedback |
+| Route dispatch, microphone selection, two-way playback, and one-speaker radio | Software regression passed |
+| Installed Quest APK hash, permission, pairing, USB forwarding | Verified; latest APK installed and hash-matched on 15 November |
+| Laptop-to-Quest speech at nearby presentation spacing | User confirmed clear speech without echo, approximately 70% Quest volume, on 15 November |
+| Latest zone reticle | Earlier rendering check; separate physical acceptance |
 | Belva movement, continuation, alternate route, stop-on-release | Earlier application regression passed |
 | Quest globe controls at different zooms | Earlier rendering regression passed |
 | Solver versus exhaustive small-graph search | Earlier 40-graph regression passed |
@@ -186,4 +209,4 @@ Rendering checks require a graphical Windows session. Historical checks describe
 
 For terrain reports, collect `LastMissionScene.json` from persistent app data, under `AppData/LocalLow/LAGRANGE V/MarsPath` on the original Windows machine. Diagnostic runs use `LastDiagnosticScene.json`. Record coordinates, route, source spacing, and viewpoint.
 
-Remaining work includes live radio/reticle confirmation, measured Quest performance, suit/risk calibration, optional desktop route dispatch, and any external engine integration. The owner will provide the next implementation task after this handoff.
+Remaining work includes separate physical reticle acceptance, measured Quest performance, suit/risk calibration, and any external engine integration. Live radio acceptance for the tested presentation setup is recorded above.

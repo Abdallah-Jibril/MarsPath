@@ -15,9 +15,13 @@ namespace MarsPath
         private volatile bool disposed;
         private volatile string failure;
         private long writtenSamples;
+        private int bufferFrames, outputUnderruns;
+        private readonly int capacityFrames;
 
         internal string Failure => failure;
         internal long WrittenSamples => Interlocked.Read(ref writtenSamples);
+        internal string Diagnostics => $"written={WrittenSamples}, nativeBufferMs={Volatile.Read(ref bufferFrames) * 1000 / MarsVoicePlayback.SampleRate}, " +
+            $"nativeUnderruns={Volatile.Read(ref outputUnderruns)}";
 
         internal MarsQuestVoiceOutput(MarsVoicePlayback playback)
         {
@@ -28,19 +32,35 @@ namespace MarsPath
             using var attributeBuilder = new AndroidJavaObject("android.media.AudioAttributes$Builder");
             using var usage = attributeBuilder.Call<AndroidJavaObject>("setUsage", 1); // USAGE_MEDIA
             using var speech = attributeBuilder.Call<AndroidJavaObject>("setContentType", 1); // CONTENT_TYPE_SPEECH
+            using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
+            {
+                if (version.GetStatic<int>("SDK_INT") >= 32)
+                {
+                    using var spatial = attributeBuilder.Call<AndroidJavaObject>("setSpatializationBehavior", 1); // NEVER
+                }
+            }
             using var attributes = attributeBuilder.Call<AndroidJavaObject>("build");
             using var formatBuilder = new AndroidJavaObject("android.media.AudioFormat$Builder");
             using var encoding = formatBuilder.Call<AndroidJavaObject>("setEncoding", 2); // PCM_16BIT
             using var rate = formatBuilder.Call<AndroidJavaObject>("setSampleRate", MarsVoicePlayback.SampleRate);
             using var channels = formatBuilder.Call<AndroidJavaObject>("setChannelMask", 4); // CHANNEL_OUT_MONO
             using var format = formatBuilder.Call<AndroidJavaObject>("build");
-            track = new AndroidJavaObject("android.media.AudioTrack", attributes, format,
-                Math.Max(minimum, 7680), 1, 0); // MODE_STREAM, generated audio session
+            using var builder = new AndroidJavaObject("android.media.AudioTrack$Builder");
+            using var trackAttributes = builder.Call<AndroidJavaObject>("setAudioAttributes", attributes);
+            using var trackFormat = builder.Call<AndroidJavaObject>("setAudioFormat", format);
+            using var trackBuffer = builder.Call<AndroidJavaObject>("setBufferSizeInBytes", Math.Max(minimum, 7680));
+            using var streaming = builder.Call<AndroidJavaObject>("setTransferMode", 1);
+            using var performance = builder.Call<AndroidJavaObject>("setPerformanceMode", 1); // LOW_LATENCY
+            track = builder.Call<AndroidJavaObject>("build");
             if (track.Call<int>("getState") != 1)
             {
                 track.Call("release"); track.Dispose();
                 throw new InvalidOperationException("Quest media output did not initialize.");
             }
+            capacityFrames = track.Call<int>("getBufferCapacityInFrames");
+            int requestedFrames = Math.Max(minimum / 2, 960);
+            bufferFrames = track.Call<int>("setBufferSizeInFrames", requestedFrames);
+            if (bufferFrames <= 0) bufferFrames = track.Call<int>("getBufferSizeInFrames");
             track.Call<int>("setVolume", 1f);
             track.Call("play");
             writer = Task.Run(WriteAudio);
@@ -54,6 +74,7 @@ namespace MarsPath
                 var mono = new float[960];
                 var pcm = new sbyte[mono.Length * 2];
                 var speechFilter = new MarsVoiceSpeechFilter();
+                int blocks = 0;
                 while (!disposed)
                 {
                     playback.Read(mono);
@@ -74,6 +95,17 @@ namespace MarsPath
                         if (written == 0) { Thread.Sleep(2); continue; }
                         offset += written;
                         Interlocked.Add(ref writtenSamples, written / 2);
+                    }
+                    if (++blocks % 50 == 0)
+                    {
+                        int underruns = track.Call<int>("getUnderrunCount");
+                        if (underruns > outputUnderruns)
+                        {
+                            int requested = Math.Min(capacityFrames, bufferFrames + 960);
+                            int actual = track.Call<int>("setBufferSizeInFrames", requested);
+                            if (actual > 0) Volatile.Write(ref bufferFrames, actual);
+                        }
+                        Volatile.Write(ref outputUnderruns, underruns);
                     }
                 }
             }
@@ -97,7 +129,7 @@ namespace MarsPath
             // A write can be blocked on a suspended device. Pause releases it.
             if (!writer.IsCompleted)
             {
-                try { track.Call("pause"); }
+                try { track.Call("pause"); track.Call("flush"); }
                 catch (Exception) { }
             }
             writer.Wait(250);
