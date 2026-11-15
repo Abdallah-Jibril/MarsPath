@@ -5,8 +5,8 @@
 | Material | File or link | Status |
 | --- | --- | --- |
 | Final project | [Application source and bundled data](../MarsPathUnity/) | Available |
-| Windows application | [MarsPath-Windows-x64.zip](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/download/hackathon-demo-2026-11-15/MarsPath-Windows-x64.zip) | Packaged build |
-| Quest 3 application | [MarsPath-Quest3.apk](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/download/hackathon-demo-2026-11-15/MarsPath-Quest3.apk) | Packaged build |
+| Windows application | [MarsPath-Windows-x64.zip](https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath-Windows-x64.zip) | Packaged build |
+| Quest 3 application | [MarsPath-Quest3.apk](https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath-Quest3.apk) | Packaged build |
 | Project demo | [MarsPath_20s_Live_Quest_Demo_EN.mp4](MarsPath_20s_Live_Quest_Demo_EN.mp4) | Available, 20 seconds, English narration |
 | Presentation | Final team deck | Awaiting the file from the team |
 
@@ -16,7 +16,7 @@ The final presentation will be stored in this folder and linked from this page w
 
 ## Application downloads
 
-The [15 November release](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/hackathon-demo-2026-11-15) contains the Windows archive, Quest installer, and demo video. Extract the complete Windows ZIP before opening `MarsPath.exe`. Install the Quest APK through authorized USB debugging. [Build manifest and SHA-256 checksums](BUILD_MANIFEST.json)
+The [15 November release](https://github.com/Abdallah-Jibril/MarsPath/releases/tag/hackathon-demo-2026-11-15) contains the Windows archive, Quest installer, and demo video. Extract the complete Windows ZIP before opening `MarsPath.exe`. Install the Quest APK through authorized USB debugging. [Build manifest and SHA-256 checksums](BUILD_MANIFEST.json)
 
 ## Project submission
 

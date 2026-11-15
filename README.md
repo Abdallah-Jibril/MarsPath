@@ -16,7 +16,7 @@ The detailed demonstration covers a measured **10 × 10 km region of Jezero Crat
 | --- | --- |
 | Application source, scenes, and runtime data | [MarsPathUnity](MarsPathUnity/) |
 | Demo video with English narration | [20-second live Quest walkthrough](resources/MarsPath_20s_Live_Quest_Demo_EN.mp4) |
-| Ready-to-run builds | [Windows ZIP and Quest APK](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/hackathon-demo-2026-11-15) |
+| Ready-to-run builds | [Windows ZIP and Quest APK](https://github.com/Abdallah-Jibril/MarsPath/releases/tag/hackathon-demo-2026-11-15) |
 | Team presentation | Awaiting the final team deck, to be added to `resources/` |
 | Planetary data and source references | [GIS datasets](GIS/) and [data attribution](docs/DATA_SOURCES.md) |
 | Algorithms and engineering methods | [Route searches](docs/ALGORITHMS.md) and [EVA calculations](docs/PHYSICS_AND_HAZARDS.md) |
@@ -77,7 +77,7 @@ Slope warnings use source-elevation gradients and a declared 10° caution policy
 
 ### Run the current version
 
-Download the [15 November Windows and Quest builds](https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/tag/hackathon-demo-2026-11-15), or build both apps from source with the instructions below. The [current build manifest](resources/BUILD_MANIFEST.json) records package sizes and SHA-256 checksums.
+Download the [15 November Windows and Quest builds](https://github.com/Abdallah-Jibril/MarsPath/releases/tag/hackathon-demo-2026-11-15), or build both apps from source with the instructions below. The [current build manifest](resources/BUILD_MANIFEST.json) records package sizes and SHA-256 checksums.
 
 - **Windows** opens `MarsPathUnity/Builds/Windows/MarsPath.exe` in borderless fullscreen. Keep the executable, data folder, and libraries together. Press `Alt+F4` to close.
 - **Quest 3** requires Developer Mode and authorized USB debugging for APK installation. Open MarsPath from the headset application library after installation. [Installation steps](HANDOFF.md#build-and-install)
@@ -88,8 +88,8 @@ Install Git LFS before cloning. Use **Unity 6000.6.5f1** with Windows build supp
 
 ```powershell
 git lfs install
-git clone https://github.com/Abdallah-Jibril/MarsPath_Hackathon.git
-Set-Location MarsPath_Hackathon
+git clone https://github.com/Abdallah-Jibril/MarsPath.git
+Set-Location MarsPath
 git lfs pull
 ```
 

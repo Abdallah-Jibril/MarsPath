@@ -1,5 +1,5 @@
 {
-  "repository": "Abdallah-Jibril/MarsPath_Hackathon",
+  "repository": "Abdallah-Jibril/MarsPath",
   "release_tag": "hackathon-demo-2026-11-15",
   "unity": "6000.6.5f1",
   "runtime_source_commit": "d630782",
@@ -8,19 +8,19 @@
       "file": "MarsPath-Windows-x64.zip",
       "bytes": 1047988353,
       "sha256": "bc74bb9b54983f15cae9b4b8badb32b976bf2c18f2aeebc7a608fcf23ff8252a",
-      "url": "https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/download/hackathon-demo-2026-11-15/MarsPath-Windows-x64.zip"
+      "url": "https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath-Windows-x64.zip"
     },
     {
       "file": "MarsPath-Quest3.apk",
       "bytes": 652856119,
       "sha256": "4623451e75e2e7657caf6e39f7cf651dfe369741b61ccd1944c3415b3ff36c4e",
-      "url": "https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/download/hackathon-demo-2026-11-15/MarsPath-Quest3.apk"
+      "url": "https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath-Quest3.apk"
     },
     {
       "file": "MarsPath_20s_Live_Quest_Demo_EN.mp4",
       "bytes": 15446170,
       "sha256": "7b727284097f9c747a9a1dd68822d566c9daf7f4e9255c4daa5cc9c628339b93",
-      "url": "https://github.com/Abdallah-Jibril/MarsPath_Hackathon/releases/download/hackathon-demo-2026-11-15/MarsPath_20s_Live_Quest_Demo_EN.mp4"
+      "url": "https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath_20s_Live_Quest_Demo_EN.mp4"
     }
   ]
 }
