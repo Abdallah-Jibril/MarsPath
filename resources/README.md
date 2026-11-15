@@ -9,7 +9,7 @@
 | Quest 3 application | [MarsPath-Quest3.apk](https://github.com/Abdallah-Jibril/MarsPath/releases/download/hackathon-demo-2026-11-15/MarsPath-Quest3.apk) | Packaged build |
 | Project demo | [MarsPath_20s_Live_Quest_Demo_EN.mp4](MarsPath_20s_Live_Quest_Demo_EN.mp4) | Available, 20 seconds, English narration |
 | Presentation | [LAGRANGE V.ppsx](LAGRANGE%20V.ppsx) | Available, PowerPoint show |
-| Research manuscript | [MarsPath_Research_Paper_EN.pdf](MarsPath_Research_Paper_EN.pdf) | Available, 8 pages, English |
+| Research manuscript | [MarsPath_Research_Paper.pdf](MarsPath_Research_Paper.pdf) | Available, 8 pages, English |
 
 The video shows manual start and destination selection, the Belva demo preset, five route alternatives, the laptop's live Quest mirror, and two-way radio indicators. It combines recorded application shots with an English narration track. Cuts omit loading intervals. The [verification record](../docs/LIVE_MISSION_AUDIO_VALIDATION.md#15-november-faster-mission-entry-over-local-wi-fi) reports measured startup times from separate Wi-Fi trials.
 

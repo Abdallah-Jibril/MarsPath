@@ -18,7 +18,7 @@ The detailed demonstration covers a measured **10 × 10 km region of Jezero Crat
 | Demo video with English narration | [20-second live Quest walkthrough](resources/MarsPath_20s_Live_Quest_Demo_EN.mp4) |
 | Ready-to-run builds | [Windows ZIP and Quest APK](https://github.com/Abdallah-Jibril/MarsPath/releases/tag/hackathon-demo-2026-11-15) |
 | Team presentation | [LAGRANGE V PowerPoint show](resources/LAGRANGE%20V.ppsx) |
-| Research manuscript | [Eight-page English research paper](resources/MarsPath_Research_Paper_EN.pdf) |
+| Research manuscript | [Eight-page English research paper](resources/MarsPath_Research_Paper.pdf) |
 | Planetary data and source references | [GIS datasets](GIS/) and [data attribution](docs/DATA_SOURCES.md) |
 | Algorithms and engineering methods | [Route searches](docs/ALGORITHMS.md) and [EVA calculations](docs/PHYSICS_AND_HAZARDS.md) |
 
